@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% include "includes/teacher.html" %}
+
+{%block main%}
+{% for teacher in teachers %}
+<div class="col-xs-12 col-sm-6 col-md-4">
+{{teacherMacro(teacher)}}
+</div>
+{% endfor %}
+
+{%endblock%}

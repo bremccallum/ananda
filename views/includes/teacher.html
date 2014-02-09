@@ -1,0 +1,13 @@
+{% macro teacherMacro(teacher) %}
+
+<section class="teacher">
+  <h1>{{teacher.name | title}}</h1>
+  <h2>
+    <small>{{teacher.title}}</small>
+  </h2>
+    {%if teacher.email%}
+  <a href="mailto:{{teacher.email}}">Email {{teacher.firstName | title}}</a>
+    {%endif%}
+  <p>{{teacher.bio}}</p>
+</section>
+{% endmacro %}

@@ -1,0 +1,68 @@
+{% extends "/layout.html" %} {%block main%}
+<div class="col-sm-6 col-md-4">
+    <div class="admin-box">
+        <a href="/admin/teacher" class="btn btn-primary pull-right">Add Teacher</a>
+        <h2>Teacher Admin</h2>
+        <ul class="list-group">
+            {% for firstName in teachersNames %}
+            <li class="list-group-item" data-firstName="{{firstName}}">
+                <i onclick="deleteTeacher(this, {{'"'+firstName+'"'}})" class="fa fa-trash-o pull-right"></i>
+                <a href="/admin/teacher?t={{firstName}}">
+                    <h4>{{firstName | title}}</h4>
+                </a>
+            </li>
+
+            {% endfor%}</ul>
+    </div>
+</div>
+<div class="col-sm-6 col-md-4">
+    <div class="admin-box">
+        <a href="/admin/event" class="btn btn-primary pull-right">Add Event</a>
+        <h2>Event Admin</h2>
+        <ul class="list-group">
+            {% for event in events %}
+            <li class="list-group-item">
+                <i onclick="" class="fa fa-trash-o pull-right"></i>
+                <a href="">
+                    <h4>{{event}}</h4>
+                </a>
+            </li>
+
+            {% endfor%}
+        </ul>
+    </div>
+</div>
+<div class="col-sm-6 col-md-4">
+    <div class="admin-box">
+        <h2></h2>
+    </div>
+</div>
+<div class="col-sm-6 col-md-4">
+    <div class="admin-box">
+        <h2></h2>
+    </div>
+</div>
+
+{% endblock %}
+{% block finally%}
+<script>
+    function deleteTeacher(t, n){
+        $parent = $(t).parent();
+        if(confirm("Are you REALLY sure you want to delete " + n + "?")){
+            $parent.prepend("<p class='delete'>Deleting...</p>");
+            $.post("/admin/teacher/delete", {firstName:n}, function(data){
+                if(data.success){
+                    $parent.find(".delete").text("Successfully deleted.");
+                    $parent.fadeOut(3000, function(){$parent.remove()});
+                }
+                else{
+                    console.log(data);
+                    $parent.find(".delete").text("Could not delete.").fadeOut(5000,function(){$parent.find(".delete").remove()});
+                }
+            }).fail(function(){
+                $parent.find(".delete").text("Could not delete.").fadeOut(5000,function(){$parent.find(".delete").remove()});
+            });
+        }
+    }
+</script>
+{% endblock %}

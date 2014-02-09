@@ -1,0 +1,13 @@
+/* humanstxt.org */
+/* TEAM */
+Developer: Matt Enlow
+Site: //novaugust.net
+Location: Lander, Wyoming, USA
+
+/* THANKS */
+Name: blossomyogastudio.com
+
+/* SITE */
+  Standards: HTML5, CSS3
+  Components: NodeJS, MongoDB, Mongoose, ExpressJS, jQuery, Bootstrap,
+  Software: Git, Brackets
