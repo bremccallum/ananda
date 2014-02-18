@@ -8,6 +8,6 @@
     {%if teacher.email%}
   <a href="mailto:{{teacher.email}}">Email {{teacher.firstName | title}}</a>
     {%endif%}
-  <p>{{teacher.bio}}</p>
+  <p>{{teacher.bio | replace("\n", "<br>") | safe}}</p>
 </section>
 {% endmacro %}

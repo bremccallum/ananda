@@ -1,7 +1,147 @@
-{%extends "layout.html"%}
+{%extends "layout.html"%} {% include "includes/alertbox.html"%} {% block styles %}
+<!-- Datepicker stuff -->
+<!-- /datepicker -->
+<link rel="stylesheet" href="/styles/datepicker3.css">
+<link rel="stylesheet" href="/styles/bootstrap-timepicker.min.css">{% endblock %} {% block scripts_top %}
+<script src="/js/bootstrap-datepicker.js"></script>
+<script src="/js/bootstrap-timepicker.min.js"></script>
+{% endblock %} {%block main%}
+<h1 class="col-xs-12">{{(event and "Editing: " + event.name) or "Add Event"}}</h1>
+{{ alertBox(error, success)}}
+<form id="event-form" class="col-xs-10 col-xs-offset-1 form-horizontal" action="" method="post" autocomplete="{{ 'off' if not event}}">
+    {% if event %}
+    <input type="hidden" name="key" value="{{event._id}}">{% endif %}
+    <div class="form-group">
+        <fieldset>
+            <legend>
+                Event Type
+            </legend>
+            <div class="btn-group" data-toggle="buttons">
+                {% for o in [{val:'class',desc:'Regular class'}, {val:'special',desc:'Special event'}] %}
+                <label for="{{o.val}}" class="btn btn-default btn-lg {{'active' if event and event.type==o.val}}">{{o.desc}}
+                    <input {{ 'checked' if event and event.type==o.val}} id="{{o.val}}" name="type" value="{{o.val}}" type="radio">
+                </label>
+                {% endfor %}
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Event Information</legend>
+            <label for="name">Event Name</label>
+            <input class="form-control" type="text" required id="name" name="name" placeholder="{{text}}" value="{{event.name}}">
+            <label for="teacher">Instructor</label>
+            <select name="teacher" id="teacher" class="form-control">
+                {% for teacher in teachers %}
+                <option {{ 'selected' if event.teacher==teacher.firstName}} value="{{teacher.firstName}}">{{teacher.firstName | title}}</option>
+                {% endfor %}
+            </select>
+            <label for="desc">Description</label>
+            <textarea name="desc" required id="desc" class="form-control">{{event.description}}</textarea>
+        </fieldset>
 
+        <fieldset class="dates">
+            <legend>Dates &amp; Times</legend>
+            <div class="pull-left">
+                <label for="">start date</label>
+                <input type="hidden" name="startDate">
+                <div class="startDate">
+                </div>
+            </div>
+            <div class="pull-left">
+                <label for="">stop date</label>
+                <input type="hidden" name="endDate">
+                <div class="endDate">
+                </div>
+            </div>
+            <h4 class="clearfix" style="clear:both;">Repeats Every...</h4>
+            <div class="btn-group" data-toggle="buttons">
+                {% for day in dayNames %}
+                <label for="{{day}}" class="btn btn-info btn-lg{{' active' if event and event.days.indexOf(loop.index0) >= 0}}">{{day}}
+                    <input name="days" id="{{day}}" value="{{loop.index0}}" type="checkbox" {{ ' checked' if event and event.days.indexOf(loop.index0)>= 0}}>
+                </label>
+                {% endfor %}
+            </div>
+            <h4>Starts at</h4>
+            <div class="input-group bootstrap-timepicker">
+                <input id="time" name="startTime" type="text" class="form-control">
+                <span class="input-group-addon">
+                    <i class="fa fa-clock-o"></i>
+                </span>
+            </div>
+            <label for="length">Class Length (Minutes)</label>
+            <input type="text" name="length" value="{{event.length if event else '75'}}">
+        </fieldset>
+        {% if event%}
+        <button class="btn btn-success pull-left">Update Event</button>
+        <button onclick="deleteEvent()" class="btn btn-danger pull-right" type="button">Delete Event</button>
+        {% else %}
+        <button class="btn btn-primary">Add Event</button>
+        {% endif %}
 
-{%block main%}
-
-
-{%endblock%}
+</form>
+{%endblock%} {%block finally%}
+<script>
+    $('#time').timepicker({defaultTime:'{{event.startTime if event else "6:30 PM"}}'});
+    var today = new Date(Date.now());
+    var dpOpts = {
+        startDate:today.getDay() + '/' + (today.getMonth()+1) + "/" + today.getFullYear
+    }
+    $(".startDate").datepicker(dpOpts);
+    $(".endDate").datepicker(dpOpts);
+    {% if event %}
+        $(".startDate").datepicker('setDate', new Date('{{event.startDate}}'));
+     {% if event.endDate %}
+        $(".endDate").datepicker('setDate', new Date('{{event.endDate}}'));
+     {% endif %}
+    {% endif %}
+    $('#event-form').submit(function(e){
+        $form = $(this);
+        e.preventDefault();
+        $('input[name="startDate"]').val($(".startDate").datepicker('getDate'));
+        $('input[name="endDate"]').val($(".endDate").datepicker('getDate'));
+        if($(".startDate").datepicker('getDate') == "Invalid Date"){
+            bootstrapAlert("alert-warning", "Please select a starting date for the event");
+            return;
+        }
+        //data.startTime = $("#time").getTime();
+        $.post("/admin/event", $form.serialize(), function(data){
+            console.log(data);
+            if(data.success){
+                bootstrapAlert("alert-success", "Event successfully {{'updated' if event else 'added'}}.");
+                $form[0].reset();
+            }
+            else if(data.name === "ValidationError"){
+                 if(data.errors.type){
+                     bootstrapAlert("alert-warning", "Please select an event type.");
+                 }
+                 else if(data.errors.days){
+                     bootstrapAlert("alert-info", "Classes must have at least one day selected to repeat on.");
+                 }
+            }
+            
+        }).fail(function(err){
+            console.log(err);
+        });
+    });
+</script>
+{%if event%}
+<script>
+    function deleteEvent(){
+        if(confirm("Are you sure you want to delete {{event.name}}?")){
+            bootstrapAlert("alert-info", "Deleting event...");
+            $.post("/admin/event/delete", {id:{{event._id}}}, function(data){
+                if(data.success){
+                    bootstrapAlert("alert-success", "{{teacher.firstName}} successfully deleted. Redirecting you back to admin homepage in 5 seconds.")
+                    setTimeout(function(){document.location = "/admin"}, 2000);
+                }
+                else{
+                    console.log(data);
+                    bootstrapAlert("alert-warning", "Could not delete.");
+                }
+            }).fail(function(){
+                bootstrapAlert("alert-warning", "Could not delete.");
+            });
+        }
+    }
+</script>
+{%endif%}
+{% endblock %}

@@ -1,4 +1,4 @@
-{% extends "layout.html" %} {% macro inputFormGroup(name,text, type="text" , required=false, value="") %}
+{% extends "layout.html" %}{% include "includes/alertbox.html" %} {% macro inputFormGroup(name,text, type="text" , required=false, value="") %}
 <div class="form-group">
     <label for="{{name}}">{{text}}</label>
     <input class="form-control" type="{{type}}" id="{{name}}" name="{{name}}" placeholder="{{text}}" {{ 'required' if required}} value="{{teacher[name]}}">
@@ -6,56 +6,58 @@
 {% endmacro %} {% block main %} {#
 <!-- IF TEACHER ====== WE'RE EDITING, NOT ADDING -->#}
 <h1 class="col-xs-10 col-xs-offset-1">{{'Edit Teacher: '+teacher.firstName|title if teacher else 'Add Teacher'}}</h1>
-<div id="form-alert" class="col-xs-12 alert alert-dismissable {{'alert-danger' if err}}{{'alert-success' if success}}{{ 'hidden' if not err and not success}}">
-    <button class="close" type="button" onclick="$('#form-alert').addClass('hidden')">&times;</button>
-    <p class="message text-center">{{err or success}}</p>
-</div>
-<form id="teacher-form" class="col-xs-10 col-xs-offset-1" action="" method="post" autocomplete={{"off" if not teacher}}>
+{{ alertBox(error, success) }}
+<form id="teacher-form" class="col-xs-10 col-xs-offset-1" action="" method="post" autocomplete={{ "off" if not teacher}}>
     {%if teacher%}
     <input type="hidden" name="key" value="{{teacher.firstName}}">{% endif %} {{ inputFormGroup("firstName", "First Name", required=true)}} {{ inputFormGroup("lastName", "Last Name", required=true)}} {{ inputFormGroup("title", "Title")}} {{ inputFormGroup("email", "Email", "email")}}
     <label for="bio">Teacher Description</label>
     <textarea class="form-control" name="bio" id="bio">{{teacher.bio}}
     </textarea>
     <button type="submit" class="btn btn-{{'success' if teacher else 'primary'}}">{{"Update" if teacher else "Add"}} Teacher</button>
-    {{ '<button type="button" class="btn btn-danger pull-right" onclick="deleteTeacher()">Delete Teacher</button>' |safe if teacher }}
+    {{ '
+    <button type="button" class="btn btn-danger pull-right" onclick="deleteTeacher()">Delete Teacher</button>' |safe if teacher }}
 </form>
 {% endblock %} {% block finally%}
 <script>
     var $form = $("#teacher-form"),
         $alert = $('#form-alert').alert();
-    function alert(alertClass, msg){
-        $alert.find(".message").html(msg);
-        $alert.removeClass("hidden alert-info alert-danger alert-warning alert-success").addClass(alertClass).alert();
-        location.hash = "#form-alert";
-    }
+    
     $form.submit(function (e) {
         e.preventDefault();
         $.post("", $form.serialize(),
             function (data) {
                 if (data.error) {
+                    console.log(data.error);
                     if(data.error.code && data.error.code === 11000){
                         //duplicate key error
-                        alert("alert-warning", "There's already a teacher with the name <strong>"+$("input[name='firstName']").val()+"</strong> in the database.<br>Please use a different first name.");
+                        bootstrapAlert("alert-warning", "There's already a teacher with the name <strong>"+$("input[name='firstName']").val()+"</strong> in the database.<br>Please use a different first name.");
                     }
                     else if(data.error.name === "ValidationError"){
                         if(data.error.errors.firstName || data.error.errors.lastName){
-                            console.log("HI!");
-                            alert("alert-danger", "First and last name must be single words, no spaces or punctuation.");
+                            console.log(data.error);
+                            bootstrapAlert("alert-danger", "First and last name must be single words, no spaces or punctuation.");
                         }
                     }
                     else{
-                    alert("alert-danger", data.error.name);
+                        bootstrapAlert("alert-danger", data.error.name);
                     }
                 }
                 else{
-                    alert("alert-success",
-                      "<strong>" + $("input[name='firstName']").val() + "</strong>" + ' successfully {{"updated in" if teacher else "saved to"}} <a class="alert-link" href="/teachers">Teachers</a>!');
-                      setTimeout(function(){$alert.addClass('hidden')}, 5000);
-                    if({{'!' if teacher}}true){$form.reset();}//reset form when adding
+                    var name = $("input[name='firstName']").val();
+                    bootstrapAlert("alert-success",
+                      "<strong>" + name + "</strong>" + ' successfully {{"updated in" if teacher else "saved to"}} <a class="alert-link" href="/teachers">Teachers</a>! <br><a href="/admin/teacher?id='+name+'">Edit ' + name +'</a>.');
+                      
+                      setTimeout(function(){
+                           $alert.fadeOut(1000, function(){
+                              $alert.addClass("hidden");
+                          });
+                      }, 5000);
+                    if({{'!' if teacher}}true){$form[0].reset();$form.find("input[name='firstName']").focus();}//reset form when adding
                 }
             })
-            .fail(function () {
-                alert("alert-warning", "Something went wrong. Try submitting the form again, or maybe refresh the page (be careful, that'll clear out everything you typed).")
+            .fail(function (err) {
+                console.log(err);
+                bootstrapAlert("alert-warning", "Something went wrong. Try submitting the form again, or maybe refresh the page (be careful, that'll clear out everything you typed).")
             });
     });
 </script>
@@ -63,20 +65,20 @@
 <script>
     function deleteTeacher(){
         if(confirm("Are you REALLY sure you want to delete {{teacher.firstName}}?")){
-            alert("alert-info", "Deleting teacher...");
+            bootstrapAlert("alert-info", "Deleting teacher...");
             $.post("/admin/teacher/delete", {firstName:"{{teacher.firstName}}"}, function(data){
                 if(data.success){
-                    alert("alert-success", "{{teacher.firstName}} successfully deleted. Redirecting you back to admin homepage in 5 seconds.")
-                    setTimeout(function(){document.location = "/admin"}, 5000);
+                    bootstrapAlert("alert-success", "{{teacher.firstName}} successfully deleted. Redirecting you back to admin homepage in 5 seconds.")
+                    setTimeout(function(){document.location = "/admin"}, 2000);
                 }
                 else{
                     console.log(data);
-                    alert("alert-warning", "Could not delete.");
+                    bootstrapAlert("alert-warning", "Could not delete.");
                 }
             }).fail(function(){
-                alert("alert-warning", "Could not delete.");
+                bootstrapAlert("alert-warning", "Could not delete.");
             });
         }
     }
 </script>
-{%endif%} {%endblock%} 
+{%endif%} {%endblock%}

@@ -1,0 +1,96 @@
+{%extends "layout.html"%} {% include "includes/alertbox.html"%} {% block styles %}
+<link rel="stylesheet" href="/styles/datepicker3.css">{% endblock %} {% block scripts_top %}
+<script src="/js/bootstrap-datepicker.js"></script>{% endblock %} {%block main%}
+<h1 class="col-xs-12">{{'Edit Substitution' if sub else 'Add Substitution'}}</h1>
+{{ alertBox(error, success)}}
+<form id="sub-form" class="col-xs-10 col-xs-offset-1 form-horizontal" action="" method="post" autocomplete="{{ 'off' if not sub}}">
+    {% if sub %}
+    <input type="hidden" name="key" value="{{sub._id}}">{% endif %}
+    <div class="form-group">
+        <fieldset>
+            <label for="event">Class</label>
+            <select required name="event" id="event" class="form-control">
+                {% for event in classes %}
+                <option {{ "selected" if sub.event._id==event._id}} value="{{event._id + '|' + event.name}}">{{event.name}}</option>
+                {% endfor %}
+            </select>
+            <div>
+                <label for="">Substitution Date</label>
+                <input type="hidden" name="date">
+                <div class="date">
+                </div>
+            </div>
+
+            <label for="teacher">Substituting Teacher</label>
+            <select required name="teacher" id="teacher" class="form-control">
+                {% for teacher in teachers %}
+                <option {{ 'selected' if sub.teacher==teacher.firstName}} value="{{teacher.firstName}}">{{teacher.firstName | title}}</option>
+                {% endfor %}
+            </select>
+
+        </fieldset>
+        {% if sub%}
+        <button class="btn btn-success pull-left">Update sub</button>
+        <button onclick="deletesub()" class="btn btn-danger pull-right" type="button">Delete sub</button>
+        {% else %}
+        <button class="btn btn-primary">Add sub</button>
+        {% endif %}
+
+</form>
+{%endblock%} {%block finally%}
+<script>
+    var today = new Date(Date.now());
+    var dpOpts = {
+        startDay:today.getDay() + '/' + (today.getMonth()+1) + "/" + today.getFullYear
+    }
+    $(".date").datepicker(dpOpts);
+    {% if sub %}
+        $(".date").datepicker('setDate', new Date('{{sub.date}}'));
+    {% endif %}
+    $('#sub-form').submit(function(e){
+        e.preventDefault();
+        $('input[name="date"]').val($(".date").datepicker('getDate'));
+        if($(".date").datepicker('getDate') == "Invalid Date"){
+            bootstrapAlert("alert-warning", "Please select a date.");
+            return;
+        }
+        //data.startTime = $("#time").getTime();
+        $.post("/admin/substitution", $(this).serialize(), function(data){
+            console.log(data);
+            if(data.success){
+                bootstrapAlert("alert-success", "Subscription successfully {{'updated' if sub else 'added'}}.");
+            }
+            else if(data.name === "ValidationError"){
+                 if(data.errors){
+                     console.log(data);
+                     bootstrapAlert("alert-danger", "Error");
+                 }
+            }
+            
+        }).fail(function(err){
+            console.log(err);
+             bootstrapAlert("alert-danger", "Error");
+        });
+    });
+</script>
+{%if sub%}
+<script>
+    function deletesub(){
+        if(confirm("Are you sure you want to delete this substitution??")){
+            bootstrapAlert("alert-info", "Deleting sub...");
+            $.post("/admin/substitution/delete", {id:"{{sub._id}}"}, function(data){
+                if(data.success){
+                    bootstrapAlert("alert-success", "Substitution successfully deleted. Redirecting you back to admin homepage in 2 seconds.")
+                    setTimeout(function(){document.location = "/admin"}, 2000);
+                }
+                else{
+                    console.log(data);
+                    bootstrapAlert("alert-warning", "Could not delete.");
+                }
+            }).fail(function(){
+                bootstrapAlert("alert-warning", "Could not delete.");
+            });
+        }
+    }
+</script>
+{%endif%} {% endblock %}

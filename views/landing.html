@@ -1,0 +1,40 @@
+{%extends "layout.html"%} {% macro classerizer(class) %}
+<div class="upcoming">
+    <p>
+        <time>{{class.startTime}}</time>: {{class.name}}</p>
+</div>
+{% endmacro %} {% block main %}
+
+<div id="leftcol" class="col-xs-12 col-sm-3 col-sm-offset-1">
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="next" class="card">
+                <h2>Upcoming Classes</h2>
+                <h3>{{'Tonight' if pm else 'Today'}}</h3>
+                {% for class in upcoming.today | sort(false, false,'startTime')%} {{classerizer(class)}} {% endfor %}
+                <h3>Tomorrow</h3>
+                {%for class in upcoming.tomorrow | sort(false,false,'startTime') %} {{classerizer(class)}} {% endfor %}
+            </div>
+            <small><a href="/schedule">See the whole schedule</a></small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="contact">
+                <h2>Contact Us</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="rightcol" class="col-xs-12 col-sm-7">
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="welcome" class="card">
+                <h2>Welcome!</h2>
+                <p>Ananda is the Sanskrit word for bliss. It is a blissful, peaceful happiness. It is the kind of happiness that does not depend on your circumstances to feel a state of happiness and contentment.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
