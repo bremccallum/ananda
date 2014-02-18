@@ -21,19 +21,21 @@ The following Models have currently been sketched out, and are the first thing b
 #####Teacher:Complete
 Teachers are, well, teachers. Their main feature is having their "firstName" be their unique primary key, helping me create beautiful routes.
 
-#####Event:In-progress
+#####Event:Complete
 Event is the powerful object that will power both regular, weekly classes as well as special events.
 
-#####Substitution:Next
+#####Substitution:Complete
 A substitution is an object denoting a one-time overwrite of a class's teacher. A substitution is made of three easy parts
 * teacher (foreign key)
 * class (foreign key)
 * date
+
 #####News / Post?:Far off
 The user's going to need some way to easily update content on the front page
-#####WYSIWIG Page Content:Further off
-Each page is going to need an easy way to have its content updated.
+
+
 ###Wireframe
+See views/mockup.html
 Anticipated pages include
 
 * Landing/Home page
