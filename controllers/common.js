@@ -4,7 +4,7 @@ var extend = require("extend"),
 exports.Page = function (title, model) {
     var o = {
         title: title,
-        prod: app.get("env") === "Production",
+        prod: process.env.NODE_ENV === "production",
     }
     extend(o, model);
     return o;
