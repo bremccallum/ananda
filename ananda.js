@@ -30,7 +30,7 @@ nunjucks.addFilter('prettyDate', function (v) {
 nunjucks.addFilter('prettyTime', function (v) {
     return (moment(v).format("h:mm a"));
 });
-var port = Number(process.env.PORT || 5000)
+var port = Number(process.env.PORT || 6969)
 app.listen(port, function () {
     console.log('Listening on port ' + port);
 });
