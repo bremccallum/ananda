@@ -30,5 +30,5 @@ nunjucks.addFilter('prettyDate', function (v) {
 nunjucks.addFilter('prettyTime', function (v) {
     return (moment(v).format("h:mm a"));
 });
-app.listen(6969);
+app.listen(Number(process.env.PORT || 5000));
 console.log('Listening on port 6969');
