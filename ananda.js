@@ -1,3 +1,4 @@
+var soap = require("soap");
 //Load dependencies
 var express = require('express'),
     moment = require("moment");
@@ -26,6 +27,8 @@ var nunjucks = require("nunjucks").configure('views', {
 nunjucks.addFilter('prettyDate', function (v) {
     return (moment(v).format("M-DD-YY"));
 });
-
+nunjucks.addFilter('prettyTime', function (v) {
+    return (moment(v).format("h:mm a"));
+});
 app.listen(6969);
 console.log('Listening on port 6969');

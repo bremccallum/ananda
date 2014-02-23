@@ -8,6 +8,7 @@
     "mongoose": "3.8.x",
     "nunjucks": "~1.0.1",
     "extend": "~1.2.1",
-    "moment": "~2.5.1"
+    "moment": "~2.5.1",
+    "soap": "~0.4.0"
   }
 }

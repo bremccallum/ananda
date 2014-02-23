@@ -12,10 +12,78 @@
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">{%else%}
     <link rel="stylesheet" href="/styles/bootstrap.css">
     <link rel="stylesheet" href="/styles/font-awesome/css/font-awesome.min.css">{%endif%}
-    <link rel="stylesheet" href="/styles/bootstrap-theme.css">
     <link rel="stylesheet" href="/styles/ananda.css">{%block styles%} {%endblock%}
     <!-- /styles -->
 
+
+
+    <title>{%block title%}{{title}}{%endblock%}</title>
+</head>
+
+<body>
+    <ul id="MQHelper">
+        <li class="visible-xs">XS</li>
+        <li class="visible-sm">SM</li>
+        <li class="visible-md">MD</li>
+        <li class="visible-lg">LG</li>
+    </ul>
+    <header class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12" id="title">
+                <h1>Ananda Yoga</h1>
+            </div>
+        </div>
+    </header>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="#">Home</a>
+                    </li>
+                    <li class="">
+                        <a href="#">Schedule</a>
+                    </li>
+                    <li>
+                        <a href="#">Instructors</a>
+                    </li>
+                    <li>
+                        <a href="#">Classes</a>
+                    </li>
+                    <li>
+                        <a href="#">Membership &amp; Pricing</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#">Store</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <main class="container-fluid">
+        {%block main%}{%endblock%}
+    </main>
+    <footer>
+        <a href="/admin" class="pull-right"><i class="fa fa-cogs"></i></a>
+        <p class="pull-right">&copy 2014 Matt Enlow</p>
+        <p class="text-center">I haven't decided what to put here yet!</p>
+    </footer>
     <!-- scripts -->
     {%if prod%}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -23,57 +91,10 @@
     {% else %}
     <script src="/js/jquery-1.10.1.js"></script>
     <script src="/js/bootstrap.js"></script>
-    {% endif %} {%block scripts_top%} {%endblock%}
+    {% endif %} {%block scripts%} {%endblock%}
     <!-- /scripts -->
 
-    <title>{%block title%}{{title}}{%endblock%}</title>
-</head>
-
-<body>
-    <div class="container-fluid">
-        <header class="row">
-            <div class="col-xs-12 col-sm-6">
-                <h1><a href="/">Ananda Yoga</a></h1>
-            </div>
-            <div class="col-xs-12 col-sm-6">
-                <h2 class="text-right">
-                    <small>Some catchline with the word
-                        <strong>bliss</strong>
-                    </small>
-                </h2>
-            </div>{%block nav%}
-            <nav class="col-xs-12 col-md-10 col-md-offset-1">
-                <ul class="row list-unstyled">
-                    <li class="col-xs-12 col-sm-2">
-                        <a href="/admin">Admin</a>
-                    </li>
-                    <li class="col-xs-12 col-sm-2">
-                        <a href="/teachers">Teachers</a>
-                    </li>
-                    <li class="col-xs-12 col-sm-2">
-                        <a href="#news">News</a>
-                    </li>
-                    <li class="col-xs-12 col-sm-2">
-                        <a href="/classes">Our Classes</a>
-                    </li>
-                    <li class="col-xs-12 col-sm-2">
-                        <a href="/about">About Us</a>
-                    </li>
-                    <li class="col-xs-12 col-sm-2">
-                        <a href="">Yet Another Link</a>
-                    </li>
-                </ul>
-            </nav>{%endblock%}
-        </header>
-        <main class="row">
-            {%block main%}{%endblock%}
-        </main>
-        <footer class="row">
-            {%block footer%}{%endblock%}
-        </footer>
-    </div>
     {%block finally%} {%endblock%}
-
 </body>
 
 </html>

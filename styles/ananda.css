@@ -1,3 +1,17 @@
+#MQHelper{
+    position:fixed;
+    right:20px;
+    top:10px;
+}
+#MQHelper li{
+    position:relative;
+    color:red;
+    background-color: black;
+    font-weight: bold;
+    font-size:2em;
+    padding:5px 10px;
+}
+
 h2,
 h3,
 h4,
@@ -6,6 +20,7 @@ h5 {
 }
 header {
     background: url(/img/wheat.jpg) center/cover;
+    min-height:10em;
 }
 header h1 {
     color: white;
@@ -14,18 +29,15 @@ header h1 {
     padding: 10px;
     border-radius: .2em;
 }
-nav li {
-    background-color: black;
-    width: 15%;
-    margin: 0;
-    text-align: center;
-}
-nav li a {
-    color: white;
+.navbar{
+    margin-bottom:0;
 }
 main {
     padding-top:1em;
-    background-image: url(/img/green_cup.png);
+    background-image: url(/img/old_map.png);
+}
+.card{
+    background-color:#F5F5F5;
 }
 #left > div {
     border: 1px solid rgba(0, 0, 0, .3);
@@ -36,19 +48,17 @@ main {
     border-radius: 3px;
 }
 #left>div>h2 {
-    color: hsl(50, 100%, 50%);
     font-family: Verdana, sans-serif;
     margin: 0;
     border-bottom: 1px dotted rgba(0, 0, 0, .1);
 }
 #welcome {
-    margin-top: 1em;
 }
 #welcome > img {
     margin: 1em 1em 1em 0;
 }
 .article-wrapper {
-    padding-top: 1em;
+    padding-bottom: 1em;
 }
 article {
     background-color: #FEFEFE;
@@ -68,10 +78,20 @@ article:after {
 }
 article time {
     font-size: .8em;
+    color:#AAA;
 }
 footer {
-    margin-top: 2em;
+    background-color:#6A6A6A;
+    padding-top: 2em;
+    color:white;
+    padding-right:20px;
 }
 footer p {
+    margin-bottom:0;
+    padding-bottom:1em;
     text-align: right;
+}
+footer > a {
+    margin-left:20px;
+    color:hsla(0, 100%, 50%, 1);
 }

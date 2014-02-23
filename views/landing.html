@@ -1,40 +1,104 @@
-{%extends "layout.html"%} {% macro classerizer(class) %}
-<div class="upcoming">
-    <p>
-        <time>{{class.startTime}}</time>: {{class.name}}</p>
-</div>
-{% endmacro %} {% block main %}
+{%extends "layout.html"%} {% macro upcomingPrinter(classes) %} {{'
+<p class="upcoming no-upcoming">No classes</p>' | safe if classes.length == 0}} {% for class in classes | sort(false, false,'StartDateTime')%}
+<p class="upcoming">
+    <time>{{class.StartDateTime | prettyTime}}</time>  <br>&nbsp;&nbsp;{{class.ClassDescription.Name}} w/ {{ class.Staff.Name }}</p>
+{% endfor %} {% endmacro %} {% block main %}
+<div class="row">
 
-<div id="leftcol" class="col-xs-12 col-sm-3 col-sm-offset-1">
-    <div class="row">
-        <div class="col-xs-12">
-            <div id="next" class="card">
-                <h2>Upcoming Classes</h2>
-                <h3>{{'Tonight' if pm else 'Today'}}</h3>
-                {% for class in upcoming.today | sort(false, false,'startTime')%} {{classerizer(class)}} {% endfor %}
-                <h3>Tomorrow</h3>
-                {%for class in upcoming.tomorrow | sort(false,false,'startTime') %} {{classerizer(class)}} {% endfor %}
-            </div>
-            <small><a href="/schedule">See the whole schedule</a></small>
+    <div id="left" class="col-xs-12 col-lg-3 col-sm-4">
+        <div id="next" class="next card">
+            <h2>Upcoming Classes</h2>
+            <h3>{{'Tonight' if pm else 'Today'}}</h3>
+            {{upcomingPrinter(today)}}
+            <h3>Tomorrow</h3>
+            {{upcomingPrinter(tmrw)}}
+            <a href="/schedule">
+                <small>or check out our entire schedule</small>
+            </a>
+        </div>
+        <div id="special" class="special card">
+            <h2>Special Events</h2>
+            <ol class="list-unstyled">
+                <li>
+                    <time>02.15.14</time>
+                    <a href="#">Inversion Workshop</a>
+                </li>
+                <li>
+                    <time>03.22.14</time>
+                    <a href="#">Arm Balances</a>
+                </li>
+                <li>
+                    <time>04.01.14</time>
+                    <a href="#">Scott Moore Visits</a>
+                </li>
+            </ol>
+        </div>
+        <div id="contact" class="clearfix card">
+            <h2>Visit Us</h2>
+            <img class="pull-right img-responsive" src="http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyCOyv-a1uHs4R15mdf87cdA-j8zU3GN7Qk&center=Lander,WY&zoom=16&size=100x100&sensor=false" alt="">
+            <span>Ananda Yoga Lander</span>
+            <br>
+            <span>c/o Sylvia Carl</span>
+            <br>
+            <span>252 N 9th St.</span>
+            <br>
+            <span>Lander, Wy 82520</span>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xs-12">
-            <div id="contact">
-                <h2>Contact Us</h2>
-            </div>
-        </div>
-    </div>
-</div>
-<div id="rightcol" class="col-xs-12 col-sm-7">
-    <div class="row">
-        <div class="col-xs-12">
-            <div id="welcome" class="card">
-                <h2>Welcome!</h2>
-                <p>Ananda is the Sanskrit word for bliss. It is a blissful, peaceful happiness. It is the kind of happiness that does not depend on your circumstances to feel a state of happiness and contentment.</p>
-            </div>
-        </div>
-    </div>
-</div>
 
+    <div id="right" class="col-xs-12 col-sm-8 col-lg-9">
+        <div id="welcome" class="clearfix well">
+
+            <img class="pull-left img-responsive" src="//lorempixel.com/200/200" alt="">
+            <h2>Welcome to Lander's Ananda Yoga</h2>
+            <p>Ananda is the Sanskrit word for bliss. It is a blissful, peaceful happiness. It is the kind of happiness that does not depend on your circumstances to feel a state of happiness and contentment.
+            </p>
+            <p>We, at Ananda Yoga Lander, strive to bring competent yoga instruction, compassion, and awareness to our community to the best of our abilities in a form true to each of our own natures in the hope of bringing further awareness to our own inner bliss that we each already possess.
+            </p>
+        </div>
+        <section id="news">
+            <div class="row">
+                <div class="article-wrapper col-lg-6">
+                    <article class="card">
+                        <h1>A Post</h1>
+                        <time>Published 02-15-2014</time>
+                        <img class="img-thumbnail" src="//placekitten.com/g/150/150" alt="">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, aspernatur, illum, porro, aut iure dolores vel perspiciatis ipsam soluta cum est recusandae. Nesciunt, maxime libero dolorem perspiciatis facere aut consectetur!</p>
+                        <a href="#">Read More..</a>
+                    </article>
+                </div>
+                <div class="article-wrapper col-lg-6">
+                    <article class="card">
+                        <h1>A Post</h1>
+                        <time>Published 02-15-2014</time>
+                        <img class="img-thumbnail" src="//lorempixel.com/150/150" alt="">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, aspernatur, illum, porro, aut iure dolores vel perspiciatis ipsam soluta cum est recusandae. Nesciunt, maxime libero dolorem perspiciatis facere aut consectetur!</p>
+                        <a href="#">Read More..</a>
+                    </article>
+                </div>
+            </div>
+            <div class="row">
+                <div class="article-wrapper col-lg-6">
+                    <article class="card">
+                        <h1>A Post</h1>
+                        <time>Published 02-15-2014</time>
+                        <img class="img-thumbnail" src="//fillmurray.com/150/150" alt="">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, aspernatur, illum, porro, aut iure dolores vel perspiciatis ipsam soluta cum est recusandae. Nesciunt, maxime libero dolorem perspiciatis facere aut consectetur!</p>
+                        <a href="#">Read More..</a>
+                    </article>
+                </div>
+                <div class="article-wrapper col-lg-6">
+                    <article class="card">
+                        <h1>A Post</h1>
+                        <time>Published 02-15-2014</time>
+                        <img class="img-thumbnail" src="//placebear.com/150/150" alt="">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, aspernatur, illum, porro, aut iure dolores vel perspiciatis ipsam soluta cum est recusandae. Nesciunt, maxime libero dolorem perspiciatis facere aut consectetur!</p>
+                        <a href="#">Read More..</a>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</div>
 {% endblock %}

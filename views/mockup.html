@@ -20,127 +20,163 @@
     <title>Ananda Mockup</title>
 </head>
 
-<body class="container-fluid">
-    <header class="row">
-        <div class="col-xs-12" id="title">
-            <h1>Ananda Yoga</h1>
-        </div>
-        <nav class="col-xs-12">
-            <ul class="list-unstyled list-inline">
-                <li>
-                    <a href="#">Link #1</a>
-                </li>
-                <li>
-                    <a href="#">Link #2</a>
-                </li>
-                <li>
-                    <a href="#">Link #3</a>
-                </li>
-                <li>
-                    <a href="#">Link #4</a>
-                </li>
-                <li>
-                    <a href="#">Link #5</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
-    <main class="row">
-        <div id="left" class="col-xs-12 col-sm-3">
-            <div id="next">
-                <h2>Next Classes</h2>
-                <h3>Tonight</h3>
-                <p>8:30pm Flow</p>
-                <h3>Tomorrow</h3>
-                <p>10:00am Yin Yoga</p>
-                <p>5:00pm Yoga 101</p>
-                <a href="#"><small>or check out our entire schedule</small></a>
+<body>
+    <ul id="MQHelper">
+        <li class="visible-xs">XS</li>
+        <li class="visible-sm">SM</li>
+        <li class="visible-md">MD</li>
+        <li class="visible-lg">LG</li>
+    </ul>
+    <div class="container-fluid header">
+        <header class="row">
+            <div class="col-xs-12" id="title">
+                <h1>Ananda Yoga</h1>
             </div>
-            <div id="special">
-                <h2>Upcoming Special Events</h2>
-                <ol class="list-unstyled">
-                    <li>
-                        <time>02.15.14</time>
-                        <a href="#">Inversion Workshop</a>
-                    </li>
-                    <li>
-                        <time>03.22.14</time>
-                        <a href="#">Arm Balances</a>
-                    </li>
-                    <li>
-                        <time>04.01.14</time>
-                        <a href="#">Scott Moore Visits</a>
-                    </li>
-                </ol>
+        </header>
+    </div>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
             </div>
-            <div id="contact" class="clearfix">
-                <h2>Visit Us</h2>
-                <img class="pull-right img-responsive" src="http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyCOyv-a1uHs4R15mdf87cdA-j8zU3GN7Qk&center=Lander,WY&zoom=16&size=100x100&sensor=false" alt="">
-                <span>Ananda Yoga Lander</span>
-                <br>
-                <span>c/o Sylvia Carl</span>
-                <br>
-                <span>252 N 9th St.</span>
-                <br>
-                <span>Lander, Wy 82520</span>
-            </div>
-        </div>
-        <div id="right" class="col-xs-12 col-sm-9">
-            <div id="welcome" class="clearfix well">
 
-                <img class="pull-left img-responsive" src="//lorempixel.com/200/200" alt="">
-                <h2>Welcome to Lander's Ananda Yoga</h2>
-                <p>Ananda is the Sanskrit word for bliss. It is a blissful, peaceful happiness. It is the kind of happiness that does not depend on your circumstances to feel a state of happiness and contentment.
-                </p>
-                <p>We, at Ananda Yoga Lander, strive to bring competent yoga instruction, compassion, and awareness to our community to the best of our abilities in a form true to each of our own natures in the hope of bringing further awareness to our own inner bliss that we each already possess.
-                </p>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="#">Home</a>
+                    </li>
+                    <li class="">
+                        <a href="#">Schedule</a>
+                    </li>
+                    <li>
+                        <a href="#">Instructors</a>
+                    </li>
+                    <li>
+                        <a href="#">Classes</a>
+                    </li>
+                    <li>
+                        <a href="#">Membership &amp; Pricing</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#">Store</a>
+                    </li>
+                </ul>
             </div>
-            <section id="news">
-                <div class="row">
-                    <div class="article-wrapper col-sm-6">
-                        <article>
-                            <h1>A Post</h1>
-                            <time>Published 02-15-2014</time>
-                            <img class="img-thumbnail" src="//placekitten.com/g/150/150" alt="">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, aspernatur, illum, porro, aut iure dolores vel perspiciatis ipsam soluta cum est recusandae. Nesciunt, maxime libero dolorem perspiciatis facere aut consectetur!</p>
-                            <a href="#">Read More..</a>
-                        </article>
-                    </div>
-                    <div class="article-wrapper col-sm-6">
-                        <article>
-                            <h1>A Post</h1>
-                            <time>Published 02-15-2014</time>
-                            <img class="img-thumbnail" src="//lorempixel.com/150/150" alt="">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, aspernatur, illum, porro, aut iure dolores vel perspiciatis ipsam soluta cum est recusandae. Nesciunt, maxime libero dolorem perspiciatis facere aut consectetur!</p>
-                            <a href="#">Read More..</a>
-                        </article>
-                    </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    
+    <main class="container-fluid">
+        <div class="row">
+            <div id="left" class="col-xs-12 col-lg-3 col-sm-4">
+                <div id="next" class="next card">
+                    <h2>Next Classes</h2>
+                    <h3>Tonight</h3>
+                    <p>8:30pm Flow</p>
+                    <h3>Tomorrow</h3>
+                    <p>10:00am Yin Yoga</p>
+                    <p>5:00pm Yoga 101</p>
+                    <a href="#">
+                        <small>or check out our entire schedule</small>
+                    </a>
                 </div>
-                <div class="row">
-                    <div class="article-wrapper col-sm-6">
-                        <article>
-                            <h1>A Post</h1>
-                            <time>Published 02-15-2014</time>
-                            <img class="img-thumbnail" src="//fillmurray.com/150/150" alt="">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, aspernatur, illum, porro, aut iure dolores vel perspiciatis ipsam soluta cum est recusandae. Nesciunt, maxime libero dolorem perspiciatis facere aut consectetur!</p>
-                            <a href="#">Read More..</a>
-                        </article>
-                    </div>
-                    <div class="article-wrapper col-sm-6">
-                        <article>
-                            <h1>A Post</h1>
-                            <time>Published 02-15-2014</time>
-                            <img class="img-thumbnail" src="//placebear.com/150/150" alt="">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, aspernatur, illum, porro, aut iure dolores vel perspiciatis ipsam soluta cum est recusandae. Nesciunt, maxime libero dolorem perspiciatis facere aut consectetur!</p>
-                            <a href="#">Read More..</a>
-                        </article>
-                    </div>
+                <div id="special" class="special card">
+                    <h2>Upcoming Special Events</h2>
+                    <ol class="list-unstyled">
+                        <li>
+                            <time>02.15.14</time>
+                            <a href="#">Inversion Workshop</a>
+                        </li>
+                        <li>
+                            <time>03.22.14</time>
+                            <a href="#">Arm Balances</a>
+                        </li>
+                        <li>
+                            <time>04.01.14</time>
+                            <a href="#">Scott Moore Visits</a>
+                        </li>
+                    </ol>
                 </div>
-            </section>
+                <div id="contact" class="clearfix card">
+                    <h2>Visit Us</h2>
+                    <img class="pull-right img-responsive" src="http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyCOyv-a1uHs4R15mdf87cdA-j8zU3GN7Qk&center=Lander,WY&zoom=16&size=100x100&sensor=false" alt="">
+                    <span>Ananda Yoga Lander</span>
+                    <br>
+                    <span>c/o Sylvia Carl</span>
+                    <br>
+                    <span>252 N 9th St.</span>
+                    <br>
+                    <span>Lander, Wy 82520</span>
+                </div>
+            </div>
+            <div id="right" class="col-xs-12 col-sm-8 col-lg-9">
+                <div id="welcome" class="clearfix well">
+        
+                    <img class="pull-left img-responsive" src="//lorempixel.com/200/200" alt="">
+                    <h2>Welcome to Lander's Ananda Yoga</h2>
+                    <p>Ananda is the Sanskrit word for bliss. It is a blissful, peaceful happiness. It is the kind of happiness that does not depend on your circumstances to feel a state of happiness and contentment.
+                    </p>
+                    <p>We, at Ananda Yoga Lander, strive to bring competent yoga instruction, compassion, and awareness to our community to the best of our abilities in a form true to each of our own natures in the hope of bringing further awareness to our own inner bliss that we each already possess.
+                    </p>
+                </div>
+                <section id="news">
+                    <div class="row">
+                        <div class="article-wrapper col-lg-6">
+                            <article class="card">
+                                <h1>A Post</h1>
+                                <time>Published 02-15-2014</time>
+                                <img class="img-thumbnail" src="//placekitten.com/g/150/150" alt="">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, aspernatur, illum, porro, aut iure dolores vel perspiciatis ipsam soluta cum est recusandae. Nesciunt, maxime libero dolorem perspiciatis facere aut consectetur!</p>
+                                <a href="#">Read More..</a>
+                            </article>
+                        </div>
+                        <div class="article-wrapper col-lg-6">
+                            <article class="card">
+                                <h1>A Post</h1>
+                                <time>Published 02-15-2014</time>
+                                <img class="img-thumbnail" src="//lorempixel.com/150/150" alt="">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, aspernatur, illum, porro, aut iure dolores vel perspiciatis ipsam soluta cum est recusandae. Nesciunt, maxime libero dolorem perspiciatis facere aut consectetur!</p>
+                                <a href="#">Read More..</a>
+                            </article>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="article-wrapper col-lg-6">
+                            <article class="card">
+                                <h1>A Post</h1>
+                                <time>Published 02-15-2014</time>
+                                <img class="img-thumbnail" src="//fillmurray.com/150/150" alt="">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, aspernatur, illum, porro, aut iure dolores vel perspiciatis ipsam soluta cum est recusandae. Nesciunt, maxime libero dolorem perspiciatis facere aut consectetur!</p>
+                                <a href="#">Read More..</a>
+                            </article>
+                        </div>
+                        <div class="article-wrapper col-lg-6">
+                            <article class="card">
+                                <h1>A Post</h1>
+                                <time>Published 02-15-2014</time>
+                                <img class="img-thumbnail" src="//placebear.com/150/150" alt="">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, aspernatur, illum, porro, aut iure dolores vel perspiciatis ipsam soluta cum est recusandae. Nesciunt, maxime libero dolorem perspiciatis facere aut consectetur!</p>
+                                <a href="#">Read More..</a>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+            </div>
         </div>
     </main>
     <footer>
-        <p>&copy 2014 Matt Enlow</p>
+        <p class="pull-right">&copy 2014 Matt Enlow</p>
+        <p class="text-center">I haven't decided what to put here yet!</p>
     </footer>
 </body>
 
