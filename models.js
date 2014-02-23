@@ -3,10 +3,9 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     ObjectId = mongoose.Schema.ObjectId;
 var moment = require('moment');
-mongoose.set("debug", true);
 var mongoUri = process.env.MONGOLAB_URI ||
   process.env.MONGOHQ_URL ||
-  'mongodb://localhost:27017';
+  'mongodb://anandaDB:ananda1@ds033499.mongolab.com:33499/heroku_app22472794';
 //Set up DB
 mongoose.connect(mongoUri);
 var db = mongoose.connection;
