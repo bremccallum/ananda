@@ -4,8 +4,11 @@ var mongoose = require('mongoose'),
     ObjectId = mongoose.Schema.ObjectId;
 var moment = require('moment');
 mongoose.set("debug", true);
+var mongoUri = process.env.MONGOLAB_URI ||
+  process.env.MONGOHQ_URL ||
+  'mongodb://localhost:27017';
 //Set up DB
-mongoose.connect('mongodb://localhost:27017');
+mongoose.connect(mongoUri);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
