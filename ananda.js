@@ -15,13 +15,11 @@ app.configure(function () {
     app.use('/admin', function (req, res, next) { //Do security shit here someday maybe!
         next();
     });
+    //must come after uses
+    require('./routes');
 });
-// ROUTES MUST COME AFTER THE FOLLOWING:
-//    bodyParser
-//    exporting app
-require('./routes');
 //
-//   Templating stuff
+//   Templating
 //
 var nunjucks = require("nunjucks").configure('views', {
     watch: true,
