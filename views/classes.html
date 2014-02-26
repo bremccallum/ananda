@@ -1,12 +1,42 @@
-{%extends 'layout.html'%} {%block main%}
-<div class="col-xs-12">
-    {{clases.length}}
-    {%for class in classes%}
-    <div class="class">
-        <h1>{{class.Name}}</h1>
-        <p>{{class.Description | safe}}</p>
-        <img src="{{class.ImageURL}}" alt="">
+{%extends 'layout.html'%}
+<!---->
+{%block bodyattr%}data-spy="scroll" data-target="#classes-nav"{%endblock%}
+<!---->
+{%block main%}
+<nav id="classes-nav" class="hidden-xs col-sm-4 col-md-3">
+    <ul id='affix' class="card no-border nav nav-pills nav-stacked">
+        {%for class in classes | attrSort('Name')%}
+        <li>
+            <a href="#{{class.Name | escape | replace(' ', '-')}}">{{class.Name}}</a>
+        </li>
+        {%endfor%}
+    </ul>
+</nav>
+<div class="col-xs-12 col-sm-8 col-md-9">
+    <div class="row">
+        {%for class in classes | attrSort('Name')%}
+        <div id="{{class.Name | escape | replace(' ', '-') }}" class="card class">
+            <h1>{{class.Name}}
+            </h1>
+            {%if class.ImageURL %}
+            <img src="{{class.ImageURL}}" alt="">{%endif%}{{class.Description | safe}}
+            <br>
+            <a href="#">Back to top</a>
+        </div>
+        {%endfor%}
     </div>
-    {%endfor%}
 </div>
+{%endblock%} {% block finally%}
+<script>
+    var px = Number(getComputedStyle(document.body, "").fontSize.match(/(\d*(\.\d*)?)px/)[1]);
+    $('#affix').affix({
+        offset: {
+          top: 190, 
+          bottom: function () {
+            console.log($('footer').outerHeight(true));
+            return (this.bottom = $('footer').outerHeight(true)+14)
+          }
+        }
+    });
+</script>
 {%endblock%}

@@ -20,13 +20,13 @@
     <title>{%block title%}{{title}}{%endblock%}</title>
 </head>
 
-<body>
-    <ul id="MQHelper">
+<body {%block bodyattr%}{%endblock%}>
+    <!-- <ul id="MQHelper">
         <li class="visible-xs">XS</li>
         <li class="visible-sm">SM</li>
         <li class="visible-md">MD</li>
         <li class="visible-lg">LG</li>
-    </ul>
+    </ul> -->
     <header class="container-fluid">
         <div class="row">
             <div class="col-xs-12" id="title">
@@ -76,7 +76,7 @@
         <!-- /.container-fluid -->
     </nav>
 
-    <main class="container-fluid">
+    <main class="container">
         {%block main%}{%endblock%}
     </main>
     <footer>

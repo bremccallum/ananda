@@ -13,14 +13,14 @@ module.exports = function (soap) {
             Fields: [
                 {
                     string: 'Classes.ClassDescription.Name'
-                    },
+                },
                 {
                     string: 'Classes.StartDateTime'
-                    },
+                },
                 {
                     string: 'Classes.Staff.Name'
-                    }
-                ],
+                }
+            ],
             StartDateTime: now.format('YYYY-MM-DD[T]HH:mm:ss'),
             EndDateTime: tmrw.format('YYYY-MM-DD[T]HH:mm:ss'),
             SchedulingWindow: true,
@@ -42,11 +42,48 @@ module.exports = function (soap) {
                     })
                 };
                 model.pm = now.hours() >= 16;
-                res.render('landing.html', Page("Ananada Yoga", model));
+                res.render('landing.html', Page("Ananda Yoga", model));
 
+            });
+    }
+
+    function instructors(req, res) {
+        var args = {
+            Fields: [
+                {
+                    string: 'Staff.Bio'
+                },
+                {
+                    string: 'Staff.ImageURL'
+                },
+                {
+                    string: 'Staff.Email'
+                },
+                {
+                    string: 'Staff.Name'
+                }
+            ],
+            XMLDetail: 'Bare'
+        };
+        soap.q(soap.Staff, 'GetStaff', args)
+            .done(function (staff) {
+                staff = staff[0].GetStaffResult.StaffMembers.Staff
+                    .filter(function (staff) {
+                        return staff.ID > 1;
+                        console.log(staff.Bio);
+                    });
+                staff.map(function (s, i) { //clear empty Bio's
+                    s.Bio = (typeof s.Bio == 'object') ? '' : s.Bio;
+                });
+                //console.log(soap.Staff.lastRequest);
+                //console.log(staff);
+                var model = {};
+                model.staff = staff;
+                res.render('instructors.html', Page("Instructors | Ananda Yoga", model))
             });
     }
     var out = {};
     out.landing = landing;
+    out.instructors = instructors;
     return out;
 }

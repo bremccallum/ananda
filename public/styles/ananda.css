@@ -11,11 +11,15 @@
     font-size:2em;
     padding:5px 10px;
 }
-
+body{
+    background-image: url(/img/old_map.png);
+}
+h1,
 h2,
 h3,
 h4,
 h5 {
+    margin-top:0;
     font-family: Verdana, sans-serif
 }
 header {
@@ -34,13 +38,27 @@ header h1 {
 }
 main {
     padding-top:1em;
-    background-image: url(/img/old_map.png);
+}
+
+main .affix{
+    position:fixed;
+    top:10px;
+}
+main .affix-bottom{
+    position:absolute;
 }
 .card{
     background-color:#F5F5F5;
+    margin-bottom: 1em;
+    border: 1px solid rgba(0, 0, 0, .3);
+}
+.card.no-border{
+    border-style:none;
+}
+.class{
+    padding:1em;
 }
 #left > div {
-    border: 1px solid rgba(0, 0, 0, .3);
     /* margin-top: 1em; */
     margin-bottom: 1em;
     padding: 1em;
@@ -57,11 +75,9 @@ main {
     margin: 1em 1em 1em 0;
 }
 .article-wrapper {
-    padding-bottom: 1em;
 }
 article {
     background-color: #FEFEFE;
-    border: 1px solid rgba(0, 0, 0, .3);
     padding-left: 1em;
 }
 article h1 {

@@ -12,6 +12,7 @@ require("./soap")(function (cli) {
 
     app.get('/', homeController.landing);
     app.get('/schedule', scheduleController.schedule);
+    app.get('/instructors', homeController.instructors);
     app.get('/teachers', teacherController.teachers);
     app.get('/classes', eventController.classes);
     app.get('/teachers/:name', teacherController.teacher);

@@ -1,0 +1,18 @@
+{% extends 'layout.html'%}
+<!---->
+{%block main%}
+<!---->
+{% for staff in staff%}
+<div class="col-xs-12">
+    <div class="row">
+        <div class="card clearfix col-sm-8 col-sm-offset-2">
+            <a href="mailto:{{staff.Email}}">
+                <h1>{{staff.Name}}</h1>
+            </a>
+            <img class="pull-left" src="{{staff.ImageURL}}" alt="">
+            <p>{{staff.Bio | safe}}</p>
+        </div>
+        {% endfor%}</div>
+</div>{%endblock%}
+
+

@@ -49,13 +49,14 @@ module.exports = function (soap) {
         };
         soap.q(soap.Classes, 'GetClassDescriptions', args)
             .done(function (classes) {
-                classes = classes[0].GetClassDescriptionsResult.ClassDescriptions.ClassDescription.filter(function (e) {
-                    return e.Program.Name != 'Workshops' && e.Program.Name != "Special Events" &&
-                        typeof e.Description === 'string' // &&                moment(e.LastUpdated).add('months', 12).isAfter(moment());
-                });
+                classes = classes[0].GetClassDescriptionsResult.ClassDescriptions.ClassDescription
+                    .filter(function (e) {
+                        var n = e.Program.Name;
+                        return n != 'Workshops' && n != "Special Events" && typeof e.Description === 'string';
+                    });
                 classes.map(function (o, i) {
                     o.Description = (typeof o.Description == 'object') ? '' : o.Description;
-                })
+                });
                 console.log(classes);
                 console.log(classes.length);
                 res.render('classes.html', Page("Classes", {

@@ -32,6 +32,34 @@ nunjucks.addFilter('prettyDate', function (v) {
 nunjucks.addFilter('prettyTime', function (v) {
     return (moment(v).format("h:mm a"));
 });
+nunjucks.addFilter('attrSort', function (arr, attr) {
+    //Code taken from nunjucks default sort function
+    // Copy it
+    arr = arr.map(function (v) {
+        return v;
+    });
+
+    arr.sort(function (a, b) {
+        var x, y;
+
+        if (attr) {
+            x = a[attr];
+            y = b[attr];
+        } else {
+            x = a;
+            y = b;
+        }
+        if (x < y) {
+            return -1;
+        } else if (x > y) {
+            return 1;
+        } else {
+            return 0;
+        }
+    });
+
+    return arr;
+})
 
 //
 //   Launch app
