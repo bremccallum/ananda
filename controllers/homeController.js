@@ -70,13 +70,10 @@ module.exports = function (soap) {
                 staff = staff[0].GetStaffResult.StaffMembers.Staff
                     .filter(function (staff) {
                         return staff.ID > 1;
-                        console.log(staff.Bio);
                     });
                 staff.map(function (s, i) { //clear empty Bio's
                     s.Bio = (typeof s.Bio == 'object') ? '' : s.Bio;
                 });
-                //console.log(soap.Staff.lastRequest);
-                //console.log(staff);
                 var model = {};
                 model.staff = staff;
                 res.render('instructors.html', Page("Instructors | Ananda Yoga", model))

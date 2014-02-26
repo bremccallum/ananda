@@ -57,8 +57,6 @@ module.exports = function (soap) {
                 classes.map(function (o, i) {
                     o.Description = (typeof o.Description == 'object') ? '' : o.Description;
                 });
-                console.log(classes);
-                console.log(classes.length);
                 res.render('classes.html', Page("Classes", {
                     classes: classes
                 }));
