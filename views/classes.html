@@ -1,0 +1,12 @@
+{%extends 'layout.html'%} {%block main%}
+<div class="col-xs-12">
+    {{clases.length}}
+    {%for class in classes%}
+    <div class="class">
+        <h1>{{class.Name}}</h1>
+        <p>{{class.Description | safe}}</p>
+        <img src="{{class.ImageURL}}" alt="">
+    </div>
+    {%endfor%}
+</div>
+{%endblock%}

@@ -19,6 +19,9 @@ app.configure(function () {
 //    bodyParser
 //    exporting app
 require('./routes');
+//
+//   Templating stuff
+//
 var nunjucks = require("nunjucks").configure('views', {
     watch: true,
     autoescape: true,
@@ -30,6 +33,10 @@ nunjucks.addFilter('prettyDate', function (v) {
 nunjucks.addFilter('prettyTime', function (v) {
     return (moment(v).format("h:mm a"));
 });
+
+//
+//   Launch app
+//
 var port = Number(process.env.PORT || 6969)
 app.listen(port, function () {
     console.log('Listening on port ' + port);

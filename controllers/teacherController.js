@@ -37,8 +37,7 @@ exports.view = function (req, res) {
         }, function (err, teacher) {
             var firstName = common.titleCase(req.query.id);
             if (!teacher || err) {
-                res.render(viewPath, 
-                           ("Edit Teacher", {
+                res.render(viewPath, ("Edit Teacher", {
                     error: 'Teacher "' + firstName + '" not found. You can add a new one, or maybe you want to go back to <a href="/admin">admin</a>.'
                 }));
             } else {
@@ -54,7 +53,8 @@ exports.view = function (req, res) {
         }));
     }
 };
-function updateTeacher (req, res) {
+
+function updateTeacher(req, res) {
     var key = common.handleKey(req.body.key, res,
         '/admin/teacher?error=Instructor%20{{key}}%20not%20found.%20Update%20failed',
         'Instructor {{key}} not found. Update failed.');

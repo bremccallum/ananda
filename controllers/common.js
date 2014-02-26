@@ -1,6 +1,7 @@
 var extend = require("extend"),
-    app = require("../ananda");
-
+    app = require("../ananda"),
+    Q = require('q');
+exports.Q = Q;
 exports.Page = function (title, model) {
     var o = {
         title: title,
