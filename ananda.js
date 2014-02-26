@@ -7,10 +7,11 @@ var app = module.exports = express();
 //  App Settings
 //
 app.configure(function () {
+    var publicDir = __dirname + "/public";
     app.use(express.bodyParser());
-    app.use("/styles", express.static(__dirname + "/styles"));
-    app.use("/img", express.static(__dirname + "/img"));
-    app.use("/js", express.static(__dirname + "/js"));
+    app.use("/styles", express.static(publicDir + "/styles"));
+    app.use("/img", express.static(publicDir + "/img"));
+    app.use("/js", express.static(publicDir + "/js"));
     app.use('/admin', function (req, res, next) { //Do security shit here someday maybe!
         next();
     });
