@@ -3,18 +3,19 @@ var models = require("./models"),
     app = require("./ananda");
 require("./soap")(function (cli) {
 
-    var homeController = require("./controllers/homeController")(cli);
-    var eventController = require("./controllers/eventController"),
-        teacherController = require("./controllers/teacherController"),
+    var home = require("./controllers/home")(cli);
+    var event = require("./controllers/event"),
+        teacher = require("./controllers/teacher"),
         adminController = require("./controllers/adminController"),
-        substitutionController = require("./controllers/substitutionController");
+        substitution = require("./controllers/substitution"),
+        schedule = require("./controllers/schedule");
 
-    app.get('/', homeController.landing);
-    app.get('/instructors', homeController.instructors);
-    app.get('/classes', homeController.classes);
-    app.get('/schedule', scheduleController.schedule);
-    app.get('/teachers', teacherController.teachers);
-    app.get('/teachers/:name', teacherController.teacher);
+    app.get('/', home.landing);
+    app.get('/instructors', home.instructors);
+    app.get('/classes', home.classes);
+    app.get('/schedule', schedule.schedule);
+    app.get('/teachers', teacher.teachers);
+    app.get('/teachers/:name', teacher.teacher);
     /* 
 =========================================================================================================
           ADMIN
@@ -27,22 +28,22 @@ require("./soap")(function (cli) {
 ======================================================================
 */
     app.get('/admin', adminController.home);
-    app.get('/admin/teacher', teacherController.view);
-    app.put('/admin/teacher', teacherController.update);
-    app.post('/admin/teacher', teacherController.add);
-    app.delete('/admin/teacher', teacherController.remove);
-    app.post('/admin/teacher/delete', teacherController.remove);
+    app.get('/admin/teacher', teacher.view);
+    app.put('/admin/teacher', teacher.update);
+    app.post('/admin/teacher', teacher.add);
+    app.delete('/admin/teacher', teacher.remove);
+    app.post('/admin/teacher/delete', teacher.remove);
 
     /*
 ======================================================================
                     EVENTS
 ======================================================================
 */
-    app.get('/admin/event', eventController.view);
-    app.put('/admin/event', eventController.update);
-    app.post('/admin/event', eventController.add);
-    app.delete('/admin/event', eventController.remove);
-    app.post('/admin/event/delete', eventController.remove);
+    app.get('/admin/event', event.view);
+    app.put('/admin/event', event.update);
+    app.post('/admin/event', event.add);
+    app.delete('/admin/event', event.remove);
+    app.post('/admin/event/delete', event.remove);
 
 
     /*
@@ -50,10 +51,10 @@ require("./soap")(function (cli) {
                     EVENTS
 ======================================================================
 */
-    app.get('/admin/substitution', substitutionController.view);
-    app.put('/admin/substitution', substitutionController.update);
-    app.post('/admin/substitution', substitutionController.add);
-    app.delete('/admin/substitution', substitutionController.remove);
-    app.post('/admin/substitution/delete', substitutionController.remove);
+    app.get('/admin/substitution', substitution.view);
+    app.put('/admin/substitution', substitution.update);
+    app.post('/admin/substitution', substitution.add);
+    app.delete('/admin/substitution', substitution.remove);
+    app.post('/admin/substitution/delete', substitution.remove);
 
 });
