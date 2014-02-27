@@ -12,7 +12,7 @@
     padding:5px 10px;
 }
 body{
-    background-image: url(/img/old_map.png);
+    background-image: linear-gradient(to bottom, #EEE, rgba(128, 128, 128, .5));
 }
 h1,
 h2,
