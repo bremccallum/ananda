@@ -12,7 +12,7 @@
     padding: 5px 10px;
 }
 body {
-    background-image:linear-gradient(to bottom, #CA9A6E, rgba(245, 217, 147, 1));
+    background-image:linear-gradient(to bottom, rgba(250, 225, 160, 0.83), rgba(228, 198, 123, 1));
 }
 a {
     color: #FFA813;
@@ -48,6 +48,13 @@ header h1 {
 }
 .navbar {
     margin-bottom: 0;
+}
+.nav-pills > li.active a,
+.nav-pills > li.active a:hover{
+    background-color:#35B855;
+}
+#classes-nav .nav-pills{
+    border-radius:4px;
 }
 main {
     padding-top: 1em;
@@ -104,8 +111,9 @@ article time {
     color: #AAA;
 }
 footer {
-    background-color: #6A6A6A;
-    padding-top: 2em;
+    background-color: black;
+    height:4em;
+    padding:10px;
     color: white;
     padding-right: 20px;
 }
