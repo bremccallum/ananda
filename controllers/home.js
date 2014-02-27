@@ -74,7 +74,6 @@ module.exports = function (soap) {
                 staff.map(function (s, i) { //clear empty Bio's
                     s.Bio = (typeof s.Bio == 'object') ? '' : s.Bio;
                 });
-                console.log(staff);
                 var model = {};
                 model.staff = staff;
                 res.render('instructors.html', Page("Instructors | Ananda Yoga", model))
@@ -103,7 +102,6 @@ module.exports = function (soap) {
             .done(function (classes) {
                 classes = classes[0].GetClassDescriptionsResult.ClassDescriptions.ClassDescription
                     .filter(function (e) {
-                        console.log(e);
                         var n = e.Program.Name;
                         return n != 'Workshops' && n != "Special Events" && typeof e.Description === 'string';
                     });
@@ -148,7 +146,6 @@ module.exports = function (soap) {
                 var model = {
                     classes: classes
                 };
-                console.log(soap.Classes.lastRequest);
                 res.render("schedule.html", Page("Schedule | Ananda Yoga", model));
             });
     }
