@@ -7,14 +7,13 @@ require("./soap")(function (cli) {
         eventController = require("./controllers/eventController")(cli),
         teacherController = require("./controllers/teacherController"),
         adminController = require("./controllers/adminController"),
-        substitutionController = require("./controllers/substitutionController"),
-        scheduleController = require("./controllers/scheduleController");
+        substitutionController = require("./controllers/substitutionController");
 
     app.get('/', homeController.landing);
-    app.get('/schedule', scheduleController.schedule);
     app.get('/instructors', homeController.instructors);
+    app.get('/classes', homeController.classes);
+    app.get('/schedule', scheduleController.schedule);
     app.get('/teachers', teacherController.teachers);
-    app.get('/classes', eventController.classes);
     app.get('/teachers/:name', teacherController.teacher);
     /* 
 =========================================================================================================

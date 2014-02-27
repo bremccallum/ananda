@@ -69,18 +69,76 @@ module.exports = function (soap) {
             .done(function (staff) {
                 staff = staff[0].GetStaffResult.StaffMembers.Staff
                     .filter(function (staff) {
-                        return staff.ID > 1;
+                        return staff.ID > 1; //they have weird testing data at lower ID
                     });
                 staff.map(function (s, i) { //clear empty Bio's
                     s.Bio = (typeof s.Bio == 'object') ? '' : s.Bio;
                 });
+                console.log(staff);
                 var model = {};
                 model.staff = staff;
                 res.render('instructors.html', Page("Instructors | Ananda Yoga", model))
             });
     }
+
+    function classes(req, res) {
+        var args = {
+            XMLDetail: 'Bare',
+            Fields: [
+                {
+                    string: 'ClassDescriptions.ImageURL'
+                },
+                {
+                    string: 'ClassDescriptions.Name'
+                },
+                {
+                    string: 'ClassDescriptions.Description'
+                },
+                {
+                    string: 'ClassDescriptions.Program.Name' //Needed for filter
+                }
+            ]
+        };
+        soap.q(soap.Classes, 'GetClassDescriptions', args)
+            .done(function (classes) {
+                classes = classes[0].GetClassDescriptionsResult.ClassDescriptions.ClassDescription
+                    .filter(function (e) {
+                        console.log(e);
+                        var n = e.Program.Name;
+                        return n != 'Workshops' && n != "Special Events" && typeof e.Description === 'string';
+                    });
+                classes.map(function (o, i) {
+                    o.Description = (typeof o.Description == 'object') ? '' : o.Description;
+                });
+                res.render('classes.html', Page("Classes", {
+                    classes: classes
+                }));
+            });
+    }
+
+    function schedule(req, res) {
+        var yesterday = moment().add('days', -1);
+        var future = yesterday.add('weeks', 2)
+        var args = {
+            StartDateTime: now.format(soap.DateFormat),
+            EndDateTime: tmrw.format(soap.DateFormat),
+            SchedulingWindow: true,
+            XMLDetail: 'Bare'
+        };
+        soap.q(soap.Classes, 'GetClasses', args)
+            .done(function (classes) {
+                classes = classes[0].GetClassesResult.Classes.Class;
+                var model = {
+                    classes: classes
+                };
+                res.render("schedule.html", Page("Schedule | Ananda Yoga", model));
+            })
+    }
+
+    //exports
     var out = {};
     out.landing = landing;
     out.instructors = instructors;
+    out.classes = classes;
     return out;
 }
