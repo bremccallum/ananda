@@ -1,30 +1,43 @@
-#MQHelper{
-    position:fixed;
-    right:20px;
-    top:10px;
+#MQHelper {
+    position: fixed;
+    right: 20px;
+    top: 10px;
 }
-#MQHelper li{
-    position:relative;
-    color:red;
+#MQHelper li {
+    position: relative;
+    color: red;
     background-color: black;
     font-weight: bold;
-    font-size:2em;
-    padding:5px 10px;
+    font-size: 2em;
+    padding: 5px 10px;
 }
-body{
-    background-image: linear-gradient(to bottom, #EEE, rgba(128, 128, 128, .5));
+body {
+    background-image:linear-gradient(to bottom, #CA9A6E, rgba(245, 217, 147, 1));
+}
+a {
+    color: #FFA813;
+}
+a:hover {
+    color: #F36F22;
 }
 h1,
 h2,
 h3,
 h4,
 h5 {
-    margin-top:0;
+    margin-top: 0;
     font-family: Verdana, sans-serif
+}
+h1,
+h2 {
+    color: rgb(8, 136, 18);
+}
+h3 {
+    color: #36A741;
 }
 header {
     background: url(/img/wheat.jpg) center/cover;
-    min-height:10em;
+    min-height: 10em;
 }
 header h1 {
     color: white;
@@ -33,30 +46,29 @@ header h1 {
     padding: 10px;
     border-radius: .2em;
 }
-.navbar{
-    margin-bottom:0;
+.navbar {
+    margin-bottom: 0;
 }
 main {
-    padding-top:1em;
+    padding-top: 1em;
 }
-
-main .affix{
-    position:fixed;
-    top:10px;
+main .affix {
+    position: fixed;
+    top: 10px;
 }
-main .affix-bottom{
-    position:absolute;
+main .affix-bottom {
+    position: absolute;
 }
-.card{
-    background-color:#F5F5F5;
+.card {
+    background-color: #F5F5F5;
     margin-bottom: 1em;
     border: 1px solid rgba(0, 0, 0, .3);
 }
-.card.no-border{
-    border-style:none;
+.card.no-border {
+    border-style: none;
 }
-.class{
-    padding:1em;
+.class {
+    padding: 1em;
 }
 #left > div {
     /* margin-top: 1em; */
@@ -69,14 +81,10 @@ main .affix-bottom{
     margin: 0;
     border-bottom: 1px dotted rgba(0, 0, 0, .1);
 }
-#welcome {
-}
-#welcome > img {
+#welcome {} #welcome > img {
     margin: 1em 1em 1em 0;
 }
-.article-wrapper {
-}
-article {
+.article-wrapper {} article {
     background-color: #FEFEFE;
     padding-left: 1em;
 }
@@ -93,24 +101,23 @@ article:after {
 }
 article time {
     font-size: .8em;
-    color:#AAA;
+    color: #AAA;
 }
 footer {
-    background-color:#6A6A6A;
+    background-color: #6A6A6A;
     padding-top: 2em;
-    color:white;
-    padding-right:20px;
+    color: white;
+    padding-right: 20px;
 }
 footer p {
-    margin-bottom:0;
-    padding-bottom:1em;
+    margin-bottom: 0;
+    padding-bottom: 1em;
     text-align: right;
 }
 footer > a {
-    margin-left:20px;
-    color:hsla(0, 100%, 50%, 1);
+    margin-left: 20px;
+    color: hsla(0, 100%, 50%, 1);
 }
-
 /* @media screen and (max-width:768px){
     #left, #right{
         padding:0;
