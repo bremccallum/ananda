@@ -3,8 +3,8 @@ var models = require("./models"),
     app = require("./ananda");
 require("./soap")(function (cli) {
 
-    var homeController = require("./controllers/homeController")(cli),
-        eventController = require("./controllers/eventController")(cli),
+    var homeController = require("./controllers/homeController")(cli);
+    var eventController = require("./controllers/eventController"),
         teacherController = require("./controllers/teacherController"),
         adminController = require("./controllers/adminController"),
         substitutionController = require("./controllers/substitutionController");
