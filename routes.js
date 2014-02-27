@@ -6,14 +6,14 @@ require("./soap")(function (cli) {
     var home = require("./controllers/home")(cli);
     var event = require("./controllers/event"),
         teacher = require("./controllers/teacher"),
-        adminController = require("./controllers/adminController"),
+        admin = require("./controllers/admin"),
         substitution = require("./controllers/substitution"),
         schedule = require("./controllers/schedule");
 
     app.get('/', home.landing);
     app.get('/instructors', home.instructors);
     app.get('/classes', home.classes);
-    app.get('/schedule', schedule.schedule);
+    app.get('/schedule', home.schedule);
     app.get('/teachers', teacher.teachers);
     app.get('/teachers/:name', teacher.teacher);
     /* 
@@ -27,7 +27,7 @@ require("./soap")(function (cli) {
                     TEACHER
 ======================================================================
 */
-    app.get('/admin', adminController.home);
+    app.get('/admin', admin.home);
     app.get('/admin/teacher', teacher.view);
     app.put('/admin/teacher', teacher.update);
     app.post('/admin/teacher', teacher.add);

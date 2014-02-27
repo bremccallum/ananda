@@ -1,13 +1,24 @@
-{% extends "layout.html" %}
-
-{%block main%}
-{% for class in classes %}
-{{class.name}}<br>
-{% endfor %}
-
-
-{% for sub in subs %}
-
-
-{% endfor %}
+{% extends "layout.html" %} {%block main%}
+<div class="col-md-12">
+    <table class="table">
+        <tr>
+            <th>Time</th>
+            <th>Class</th>
+            <th>Instructor</th>
+            <th>Notes</th>
+        </tr>
+        {% for class in classes |attrSort('StartDateTime') %}
+        <tr>
+            <td>{{class.StartDateTime}}</td>
+            <td>
+                <a href="/classes#{{class.ClassDescription.Name | escape | replace(' ', '-')}}">{{class.ClassDescription.Name}}</a>
+            </td>
+            <td>
+                <a href="/instructors#{{class.Staff.Name | escape | replace(' ', '-')}}">{{class.Staff.Name}}</a>
+            </td>
+            <td>Not yet implemented</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 {%endblock%}

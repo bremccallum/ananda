@@ -118,21 +118,39 @@ module.exports = function (soap) {
 
     function schedule(req, res) {
         var yesterday = moment().add('days', -1);
-        var future = yesterday.add('weeks', 2)
+        var future = moment(yesterday).add('weeks', 2)
         var args = {
-            StartDateTime: now.format(soap.DateFormat),
-            EndDateTime: tmrw.format(soap.DateFormat),
+            StartDateTime: yesterday.format(soap.DateFormat),
+            EndDateTime: future.format(soap.DateFormat),
             SchedulingWindow: true,
-            XMLDetail: 'Bare'
+            XMLDetail: 'Bare',
+            Fields: [
+                {
+                    string: 'Classes.Staff.Name'
+                },
+                {
+                    string: 'Classes.ClassDescription.Name'
+                },
+                {
+                    string: 'Classes.StartDateTime'
+                },
+                {
+                    string: 'Classes.EndDateTime'
+                }
+            ]
         };
         soap.q(soap.Classes, 'GetClasses', args)
             .done(function (classes) {
-                classes = classes[0].GetClassesResult.Classes.Class;
+                classes = classes[0].GetClassesResult.Classes.Class
+                /*.sort(function (a, b) {
+                    return a < b ? 1 : -1;
+                }); */
                 var model = {
                     classes: classes
                 };
+                console.log(soap.Classes.lastRequest);
                 res.render("schedule.html", Page("Schedule | Ananda Yoga", model));
-            })
+            });
     }
 
     //exports
@@ -140,5 +158,6 @@ module.exports = function (soap) {
     out.landing = landing;
     out.instructors = instructors;
     out.classes = classes;
+    out.schedule = schedule;
     return out;
 }
