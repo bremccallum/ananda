@@ -28,12 +28,11 @@
 </div>
 {%endblock%} {% block finally%}
 <script>
-    var px = Number(getComputedStyle(document.body, "").fontSize.match(/(\d*(\.\d*)?)px/)[1]);
+    
     $('#affix').affix({
         offset: {
           top: 190, 
           bottom: function () {
-            console.log($('footer').outerHeight(true));
             return (this.bottom = $('footer').outerHeight(true)+14)
           }
         }

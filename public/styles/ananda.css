@@ -60,7 +60,7 @@ main .affix-bottom{
 }
 #left > div {
     /* margin-top: 1em; */
-    margin-bottom: 1em;
+    /* margin-bottom: 1em; */
     padding: 1em;
     border-radius: 3px;
 }
@@ -110,3 +110,22 @@ footer > a {
     margin-left:20px;
     color:hsla(0, 100%, 50%, 1);
 }
+
+/* @media screen and (max-width:768px){
+    #left, #right{
+        padding:0;
+    }
+    main{
+        padding-top:0px;
+    }
+    body{
+        background-image:none;
+    }
+    header{
+        background-image:none;
+    }
+    .card{
+        margin:0;
+        padding:1em;
+    }
+} */
