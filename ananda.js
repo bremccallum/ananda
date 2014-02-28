@@ -7,16 +7,12 @@ var app = module.exports = express();
 //  App Settings
 //
 app.configure(function () {
-    var publicDir = __dirname + "/public";
     app.use(express.bodyParser());
-    app.use("/styles", express.static(publicDir + "/styles"));
-    app.use("/img", express.static(publicDir + "/img"));
-    app.use("/js", express.static(publicDir + "/js"));
-    app.use('/admin', function (req, res, next) { //Do security shit here someday maybe!
+    /*app.use('/admin', function (req, res, next) { //Do security shit here someday maybe!
         next();
-    });
-    //must come after uses
+    });*/
     require('./routes');
+    app.use(express.static(__dirname + "/public"));
 });
 //
 //   Templating
