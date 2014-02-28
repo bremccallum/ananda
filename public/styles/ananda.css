@@ -12,7 +12,7 @@
     padding: 5px 10px;
 }
 body {
-    background-image:linear-gradient(to bottom, rgba(250, 225, 160, 0.83), rgba(228, 198, 123, 1));
+    background-image:linear-gradient(to bottom, rgba(255, 246, 223, 0.83), rgba(228, 198, 123, 1));
 }
 a {
     color: #FFA813;
