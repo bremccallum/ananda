@@ -8,9 +8,9 @@
     Location: Riverton, Wyoming
     
 /* THANKS */
-    Name: blossomyogastudio.com
-    
     Name: Lee Pepper
+    Name: Leah Yandow
+    Name: blossomyogastudio.com
 
 /* SITE */
     Standards: HTML5, CSS3
