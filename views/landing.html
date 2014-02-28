@@ -19,18 +19,12 @@
         <div id="special" class="special card">
             <h2>Special Events</h2>
             <ol class="list-unstyled">
+                {%for ws in workshops %}
                 <li>
-                    <time>02.15.14</time>
-                    <a href="#">Inversion Workshop</a>
+                    <time>{{ws.StartDateTime | prettyDate}}</time>
+                    <a href="#">{{ws.ClassDescription.Name}}</a>
                 </li>
-                <li>
-                    <time>03.22.14</time>
-                    <a href="#">Arm Balances</a>
-                </li>
-                <li>
-                    <time>04.01.14</time>
-                    <a href="#">Scott Moore Visits</a>
-                </li>
+                {% endfor %}
             </ol>
         </div>
         <div id="contact" class="clearfix card">
