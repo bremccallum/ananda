@@ -52,7 +52,8 @@ nav.navbar.navbar-default{
 }
 
 nav.navbar.navbar-default a{
-    color:#1C8125;
+    /* color:#1C8125; */
+    color:#5769B3;
 }
 nav.navbar.navbar-default li a:hover,
 nav.navbar.navbar-default li.active a{
@@ -184,7 +185,7 @@ table td.class-time{
 }
 table th.no-classes{
     font-size:1.1em;
-    color:#777;
+    color:#AAA;
     font-style: italic;
-    background-color:#EFEFEF;
+    background-color:#F5F5F5;
 }
