@@ -32,6 +32,9 @@ module.exports = function (soap) {
         soap.q(soap.Classes, 'GetClasses', args)
             .done(function (result) {
                 var classes = result[0].GetClassesResult.Classes.Class;
+                if(classes.length === undefined){
+                    classes = [classes];
+                }
                 var model = {
                     today: classes.filter(function (ele) {
                         var d = moment(ele.StartDateTime);
