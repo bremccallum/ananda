@@ -12,7 +12,7 @@
     padding: 5px 10px;
 }
 body {
-    background-image:linear-gradient(to bottom, rgba(255, 246, 223, 0.83), rgba(228, 198, 123, 1));
+    background-image:linear-gradient(to bottom, #EBE0A0, #E7DEB2);
 }
 a {
     color: #FFA813;
@@ -30,10 +30,10 @@ h5 {
 }
 h1,
 h2 {
-    color: rgb(8, 136, 18);
+    color: #407743;
 }
 h3 {
-    color: #36A741;
+    color: #D19115;
 }
 header {
     background: url(/img/wheat.jpg) center/cover;
@@ -45,6 +45,19 @@ header h1 {
     display: inline-block;
     padding: 10px;
     border-radius: .2em;
+}
+nav.navbar.navbar-default{
+    background-color:#AE8448; 
+    border-color:#AD8347;
+}
+
+nav.navbar.navbar-default a{
+    color:#1C8125;
+}
+nav.navbar.navbar-default li a:hover,
+nav.navbar.navbar-default li.active a{
+    color:#FFFFFF;
+    background-color:#C9954A;
 }
 .navbar {
     margin-bottom: 0;
@@ -111,7 +124,7 @@ article time {
     color: #AAA;
 }
 footer {
-    background-color: black;
+    background-color: #AE8448;
     height:4em;
     padding:10px;
     color: white;
