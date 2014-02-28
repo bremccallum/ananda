@@ -1,31 +1,32 @@
 {% extends "layout.html" %} {%block main%}
-<div class="col-md-12">
-    <table class="table table-responsive">
-        <tr>
-            <th>Time</th>
-            <th>Class</th>
-            <th>Instructor</th>
-            <th>Notes</th>
-        </tr>
-        {% for day in days %}
-        {%if not (loop.index0 == 0 and classes[day].length == 0)%}{#get rid of first empty day#}
-        <tr>
-            <th class="day{{ ' no-classes' if classes[day].length == 0 }}" colspan="4">{{day}}</td>
-        </tr>
-        {% for class in classes[day] | attrSort("StartDateTime")%}
-        <tr>
-            <td class="class-time">{{class.StartDateTime | prettyTime}}</td>
-            <td>
-                <a href="/classes#{{class.ClassDescription.Name | escape | replace(' ', '-')}}">{{class.ClassDescription.Name}}</a>
-            </td>
-            <td>
-                <a href="/instructors#{{class.Staff.Name | escape | replace(' ', '-')}}">{{class.Staff.Name}}</a>
-            </td>
-            <td>Not yet implemented</td>
-        </tr>
-        {% endfor %}
-        {%endif%} {% endfor %}
-    </table>
-    </table>
+<div class="row">
+
+    <div class="col-md-12">
+        <table class="table table-responsive">
+            <tr>
+                <th>Time</th>
+                <th>Class</th>
+                <th>Instructor</th>
+                <th>Notes</th>
+            </tr>
+            {% for day in days %} {%if not (loop.index0 == 0 and classes[day].length == 0)%}{#get rid of first empty day#}
+            <tr>
+                <th class="day{{ ' no-classes' if classes[day].length == 0 }}" colspan="4">{{day}}</td>
+            </tr>
+            {% for class in classes[day] | attrSort("StartDateTime")%}
+            <tr>
+                <td class="class-time">{{class.StartDateTime | prettyTime}}</td>
+                <td>
+                    <a href="/classes#{{class.ClassDescription.Name | escape | replace(' ', '-')}}">{{class.ClassDescription.Name}}</a>
+                </td>
+                <td>
+                    <a href="/instructors#{{class.Staff.Name | escape | replace(' ', '-')}}">{{class.Staff.Name}}</a>
+                </td>
+                <td>Not yet implemented</td>
+            </tr>
+            {% endfor %} {%endif%} {% endfor %}
+        </table>
+        </table>
+    </div>
 </div>
 {%endblock%}
