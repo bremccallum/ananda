@@ -1,11 +1,21 @@
-{%extends "layout.html"%} {% macro upcomingPrinter(classes) %} {{'
+{%extends "layout.html"%}
+<!------>
+{% macro upcomingPrinter(classes) %}
+<!------>
+{{'
 <p class="upcoming no-upcoming">No classes</p>' | safe if classes.length == 0}} {% for class in classes | sort(false, false,'StartDateTime')%}
 <p class="upcoming">
-    <time>{{class.StartDateTime | prettyTime}}</time>  <br>&nbsp;&nbsp;{{class.ClassDescription.Name}} w/ {{ class.Staff.Name }}</p>
-{% endfor %} {% endmacro %} {% block main %}
+    <time>{{class.StartDateTime | prettyTime}}</time>
+    <br>&nbsp;&nbsp;{{class.ClassDescription.Name}} w/ {{ class.Staff.Name }}</p>
+{% endfor %}
+<!------>
+{% endmacro %}
+
+<!-------->
+{% block main %}
 <div class="row">
 
-    <div id="left" class="col-xs-12 col-sm-4 col-lg-3">
+    <div id="left" class="col-xs-12 col-sm-4">
         <div id="next" class="next card">
             <h2>Upcoming Classes</h2>
             <h3>{{'Tonight' if pm else 'Today'}}</h3>
@@ -21,7 +31,7 @@
             <ol class="list-unstyled">
                 {%for ws in workshops %}
                 <li>
-                    <time>{{ws.StartDateTime | prettyDate}}</time>
+                    <time>{{ws.StartDateTime | prettyDate}}</time><br>&nbsp;&nbsp;
                     <a href="#">{{ws.ClassDescription.Name}}</a>
                 </li>
                 {% endfor %}
@@ -40,7 +50,7 @@
         </div>
     </div>
 
-    <div id="right" class="col-xs-12 col-sm-8 col-lg-9">
+    <div id="right" class="col-xs-12 col-sm-8">
         <div id="welcome" class="clearfix well">
 
             <img class="pull-left img-responsive" src="//lorempixel.com/200/200" alt="">
