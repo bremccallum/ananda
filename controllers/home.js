@@ -32,7 +32,7 @@ module.exports = function (soap) {
         soap.q(soap.Classes, 'GetClasses', args)
             .done(function (result) {
                 var classes = result[0].GetClassesResult.Classes.Class;
-                if(classes.length === undefined){
+                if (classes.length === undefined) {
                     classes = [classes];
                 }
                 var model = {
@@ -118,10 +118,10 @@ module.exports = function (soap) {
     }
 
     function schedule(req, res) {
-        var yesterday = moment().add('days', -1);
-        var future = moment(yesterday).add('weeks', 2)
+        var now = moment();
+        var future = moment().add('weeks', 2)
         var args = {
-            StartDateTime: yesterday.format(soap.DateFormat),
+            StartDateTime: now.format(soap.DateFormat),
             EndDateTime: future.format(soap.DateFormat),
             SchedulingWindow: true,
             XMLDetail: 'Bare',
@@ -142,13 +142,19 @@ module.exports = function (soap) {
         };
         soap.q(soap.Classes, 'GetClasses', args)
             .done(function (classes) {
-                classes = classes[0].GetClassesResult.Classes.Class
-                /*.sort(function (a, b) {
-                    return a < b ? 1 : -1;
-                }); */
                 var model = {
-                    classes: classes
-                };
+                        classes: {},
+                        days : []
+                    };
+                for (var i = 0; i <= future.diff(now, 'days'); i++) {
+                    var m = moment(now).add('days', i).format("dddd [the] Do");
+                    model.days.push(m);
+                    model.classes[m] = [];
+                }
+                classes[0].GetClassesResult.Classes.Class.forEach(function (c) {
+                    model.classes[moment(c.StartDateTime).format("dddd [the] Do")].push(c);
+                });
+                
                 res.render("schedule.html", Page("Schedule | Ananda Yoga", model));
             });
     }
