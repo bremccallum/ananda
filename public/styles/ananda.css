@@ -52,8 +52,8 @@ nav.navbar.navbar-default{
 }
 
 nav.navbar.navbar-default a{
-    /* color:#1C8125; */
-    color:#5769B3;
+    color:#1C8125;
+    /* color:#5769B3; */
 }
 nav.navbar.navbar-default li a:hover,
 nav.navbar.navbar-default li.active a{
