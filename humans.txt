@@ -2,13 +2,17 @@
 /* TEAM */
     Developer: Matt Enlow
     Site: //novaugust.net
-    Location: Lander, Wyoming, USA
-
+    Location: Lander, Wyoming
+    
+    Color Designer: Amy Shaner
+    Location: Riverton, Wyoming
+    
 /* THANKS */
     Name: blossomyogastudio.com
+    
     Name: Lee Pepper
 
 /* SITE */
     Standards: HTML5, CSS3
-    Components: NodeJS, MongoDB, Mongoose, ExpressJS, jQuery, Bootstrap
+    Components: NodeJS, MongoDB, Mongoose, ExpressJS, jQuery, Bootstrap, MomentJS, MindBodyOnline Soap API, SoapJS, q
     Software: Git, Brackets, Chrome
