@@ -7,8 +7,7 @@ require("./soap")(function (cli) {
     var event = require("./controllers/event"),
         teacher = require("./controllers/teacher"),
         admin = require("./controllers/admin"),
-        substitution = require("./controllers/substitution"),
-        schedule = require("./controllers/schedule");
+        substitution = require("./controllers/substitution");
 
     app.get('/', home.landing);
     app.get('/instructors', home.instructors);
