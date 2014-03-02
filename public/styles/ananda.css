@@ -105,7 +105,14 @@ main .affix-bottom {
 #welcome {} #welcome > img {
     margin: 1em 1em 1em 0;
 }
-.article-wrapper {} article {
+
+.article-wrapper article{
+    height:250px;
+    overflow:hidden;
+}
+
+
+article {
     background-color: #FEFEFE;
     padding-left: 1em;
 }
@@ -125,7 +132,6 @@ article time {
     color: #AAA;
 }
 footer {
-    background-color: #AE8448;
     height:4em;
     padding:10px;
     color: white;

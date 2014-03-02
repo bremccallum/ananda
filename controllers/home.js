@@ -53,8 +53,9 @@ module.exports = function (soap) {
         console.time("Soap");
         //get classes
         Q.all([soap.q(soap.Classes, 'GetClasses', args),
-               soap.q(soap.Classes, 'GetClasses', workshopArgs)])
-            .spread(function (classes, workshops) {
+               soap.q(soap.Classes, 'GetClasses', workshopArgs),
+              Q.when(Posts.find().exec())])
+            .spread(function (classes, workshops, posts) {
                 console.timeEnd("Soap");
                 console.time("Model");
                 classes = classes[0].GetClassesResult.Classes.Class;
@@ -63,6 +64,8 @@ module.exports = function (soap) {
                 }
                 var tmrwStart = tmrw.startOf('day');
                 var model = {
+                    posts:posts,
+                    
                     today: classes.filter(function (ele) {
                         var d = moment(ele.StartDateTime);
                         return d.isBefore(tmrwStart);

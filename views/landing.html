@@ -31,7 +31,8 @@
             <ol class="list-unstyled">
                 {%for ws in workshops %}
                 <li>
-                    <time>{{ws.StartDateTime | prettyDate}}</time><br>&nbsp;&nbsp;
+                    <time>{{ws.StartDateTime | prettyDate}}</time>
+                    <br>&nbsp;&nbsp;
                     <a href="#">{{ws.ClassDescription.Name}}</a>
                 </li>
                 {% endfor %}
@@ -62,44 +63,19 @@
         </div>
         <section id="news">
             <div class="row">
+                {%for post in posts %} {% if loop.index0%2==0 %}
                 <div class="article-wrapper col-lg-6">
+                    {% endif %}
                     <article class="card">
-                        <h1>A Post</h1>
-                        <time>Published 02-15-2014</time>
-                        <img class="img-thumbnail" src="//placekitten.com/g/150/150" alt="">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, aspernatur, illum, porro, aut iure dolores vel perspiciatis ipsam soluta cum est recusandae. Nesciunt, maxime libero dolorem perspiciatis facere aut consectetur!</p>
-                        <a href="#">Read More..</a>
+                        <h1><a href="/news/{{post.slug}}">{{post.title}}</a></h1>
+                        <time>Published {{post.published | prettyDate}}</time>
+                        <img class="img-thumbnail" src="//lorempixel.com/g/150/150" alt="">
+                        <div class="post-body">{{post.body | safe}}</div>
+                        <a href="/news/{{post.slug}}">Read More..</a>
                     </article>
+                    {% if loop.index0%2==1 %}
                 </div>
-                <div class="article-wrapper col-lg-6">
-                    <article class="card">
-                        <h1>A Post</h1>
-                        <time>Published 02-15-2014</time>
-                        <img class="img-thumbnail" src="//lorempixel.com/150/150" alt="">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, aspernatur, illum, porro, aut iure dolores vel perspiciatis ipsam soluta cum est recusandae. Nesciunt, maxime libero dolorem perspiciatis facere aut consectetur!</p>
-                        <a href="#">Read More..</a>
-                    </article>
-                </div>
-            </div>
-            <div class="row">
-                <div class="article-wrapper col-lg-6">
-                    <article class="card">
-                        <h1>A Post</h1>
-                        <time>Published 02-15-2014</time>
-                        <img class="img-thumbnail" src="//fillmurray.com/150/150" alt="">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, aspernatur, illum, porro, aut iure dolores vel perspiciatis ipsam soluta cum est recusandae. Nesciunt, maxime libero dolorem perspiciatis facere aut consectetur!</p>
-                        <a href="#">Read More..</a>
-                    </article>
-                </div>
-                <div class="article-wrapper col-lg-6">
-                    <article class="card">
-                        <h1>A Post</h1>
-                        <time>Published 02-15-2014</time>
-                        <img class="img-thumbnail" src="//placebear.com/150/150" alt="">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, aspernatur, illum, porro, aut iure dolores vel perspiciatis ipsam soluta cum est recusandae. Nesciunt, maxime libero dolorem perspiciatis facere aut consectetur!</p>
-                        <a href="#">Read More..</a>
-                    </article>
-                </div>
+                {% endif %} {%endfor%}
             </div>
         </section>
     </div>
