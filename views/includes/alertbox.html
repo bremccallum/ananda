@@ -1,7 +1,9 @@
 {% macro alertBox(error, success) %}
-<div id="form-alert" class="col-xs-12 alert alert-dismissable {{'alert-danger' if error}}{{'alert-success' if success}}{{ 'hidden' if not error and not success}}">
-    <button class="close" type="button" onclick="$('#form-alert').addClass('hidden')">&times;</button>
-    <p class="message text-center">{{error or success | safe}}</p>
+<div class="row">
+    <div id="form-alert" class="col-xs-12 alert alert-dismissable {{'alert-danger' if error}}{{'alert-success' if success}}{{ 'hidden' if not error and not success}}">
+        <button class="close" type="button" onclick="$('#form-alert').addClass('hidden')">&times;</button>
+        <p class="message text-center">{{error or success | safe}}</p>
+    </div>
 </div>
 <script>
     var $alert = $("#form-alert");

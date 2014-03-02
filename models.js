@@ -15,13 +15,14 @@ var requiredString = {type: String, required:true};
 //              Posts
 //**************************************
 var postSchema = mongoose.Schema({
+    slug: {type:String, required:true, index:true, unique:true},
     title: requiredString,
-    slug: requiredString,
     author: requiredString,
+    body: requiredString,
+    isPublished: {type:Boolean, default:false},
     published: Date,
-    updated: [Date],
-    created: {type:Date, default:Date.now},
-    body: requiredString
+    versions: [{date:Date, body:String}],
+    created: {type:Date, default:Date.now}
 })
 //**************************************
 //          EXPORTS

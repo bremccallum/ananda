@@ -1,0 +1,92 @@
+{%extends "layout.html"%} {% include "includes/alertbox.html"%}
+<!----->
+{%block main%}
+<div class="row">
+    <h1 class="col-sm-9 col-sm-offset-1">{{'Edit Post' if sub else 'Add Post'}}</h1>
+</div>
+{{ alertBox(error, success)}}
+<div class="row">
+    <form id="form" class="col-sm-8 col-sm-offset-2 form-horizontal" action="" method="post" autocomplete="{{ 'off' if not post}}">
+        <input type="hidden" name="update" value="{{'true' if post else 'false'}}">
+        <div class="form-group">
+            <fieldset>
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title" name="title" value="{{post.title}}">
+                <label for="slug">Title's URL</label>
+                <input type="text" id="slug" name="slug" value="{{post.slug}}" class="form-control">
+                <label for="author">Post as:</label>
+                <select required name="author" id="author" class="form-control">
+                    {% for author in teacherNames %}
+                    <option {{ 'selected' if post.author==author}} value="{{author}}">{{author}}</option>
+                    {% endfor %}
+                </select>
+                <label for="body">Post text</label>
+                <textarea name="body" id="body">{{post.body}}</textarea>
+            </fieldset>
+        </div>
+        {% if sub%}
+        <button class="btn btn-success pull-left">Update sub</button>
+        <button onclick="deletesub()" class="btn btn-danger pull-right" type="button">Delete sub</button>
+        {% else %}
+        <button class="btn btn-primary">Add sub</button>
+        {% endif %}
+
+    </form>
+</div>
+{%endblock%}
+<!----->
+{%block finally%}
+<script>
+    var today = new Date(Date.now());
+        var dpOpts = {
+            startDay:today.getDay() + '/' + (today.getMonth()+1) + "/" + today.getFullYear
+        }
+        $(".date").datepicker(dpOpts);
+        {% if sub %}
+            $(".date").datepicker('setDate', new Date('{{post.date}}'));
+        {% endif %}
+        $('#sub-form').submit(function(e){
+            e.preventDefault();
+            $('input[name="date"]').val($(".date").datepicker('getDate'));
+            if($(".date").datepicker('getDate') == "Invalid Date"){
+                bootstrapAlert("alert-warning", "Please select a date.");
+                return;
+            }
+            //data.startTime = $("#time").getTime();
+            $.post("/admin/substitution", $(this).serialize(), function(data){
+                console.log(data);
+                if(data.success){
+                    bootstrapAlert("alert-success", "Subscription successfully {{'updated' if sub else 'added'}}.");
+                }
+                else if(data.name === "ValidationError"){
+                     if(data.errors){
+                         console.log(data);
+                         bootstrapAlert("alert-danger", "Error");
+                     }
+                }
+                
+            }).fail(function(err){
+                console.log(err);
+                 bootstrapAlert("alert-danger", "Error");
+            });
+        });
+</script>
+<script>
+    function deletesub(){
+            if(confirm("Are you sure you want to delete this substitution??")){
+                bootstrapAlert("alert-info", "Deleting post...");
+                $.post("/admin/substitution/delete", {id:"{{post._id}}"}, function(data){
+                    if(data.success){
+                        bootstrapAlert("alert-success", "Substitution successfully deleted. Redirecting you back to admin homepage in 2 seconds.")
+                        setTimeout(function(){document.location = "/admin"}, 2000);
+                    }
+                    else{
+                        console.log(data);
+                        bootstrapAlert("alert-warning", "Could not delete.");
+                    }
+                }).fail(function(){
+                    bootstrapAlert("alert-warning", "Could not delete.");
+                });
+            }
+        }
+</script>{% endblock %}

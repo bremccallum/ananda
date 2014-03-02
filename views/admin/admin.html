@@ -1,120 +1,31 @@
-{% extends "/layout.html" %} {%block main%}
-<div class="col-sm-6 col-md-4">
-    <div class="admin-box">
-        <a href="/admin/teacher" class="btn btn-primary pull-right">New Teacher</a>
-        <h2>Teachers</h2>
-        <ul class="list-group">
-            {% for firstName in teachersNames | sort%}
-            <li class="list-group-item" data-firstName="{{firstName}}">
-                <i onclick="deleteTeacher(this, '{{firstName}}')" class="fa fa-trash-o pull-right"></i>
-                <a href="/admin/teacher?id={{firstName}}">
-                    <h4 class="list-group-item-heading">{{firstName | title}}</h4>
-                </a>
-            </li>
-
-            {% endfor%}</ul>
-    </div>
-</div>
-<div class="col-sm-6 col-md-4">
-    <div class="admin-box">
-        <a href="/admin/event" class="btn btn-primary pull-right">New Event</a>
-        <h2>Events</h2>
-        <ul class="list-group">
-            {% for event in events|sort(false, false, 'name')%}
-            <li class="list-group-item">
-                <i onclick="deleteEvent(this, '{{event.name}}', '{{event._id}}')" class="fa fa-trash-o pull-right"></i>
-                <a href="/admin/event?id={{event._id}}">
-                    <h4 class="list-group-item-heading">{{event.name}} <small>with {{event.teacher | title}}</small></h4>
-                    <span>{{event.startDate | prettyDate}} - {{event.endDate|prettyDate if event.endDate else '
-                        <i>[end not set]</i>' | safe}}</span>{%if event.type == "class" %}
-                    <p>
-                        <small>
-                            {% for day in event.days %} {{days[day]}} {% endfor %}
-                        </small>
-                    </p>
+{% extends "/layout.html" %}
+<!----->
+{%block main%}
+<div class="row">
+    <div class="col-sm-8 col-sm-offset-3">
+        <div class="admin-box">
+            <a href="/admin/post" class="btn btn-primary pull-right">New Post</a>
+            <h2>News Posts</h2>
+            <ul class="list-group">
+                {% for post in posts %}
+                <li class="list-group-item">
+                    <a href="/admin/post/{{post.slug}}">
+                        <h3 class="list-group-item-heading">{{post.title}}</h3>
+                    </a>
+                    {% if post.isPublished %}
+                    <p>Published {{post.published | prettyDate}}</p>
                     {% endif %}
-                </a>
-            </li>
+                    <p>By {{post.author}}</p>
+                </li>
 
-            {% endfor%}
-        </ul>
+                {% endfor %}
+                <!----->
+            </ul>
+        </div>
     </div>
 </div>
-<div class="col-sm-6 col-md-4">
-    <div class="admin-box">
-        <a href="/admin/substitution" class="btn btn-primary pull-right">New Substitution</a>
-        <h2>Substitutions</h2>
-        {% for sub in subs %}
-            <li class="list-group-item">
-                <i onclick="deleteSub(this, '{{sub._id}}')" class="fa fa-trash-o pull-right"></i>
-                <a href="/admin/substitution?id={{sub._id}}">
-                    {{sub.date | prettyDate}} | {{sub.event.name}} | {{sub.teacher | title}}
-                </a>
-            </li>
-
-            {% endfor%}
-    </div>
-</div>
-<div class="col-sm-6 col-md-4">
-    <div class="admin-box">
-        <h2></h2>
-    </div>
-</div>
-
 {% endblock %} {% block finally%}
+<!-- <i onclick="deleteTeacher(this, '{{firstName}}')" class="fa fa-trash-o pull-right"></i> -->
 <script>
-    function deleteTeacher(t, n){
-        $parent = $(t).parent();
-        if(confirm("Are you REALLY sure you want to delete " + n + "?")){
-            $.post("/admin/teacher/delete", {firstName:n}, function(data){
-                if(data.success){
-                    $parent.fadeOut(1000, function(){$parent.remove()});
-                }
-                else{
-                    console.log(data);
-                    $parent.append("<span class='delete'>Could not delete.</span>").fadeOut(5000,function(){$parent.find(".delete").remove()});
-                }
-            }).fail(function(){
-                    $parent.append("<span class='delete'>Could not delete.</span>").fadeOut(5000,function(){$parent.find(".delete").remove()});
-            });
-        }
-    }
-    function deleteEvent(t, n, i){
-        $parent = $(t).parent();
-        if(confirm("Are you REALLY sure you want to delete " + n + "?")){
-            $.post("/admin/event/delete", {id:i}, function(data){
-                if(data.success){
-                    $parent.fadeOut(1000, function(){$parent.remove()});
-                }
-                else{
-                    console.log(data);
-                    $parent.append("<span class='delete'>Could not delete.</span>").fadeOut(5000,function(){$parent.find(".delete").remove()});
-                }
-            }).fail(function(){
-                    $parent.append("<span class='delete'>Could not delete.</span>").fadeOut(5000,function(){$parent.find(".delete").remove()});
-            });
-        }
-    }
-    function deleteSub(t, i){
-        $parent = $(t).parent();
-        var oldBorder = $parent.css("border");
-        $parent.css("border", "1px solid yellow");
-        if(confirm("Delete selected substitution?")){
-            $.post("/admin/substitution/delete", {id:i}, function(data){
-                if(data.success){
-                    $parent.fadeOut(1000, function(){$parent.remove()});
-                }
-                else{
-                    console.log(data);
-                    $parent.append("<span class='delete'>Could not delete.</span>").fadeOut(5000,function(){$parent.find(".delete").remove()});
-                    $parent.css("border-color", "red");
-                }
-            }).fail(function(){
-                    $parent.append("<span class='delete'>Could not delete.</span>").fadeOut(5000,function(){$parent.find(".delete").remove()});
-                    $parent.css("border-color", "red");
-            });
-        }
-        else{$parent.css("border", oldBorder);}
-    }
 </script>
 {% endblock %}
