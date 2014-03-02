@@ -4,25 +4,43 @@ var mongoose = require('mongoose'),
     ObjectId = mongoose.Schema.ObjectId;
 var moment = require('moment');
 var mongoUri = process.env.MONGOLAB_URI ||
-  process.env.MONGOHQ_URL ||
-  'mongodb://anandaDB:ananda1@ds033499.mongolab.com:33499/heroku_app22472794';
+    process.env.MONGOHQ_URL ||
+    'mongodb://anandaDB:ananda1@ds033499.mongolab.com:33499/heroku_app22472794';
 //Set up DB
 mongoose.connect(mongoUri);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-var requiredString = {type: String, required:true};
+var requiredString = {
+    type: String,
+    required: true
+};
 //**************************************
 //              Posts
 //**************************************
 var postSchema = mongoose.Schema({
-    slug: {type:String, required:true, index:true, unique:true},
+    slug: {
+        type: String,
+        required: true,
+        index: true,
+        unique: true
+    },
     title: requiredString,
     author: requiredString,
     body: requiredString,
-    isPublished: {type:Boolean, default:false},
+    isPublished: {
+        type: Boolean,
+        default: false,
+        index: true
+    },
     published: Date,
-    versions: [{date:Date, body:String}],
-    created: {type:Date, default:Date.now}
+    versions: [{
+        date: Date,
+        body: String
+    }],
+    created: {
+        type: Date,
+        default: Date.now
+    }
 })
 //**************************************
 //          EXPORTS

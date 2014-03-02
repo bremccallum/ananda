@@ -1,8 +1,7 @@
-var common = require('./common'),
-    models = require("../models"),
-    moment = require("moment");
-var Page = common.Page,
-    Q = common.Q;
+var Page = require('./common').Page,
+    Posts = require("../models").Post,
+    moment = require("moment"),
+    Q = require("q");
 module.exports = function (soap) {
     function landing(req, res) {
         console.time("Landing");
@@ -186,12 +185,18 @@ module.exports = function (soap) {
                 res.render("schedule.html", Page("Schedule | Ananda Yoga", model));
             });
     }
-
+    function viewPost(req, res){
+        Posts.findOne({slug:req.params.slug}, function(err, post){
+            var model = {post:post};
+            res.render("news.html", Page(post.title, model));
+        })
+    }
     //exports
     var out = {};
     out.landing = landing;
     out.instructors = instructors;
     out.classes = classes;
     out.schedule = schedule;
+    out.viewPost = viewPost;
     return out;
 }

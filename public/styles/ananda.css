@@ -189,3 +189,13 @@ table th.no-classes{
     font-style: italic;
     background-color:#FFFFFF;
 }
+
+
+/*
+============================================================================
+                        Admin
+============================================================================
+*/
+.note-editable{
+    background-color:white;
+}

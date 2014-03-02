@@ -13,9 +13,7 @@ require("./soap")(function (cli) {
     app.get('/instructors', home.instructors);
     app.get('/classes', home.classes);
     app.get('/schedule', home.schedule);
-    app.get('/news/:slug', function(req, res){
-        res.send("Under construction");
-    });
+    app.get('/news/:slug', home.viewPost);
     
     
     app.get('/admin', admin.dashboard);

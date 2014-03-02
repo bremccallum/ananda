@@ -28,6 +28,10 @@ nunjucks.addFilter('prettyDate', function (v) {
 nunjucks.addFilter('prettyTime', function (v) {
     return (moment(v).format("h:mm a"));
 });
+nunjucks.addFilter("regexReplace", function(v, pattern, flags, new_){
+    if(typeof v === 'string')
+        return v.replace(new RegExp(pattern, flags), new_);
+});
 nunjucks.addFilter('attrSort', function (arr, attr) {
     //Code taken from nunjucks default sort function
     // Copy it

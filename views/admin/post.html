@@ -1,76 +1,119 @@
-{%extends "layout.html"%} {% include "includes/alertbox.html"%}
+{%extends "layout.html"%}
+<!----->
+{%block styles%}
+<link rel="stylesheet" href="/styles/summernote.css">
+<!----->
+{%endblock%}
 <!----->
 {%block main%}
 <div class="row">
     <h1 class="col-sm-9 col-sm-offset-1">{{'Edit Post' if sub else 'Add Post'}}</h1>
 </div>
-{{ alertBox(error, success)}}
+<div class="row">
+    <div id="form-alert" class="col-xs-12 alert alert-dismissable {{'alert-danger' if error}}{{'alert-success' if success}}{{ 'hidden' if not error and not success}}">
+        <button class="close" type="button" onclick="$('#form-alert').addClass('hidden')">&times;</button>
+        <p class="message text-center">{{error or success | safe}}</p>
+    </div>
+</div>
 <div class="row">
     <form id="form" class="col-sm-8 col-sm-offset-2 form-horizontal" action="" method="post" autocomplete="{{ 'off' if not post}}">
-        <input type="hidden" name="update" value="{{'true' if post else 'false'}}">
+        <input type="hidden" name="update" id="isUpdate" value="{{'true' if post else 'false'}}">
         <div class="form-group">
             <fieldset>
                 <label for="title">Title</label>
                 <input type="text" class="form-control" id="title" name="title" value="{{post.title}}">
-                <label for="slug">Title's URL</label>
+                <label for="slug">Post's Slug</label>
                 <input type="text" id="slug" name="slug" value="{{post.slug}}" class="form-control">
                 <label for="author">Post as:</label>
                 <select required name="author" id="author" class="form-control">
-                    {% for author in teacherNames %}
+                    {% for author in teacherNames | sort %}
                     <option {{ 'selected' if post.author==author}} value="{{author}}">{{author}}</option>
                     {% endfor %}
                 </select>
-                <label for="body">Post text</label>
-                <textarea name="body" id="body">{{post.body}}</textarea>
+                <input type="hidden" id="body" name="body">
+                <label for="summernote">Post text</label>
+                <div id="summernote"></div>
             </fieldset>
         </div>
         {% if sub%}
         <button class="btn btn-success pull-left">Update sub</button>
         <button onclick="deletesub()" class="btn btn-danger pull-right" type="button">Delete sub</button>
         {% else %}
-        <button class="btn btn-primary">Add sub</button>
+        <button class="btn btn-primary">Save Post</button>
         {% endif %}
 
     </form>
 </div>
+{%endblock%} {%block scripts%}
+<script src="/js/summernote.min.js"></script>
 {%endblock%}
 <!----->
 {%block finally%}
 <script>
-    var today = new Date(Date.now());
-        var dpOpts = {
-            startDay:today.getDay() + '/' + (today.getMonth()+1) + "/" + today.getFullYear
+    //AlertBox
+    var $alert = $("#form-alert");
+    function bootstrapAlert(alertClass, msg){
+            $alert.find(".message").html(msg);
+            $alert.removeClass("hidden alert-info alert-danger alert-warning alert-success").addClass(alertClass).css("display", "block").alert();
+            location.hash = "#form-alert";
         }
-        $(".date").datepicker(dpOpts);
-        {% if sub %}
-            $(".date").datepicker('setDate', new Date('{{post.date}}'));
-        {% endif %}
-        $('#sub-form').submit(function(e){
-            e.preventDefault();
-            $('input[name="date"]').val($(".date").datepicker('getDate'));
-            if($(".date").datepicker('getDate') == "Invalid Date"){
-                bootstrapAlert("alert-warning", "Please select a date.");
-                return;
-            }
-            //data.startTime = $("#time").getTime();
-            $.post("/admin/substitution", $(this).serialize(), function(data){
-                console.log(data);
-                if(data.success){
-                    bootstrapAlert("alert-success", "Subscription successfully {{'updated' if sub else 'added'}}.");
-                }
-                else if(data.name === "ValidationError"){
-                     if(data.errors){
-                         console.log(data);
-                         bootstrapAlert("alert-danger", "Error");
-                     }
-                }
-                
-            }).fail(function(err){
-                console.log(err);
-                 bootstrapAlert("alert-danger", "Error");
-            });
-        });
 </script>
+<script>
+    $summernote = $("#summernote");
+    $summernote.summernote({
+        height:300,
+        toolbar: [
+            //['table', ['table']], // no table button
+            ['style', ['style']], 
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+            ['insert', ['picture', 'link']],
+            ['help', ['help']]
+        ]
+    });
+    $summernote.code("{{post.body | regexReplace('"', "g", '\\"') | safe}}");
+    var $slug = $("#slug");
+    function generateSlug(){
+        var title = $title.val();
+        var slug = title.toLowerCase().replace(/\W+/g, '-').replace(/^-/, '').replace(/-$/, '');
+        $slug.val(slug);
+    }
+    $title = $("#title").on('keyup blur', generateSlug);
+    $('#form').submit(function(e){
+        e.preventDefault();
+        $("#body").val($summernote.code());
+        var method = $("#isUpdate").val() == "true" ? $.put : $.post;
+        method("/admin/post", $(this).serialize(), function(data){
+            console.log(data);
+            if(data.success){
+                bootstrapAlert("alert-success", "Post successfully saved.");
+            }
+            else if(data.name === "ValidationError"){
+                 if(data.errors){
+                     bootstrapAlert("alert-danger", "Error");
+                 }
+            }
+            else if(data.name ==="MongoError"){
+                if(data.code == 11000 && (data.err.indexOf("slug") != -1)){
+                    console.log("Slug error")
+                    
+                    bootstrapAlert("alert-info",'There\'s already <a class="alert-link" href="/news/'+$slug.val()+'" target="_blank">a post</a> whose name generates the same slug. Please come up with a new title."')
+                
+                }
+            
+            
+            }
+        }).fail(function(err){
+            console.log(err);
+             bootstrapAlert("alert-danger", "Error");
+        });
+    });
+</script>
+
+
 <script>
     function deletesub(){
             if(confirm("Are you sure you want to delete this substitution??")){
