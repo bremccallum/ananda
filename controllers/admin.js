@@ -26,7 +26,18 @@ module.exports = function (soap) {
         }
     }
 
-    function getTeacherNames(callback) {
+    function teachersToNames(staff) {
+        staff = staff[0].GetStaffResult.StaffMembers.Staff
+            .filter(function (staff) {
+                return staff.ID > 1; //they have weird testing data at lower ID
+            });
+        staff.map(function (v, i) {
+            staff[i] = v.Name;
+        });
+        return staff;
+    }
+
+    function getTeacherPromise(callback) {
         var args = {
             Fields: [
                 {
@@ -35,41 +46,31 @@ module.exports = function (soap) {
             ],
             XMLDetail: 'Bare'
         };
-        soap.q(soap.Staff, 'GetStaff', args)
-            .done(function (staff) {
-                staff = staff[0].GetStaffResult.StaffMembers.Staff
-                    .filter(function (staff) {
-                        return staff.ID > 1; //they have weird testing data at lower ID
-                    });
-                staff.map(function (v, i) {
-                    staff[i] = v.Name;
-                });
-                callback(staff);
-            });
+        return soap.q(soap.Staff, 'GetStaff', args);
     }
 
     function newPost(req, res) {
-        getTeacherNames(function (names) {
+        getTeacherPromise().then(function (teachers) {
             var model = {
-                teacherNames: names
+                teacherNames: teachersToNames(teachers)
             };
             res.render('/admin/post.html', Page('New Post', model))
         });
     }
 
     function editPost(req, res) {
-        getTeacherNames(function (names) {
-            var slug = req.params.slug;
-            Posts.findOne({
+        var slug = req.params.slug;
+        Q.all([getTeacherPromise(),
+               Q.when(Posts.findOne({
                 slug: slug
-            }, function (err, post) {
+            }).exec())])
+            .spread(function (teachers, post) {
                 var model = {
-                    teacherNames: names,
+                    teacherNames: teachersToNames(teachers),
                     post: post
                 };
                 res.render('/admin/post.html', Page('Edit Post', model));
             });
-        });
     }
 
     function updatePost(req, res) {
