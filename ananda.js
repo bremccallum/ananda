@@ -62,7 +62,7 @@ nunjucks.addFilter('attrSort', function (arr, attr) {
 })
 
 //
-//   Launch app
+//   Launch app at port 6969
 //
 var port = Number(process.env.PORT || 6969)
 app.listen(port, function () {
