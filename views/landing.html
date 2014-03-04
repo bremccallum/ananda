@@ -62,10 +62,10 @@
             </p>
         </div>
         <section id="news">
-            <div class="row">
                 {%for post in posts %} {% if loop.index0%2==0 %}
-                <div class="article-wrapper col-lg-6">
+            <div class="row">
                     {% endif %}
+                <div class="article-wrapper col-lg-6">
                     <article class="card">
                         <h1><a href="/news/{{post.slug}}">{{post.title}}</a></h1>
                         <time>Published {{post.published | prettyDate}}</time>
@@ -73,10 +73,10 @@
                         <div class="post-body">{{post.body | safe}}</div>
                         <a href="/news/{{post.slug}}">Read More..</a>
                     </article>
-                    {% if loop.index0%2==1 %}
                 </div>
-                {% endif %} {%endfor%}
+                    {% if loop.index0%2==1 %}
             </div>
+                {% endif %} {%endfor%}
         </section>
     </div>
 
