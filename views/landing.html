@@ -61,22 +61,19 @@
             <p>We, at Ananda Yoga Lander, strive to bring competent yoga instruction, compassion, and awareness to our community to the best of our abilities in a form true to each of our own natures in the hope of bringing further awareness to our own inner bliss that we each already possess.
             </p>
         </div>
-        <section id="news">
-                {%for post in posts %} {% if loop.index0%2==0 %}
-            <div class="row">
-                    {% endif %}
-                <div class="article-wrapper col-lg-6">
-                    <article class="card">
-                        <h1><a href="/news/{{post.slug}}">{{post.title}}</a></h1>
-                        <time>Published {{post.published | prettyDate}}</time>
-                        <img class="img-thumbnail" src="//lorempixel.com/g/150/150" alt="">
-                        <div class="post-body">{{post.body | safe}}</div>
-                        <a href="/news/{{post.slug}}">Read More..</a>
-                    </article>
-                </div>
-                    {% if loop.index0%2==1 %}
-            </div>
-                {% endif %} {%endfor%}
+        <section id="news" class="row">
+            {%for post in posts %}
+            <div class="article-wrapper col-xs-12 col-lg-6">
+                <article class="card">
+                    <h1>
+                        <a href="/news/{{post.slug}}">{{post.title}}</a>
+                    </h1>
+                    <time>Published {{post.published | prettyDate}}</time>
+                    <img class="img-thumbnail" src="//lorempixel.com/g/150/150" alt="">
+                    <div class="post-body">{{post.body | safe}}</div>
+                    <a href="/news/{{post.slug}}">Read More..</a>
+                </article>
+            </div>{%endfor%}
         </section>
     </div>
 
