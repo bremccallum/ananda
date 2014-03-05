@@ -3,8 +3,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     ObjectId = mongoose.Schema.ObjectId;
 var moment = require('moment');
-//Set up DB
-var requiredString =
+
 //**************************************
 //              Posts
 //**************************************
