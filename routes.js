@@ -15,6 +15,8 @@ require("./soap")(function (cli) {
     app.get('/schedule', home.schedule);
     app.get('/news/:slug', home.viewPost);
     
+    app.get("/login", function(req, res){res.render("/admin/login.html");});
+    app.post("/login", admin.login);
     
     app.get('/admin', admin.dashboard);
     app.get('/admin/post', admin.newPost);

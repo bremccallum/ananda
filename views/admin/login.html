@@ -1,0 +1,14 @@
+{%extends 'layout.html'%}
+{%block main%}
+<div class="row">
+    <form class="form-signin col-sm-5 col-sm-offset-4" role="form" method="post" action="/login">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <input type="email" class="form-control" placeholder="Email address" required name="email" autofocus="">
+        <input type="password" class="form-control" placeholder="Password" required name="password">
+        <label class="checkbox">
+            <input type="checkbox" value="remember-me">Remember me
+        </label>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+</div>
+{%endblock%}

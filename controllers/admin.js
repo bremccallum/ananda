@@ -19,6 +19,17 @@ module.exports = function (soap) {
             });
     }
 
+    function login(req, res){
+        Users.authenticate(req.body.email, req.body.password, function(err, isMatch){
+            if(isMatch){
+                res.cookie("loggedin", "true", {maxAge: 1000*60*60*5, signed:true})
+                res.redirect("/admin");
+            }
+            else{
+                res.redirect("/admin/login");
+            }
+        });
+    }
 
     //Posts from here
     function parseBody(body) {
@@ -123,6 +134,8 @@ module.exports = function (soap) {
     //exports
     var out = {};
     out.dashboard = dashboard;
+    
+    out.login = login;
 
     out.newPost = newPost;
     out.addPost = addPost;

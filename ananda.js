@@ -7,7 +7,7 @@ var app = module.exports = express();
 
 var mongoose = require("mongoose");
 var mongoUri = process.env.MONGOLAB_URI ||
-    process.env.MONGOHQ_URL || 
+    process.env.MONGOHQ_URL ||
     process.env.ANANDA_MONGO_DEV;
 mongoose.connect(mongoUri);
 var db = mongoose.connection;
@@ -20,9 +20,16 @@ db.on('error', console.error.bind(console, 'connection error:'));
 //
 app.configure(function () {
     app.use(express.bodyParser());
-    /*app.use('/admin', function (req, res, next) { //Do security shit here someday maybe!
-        next();
-    });*/
+    app.use(express.cookieParser('super secret string'));
+    app.use('/admin', function (req, res, next) { //Do security shit here someday maybe!
+        console.log(req.signedCookies);
+        if (req.signedCookies.loggedin === "true") {
+            next();
+        } else {
+            console.log("redirecting to login");
+            res.redirect("/login");
+        }
+    });
     require('./routes');
     app.use(express.static(__dirname + "/public"));
 });
@@ -40,8 +47,8 @@ nunjucks.addFilter('prettyDate', function (v) {
 nunjucks.addFilter('prettyTime', function (v) {
     return (moment(v).format("h:mm a"));
 });
-nunjucks.addFilter("regexReplace", function(v, pattern, flags, new_){
-    if(typeof v === 'string')
+nunjucks.addFilter("regexReplace", function (v, pattern, flags, new_) {
+    if (typeof v === 'string')
         return v.replace(new RegExp(pattern, flags), new_);
 });
 nunjucks.addFilter('attrSort', function (arr, attr) {
