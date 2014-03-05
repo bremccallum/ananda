@@ -4,6 +4,20 @@
 
 This website began as a personal project, done pro bono without being requested by the studio itself, as an exercise in putting together technologies I had no worked with before, specifically crucial parts of the *MEAN* stack. 
 
+##Tasks
+
+* login system
+* upload files
+* edit posts
+* post versioning
+* delete posts
+* WYSIWIG for front-page content
+* add photos to posts
+* style posts
+* pricing & membership (see WYSIWIG)
+* retail store WYSIWIG
+* view caching
+
 ##Getting Started
 <code>npm install</code> will get dependencies out of packages.json
 
