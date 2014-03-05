@@ -1,5 +1,5 @@
 var common = require('./common'),
-    Posts = require("../models").Post,
+    Posts = require("../models/post"),
     moment = require("moment");
 var Page = common.Page,
     Q = common.Q;

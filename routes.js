@@ -1,5 +1,4 @@
-var models = require("./models"),
-    extend = require("extend"),
+var extend = require("extend"),
     app = require("./ananda");
 require("./soap")(function (cli) {
 

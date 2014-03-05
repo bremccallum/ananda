@@ -1,5 +1,5 @@
 var Page = require('./common').Page,
-    Posts = require("../models").Post,
+    Posts = require("../models/post"),
     moment = require("moment"),
     Q = require("q");
 module.exports = function (soap) {
