@@ -3,6 +3,18 @@ var soap = require("soap");
 var express = require('express'),
     moment = require("moment");
 var app = module.exports = express();
+
+
+var mongoose = require("mongoose");
+var mongoUri = process.env.MONGOLAB_URI ||
+    process.env.MONGOHQ_URL || 
+    process.env.ANANDA_MONGO_DEV;
+mongoose.connect(mongoUri);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+
+
+
 //
 //  App Settings
 //
