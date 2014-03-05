@@ -1,8 +1,6 @@
 "use strict"
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema,
-    ObjectId = mongoose.Schema.ObjectId;
-var moment = require('moment');
+    Schema = mongoose.Schema;
 
 //**************************************
 //              Posts
