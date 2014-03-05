@@ -4,6 +4,7 @@ require("./soap")(function (cli) {
 
     var home = require("./controllers/home")(cli);
     var admin = require("./controllers/admin")(cli);
+    
 
 
 
@@ -20,6 +21,10 @@ require("./soap")(function (cli) {
     app.get('/admin/post/:slug', admin.editPost);
     app.put('/admin/post', admin.updatePost);
     app.post('/admin/post', admin.addPost);
-    app.delete('/admin/post', substitution.deletePost);
-    app.post('/admin/post/delete', substitution.deletePost);
+    app.delete('/admin/post', admin.deletePost);
+    app.post('/admin/post/delete', admin.deletePost);
+    
+    app.get('/admin/addUser', admin.newUser);
+    app.post("/admin/addUser", admin.addUser);
+    
 });

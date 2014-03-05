@@ -1,18 +1,22 @@
 var common = require('./common'),
     Posts = require("../models/post"),
+    Users = require("../models/user"),
     moment = require("moment");
 var Page = common.Page,
     Q = common.Q;
 module.exports = function (soap) {
     function dashboard(req, res) {
-        Posts.find(function (err, posts) {
-            var model = {
-                posts: posts
-            }
-            if (err) res.send("Error loading posts. Try reloading the page.\nError:" + err);
-            else
+        Q.all([Q.when(Users.find().exec()),
+            Q.when(Posts.find().exec())])
+            .spread(function (users, posts) {
+                var model = {
+                    posts: posts,
+                    users: users
+                }
                 res.render('/admin/admin.html', Page("Admin | Ananda Yoga", model));
-        });
+            }).done(function (err) {
+                if (err) res.send("Error loading posts. Try reloading the page.\nError:" + err);
+            });
     }
 
 
@@ -97,13 +101,37 @@ module.exports = function (soap) {
     function deletePost(req, res) {
         res.send("under construction");
     }
+
+    function newUser(req, res) {
+        var model = {};
+        res.render("admin/user.html", Page("Add User", model));
+    }
+
+    function addUser(req, res) {
+        var body = req.body;
+        var user = new Users({
+            email: body.email,
+            password: body.password
+        });
+        user.save(function (err, user) {
+            if (err) res.send(err);
+            else res.send({
+                success: true
+            });
+        });
+    }
     //exports
     var out = {};
     out.dashboard = dashboard;
-    out.deletePost = deletePost;
-    out.addPost = addPost;
+
     out.newPost = newPost;
+    out.addPost = addPost;
     out.updatePost = updatePost;
     out.editPost = editPost;
+    out.deletePost = deletePost;
+
+    out.newUser = newUser;
+    out.addUser = addUser;
+
     return out;
 }
