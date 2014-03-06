@@ -19,7 +19,11 @@ var cache = module.exports = function (app) {
             var end = res.end;
             res.end = function (data, encryption) {
                 res.end = end;
-                if (data.length) {//data empty on 304 or 204
+                if(!data.length){
+                    //shouldn't happen as long as etag is disabled
+                    console.log("CACHE: !ERROR! no data:" + myRoute);
+                }
+                else{
                     res.on('finish', function () {
                         console.log("CACHE: SAVING:'" + route);
                         app._cache[route] = {
