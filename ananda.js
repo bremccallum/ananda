@@ -29,7 +29,7 @@ app.configure(function () {
             res.redirect("/login");
         }
     });
-    
+    app.disable("etag");
     require('./routes');
     app.use(express.static(__dirname + "/public"));
 });
