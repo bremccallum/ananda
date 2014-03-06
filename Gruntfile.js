@@ -3,12 +3,12 @@ module.exports = function (grunt) {
         less: {
             development: {
                 files: {
-                    "public/styles/ananda.css": "views/less/ananda.less"
+                    "public/styles/ananda.css": "less/ananda.less"
                 }
             }
         },
         watch:{
-            files:'./views/less/*',
+            files:'./less/*',
             tasks:['less']
         }
     })
