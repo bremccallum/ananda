@@ -5,6 +5,19 @@ var common = require('./common'),
 var Page = common.Page,
     Q = common.Q;
 module.exports = function (soap) {
+
+    function login(req, res){
+        Users.authenticate(req.body.email, req.body.password, function(err, isMatch){
+            if(isMatch){
+                res.cookie("loggedin", "true", {maxAge: 1000*60*60*5, signed:true})
+                res.redirect("/admin");
+            }
+            else{
+                res.redirect("/login");
+            }
+        });
+    }
+    
     function dashboard(req, res) {
         Q.all([Q.when(Users.find().exec()),
             Q.when(Posts.find().exec())])
@@ -17,18 +30,6 @@ module.exports = function (soap) {
             }).done(function (err) {
                 if (err) res.send("Error loading posts. Try reloading the page.\nError:" + err);
             });
-    }
-
-    function login(req, res){
-        Users.authenticate(req.body.email, req.body.password, function(err, isMatch){
-            if(isMatch){
-                res.cookie("loggedin", "true", {maxAge: 1000*60*60*5, signed:true})
-                res.redirect("/admin");
-            }
-            else{
-                res.redirect("/admin/login");
-            }
-        });
     }
 
     //Posts from here
@@ -72,7 +73,7 @@ module.exports = function (soap) {
             res.render('/admin/post.html', Page('New Post', model))
         });
     }
-
+    //get
     function editPost(req, res) {
         var slug = req.params.slug;
         Q.all([getTeacherPromise(),
@@ -87,13 +88,15 @@ module.exports = function (soap) {
                 res.render('/admin/post.html', Page('Edit Post', model));
             });
     }
-
+    //put
     function updatePost(req, res) {
-        var slug = req.body.slug;
-        Posts.findOne({
-            slug: slug
-        }, function (err, post) {
-
+        var p = parseBody(req.body);
+        Posts.findById(req.body._id, function (err, post) {
+            post.title = p.title;
+            post.author = p.author;
+            
+            
+            post.body = p.body;
         });
     }
 
@@ -113,6 +116,10 @@ module.exports = function (soap) {
         res.send("under construction");
     }
 
+    ///////////////////////////////////////////////////////
+    ///////////////// USER ///////////////////////////////
+    /////////////////////////////////////////////////////
+    
     function newUser(req, res) {
         var model = {};
         res.render("admin/user.html", Page("Add User", model));

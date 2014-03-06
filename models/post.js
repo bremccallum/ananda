@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 //**************************************
 //              Posts
 //**************************************
-var postSchema = mongoose.Schema({
+var postSchema = Schema({
     slug: {
         type: String,
         required: true,

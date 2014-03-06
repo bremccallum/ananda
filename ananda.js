@@ -22,7 +22,6 @@ app.configure(function () {
     app.use(express.bodyParser());
     app.use(express.cookieParser('super secret string'));
     app.use('/admin', function (req, res, next) { //Do security shit here someday maybe!
-        console.log(req.signedCookies);
         if (req.signedCookies.loggedin === "true") {
             next();
         } else {
@@ -30,6 +29,7 @@ app.configure(function () {
             res.redirect("/login");
         }
     });
+    
     require('./routes');
     app.use(express.static(__dirname + "/public"));
 });

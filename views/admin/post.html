@@ -17,7 +17,7 @@
 </div>
 <div class="row">
     <form id="form" class="col-sm-8 col-sm-offset-2 form-horizontal" action="" method="post" autocomplete="{{ 'off' if not post}}">
-        <input type="hidden" name="update" id="isUpdate" value="{{'true' if post else 'false'}}">
+        <input type="hidden" name="_id" id="isUpdate" value="{{post._id}}">
         <div class="form-group">
             <fieldset>
                 <label for="title">Title</label>
@@ -35,9 +35,9 @@
                 <div id="summernote"></div>
             </fieldset>
         </div>
-        {% if sub%}
-        <button class="btn btn-success pull-left">Update sub</button>
-        <button onclick="deletesub()" class="btn btn-danger pull-right" type="button">Delete sub</button>
+        {% if post%}
+        <button class="btn btn-success pull-left">Update Post</button>
+        <button onclick="deletepost()" class="btn btn-danger pull-right" type="button">Delete Post</button>
         {% else %}
         <button class="btn btn-primary">Save Post</button>
         {% endif %}
@@ -59,6 +59,7 @@
         }
 </script>
 <script>
+    //summernote
     $summernote = $("#summernote");
     $summernote.summernote({
         height:300,
@@ -75,6 +76,7 @@
         ]
     });
     $summernote.code("{{post.body | regexReplace('"', "g", '\\"') | safe}}");
+    //slug
     var $slug = $("#slug");
     function generateSlug(){
         var title = $title.val();
@@ -82,10 +84,11 @@
         $slug.val(slug);
     }
     $title = $("#title").on('keyup blur', generateSlug);
+    //
     $('#form').submit(function(e){
         e.preventDefault();
         $("#body").val($summernote.code());
-        var method = $("#isUpdate").val() == "true" ? $.put : $.post;
+        var method = $("#isUpdate").val() ? $.put : $.post;
         method("/admin/post", $(this).serialize(), function(data){
             console.log(data);
             if(data.success){
@@ -100,11 +103,9 @@
                 if(data.code == 11000 && (data.err.indexOf("slug") != -1)){
                     console.log("Slug error")
                     
-                    bootstrapAlert("alert-info",'There\'s already <a class="alert-link" href="/news/'+$slug.val()+'" target="_blank">a post</a> whose name generates the same slug. Please come up with a new title."')
+                    bootstrapAlert("alert-info",'There\'s already <a class="alert-link" href="/news/'+$slug.val()+'" target="_blank">a post</a> whose name generates the same slug. Please come up with a new title.')
                 
                 }
-            
-            
             }
         }).fail(function(err){
             console.log(err);

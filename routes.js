@@ -1,14 +1,20 @@
 var extend = require("extend"),
-    app = require("./ananda");
+    app = require("./ananda"),
+    //half an hour?
+    CACHE_TIME = 1000*60*30;
 require("./soap")(function (cli) {
 
-    var home = require("./controllers/home")(cli);
-    var admin = require("./controllers/admin")(cli);
+    var home = require("./controllers/home")(cli),
+        admin = require("./controllers/admin")(cli);
+    var cache = require('./cache')(app);
+
+    app.use('/', cache(CACHE_TIME, '/'));
+    app.use('/instructors', cache(CACHE_TIME, '/instructors'));
+    app.use('/classes', cache(CACHE_TIME, '/classes'));
+    app.use('/schedule', cache(CACHE_TIME, '/schedule'));
+    app.use('/news/:slug', cache(CACHE_TIME, '/news/:slug'));
     
-
-
-
-
+    
     app.get('/', home.landing);
     app.get('/instructors', home.instructors);
     app.get('/classes', home.classes);
@@ -28,5 +34,7 @@ require("./soap")(function (cli) {
     
     app.get('/admin/addUser', admin.newUser);
     app.post("/admin/addUser", admin.addUser);
+    
+    app.get("/cache", function(req,res){});
     
 });

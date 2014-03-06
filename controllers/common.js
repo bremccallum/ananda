@@ -1,7 +1,6 @@
 var extend = require("extend"),
-    app = require("../ananda"),
-    Q = require('q');
-exports.Q = Q;
+    app = require("../ananda");
+exports.Q = require('q');
 exports.Page = function (title, model) {
     var o = {
         title: title,
@@ -9,23 +8,4 @@ exports.Page = function (title, model) {
     }
     extend(o, model);
     return o;
-};
-exports.handleKey = function (key, res, redirect, error) {
-    if (!key) {
-        if (req.xhr) {
-            res.redirect(redirect.replace("{{key}}", key));
-        } else {
-            res.send({
-                error: error.replace("{{key}}", key)
-            })
-        }
-    }
-    return key;
-};
-exports.titleCase = function (s) {
-    var a = s.split(" ");
-    a.forEach(function (s, i, a) {
-        a[i] = s.charAt(0) + s.slice(1);
-    });
-    return a.join(" ");
 };
