@@ -13,6 +13,7 @@
 * pricing & membership (see WYSIWIG)
 * retail store WYSIWIG
 * ~~view caching~~
+* navbar activation
 
 ##Getting Started
 <code>npm install</code> will get dependencies out of packages.json
