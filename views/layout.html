@@ -20,7 +20,7 @@
 
 <body {%block bodyattr%}{%endblock%}>
     
-    {%if !prod%} <ul id="MQHelper">
+    {%if not prod%} <ul id="MQHelper">
         <li class="visible-xs">XS</li>
         <li class="visible-sm">SM</li>
         <li class="visible-md">MD</li>
@@ -48,7 +48,7 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="nav navbar-nav">
-                    <li class="active">
+                    <li>
                         <a href="/">Home</a>
                     </li>
                     <li>
@@ -86,7 +86,9 @@
     <!-- scripts -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-    
+    <script>
+        $('#navbar li a[href="'+window.location.pathname+'"]').parent().addClass('active');
+    </script>
     {%block scripts%} {%endblock%}
     <!-- /scripts -->
 
