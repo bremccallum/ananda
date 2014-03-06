@@ -84,13 +84,10 @@
         <p class="text-center">I haven't decided what to put here yet!</p>
     </footer>
     <!-- scripts -->
-    {%if prod%}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-    {% else %}
-    <script src="/js/jquery-1.10.1.js"></script>
-    <script src="/js/bootstrap.js"></script>
-    {% endif %} {%block scripts%} {%endblock%}
+    
+    {%block scripts%} {%endblock%}
     <!-- /scripts -->
 
     {%block finally%} {%endblock%}
