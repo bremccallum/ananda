@@ -29,7 +29,7 @@
         <div id="special" class="special card">
             <h2>Special Events</h2>
             <ol class="list-unstyled">
-                {%for ws in workshops %}
+                {%for ws in workshops |attrSort("StartDateTime") %}
                 <li>
                     <time>{{ws.StartDateTime | prettyDate}}</time>
                     <br>&nbsp;&nbsp;
