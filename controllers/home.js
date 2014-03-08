@@ -59,7 +59,7 @@ module.exports = function (soap) {
                 console.timeEnd("Soap");
                 console.time("Model");
                 if (classes[0].GetClassesResult.ResultCount) //no classes
-                    classes = {};
+                    classes = [];
                 else
                     classes = classes[0].GetClassesResult.Classes.Class;
 
