@@ -58,14 +58,18 @@ module.exports = function (soap) {
             .spread(function (classes, workshops, posts) {
                 console.timeEnd("Soap");
                 console.time("Model");
-                classes = classes[0].GetClassesResult.Classes.Class;
-                if (classes.length === undefined) {
+                if (classes[0].GetClassesResult.ResultCount) //no classes
+                    classes = {};
+                else
+                    classes = classes[0].GetClassesResult.Classes.Class;
+
+                if (classes.length === undefined) { //only one class
                     classes = [classes];
                 }
                 var tmrwStart = tmrw.startOf('day');
                 var model = {
-                    posts:posts,
-                    
+                    posts: posts,
+
                     today: classes.filter(function (ele) {
                         var d = moment(ele.StartDateTime);
                         return d.isBefore(tmrwStart);
@@ -76,6 +80,7 @@ module.exports = function (soap) {
                     workshops: workshops[0].GetClassesResult.Classes.Class,
                     pm: now.hours() >= 16
                 };
+                console.log(classes);
                 console.timeEnd("Model");
                 res.render('landing.html', Page("Ananda Yoga", model));
                 console.timeEnd("Landing");
@@ -188,9 +193,14 @@ module.exports = function (soap) {
                 res.render("schedule.html", Page("Schedule | Ananda Yoga", model));
             });
     }
-    function viewPost(req, res){
-        Posts.findOne({slug:req.params.slug}, function(err, post){
-            var model = {post:post};
+
+    function viewPost(req, res) {
+        Posts.findOne({
+            slug: req.params.slug
+        }, function (err, post) {
+            var model = {
+                post: post
+            };
             res.render("news.html", Page(post.title, model));
         })
     }
