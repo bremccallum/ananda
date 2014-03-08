@@ -3998,10 +3998,6 @@ button.close {
     display: none !important;
   }
 }
-/*!
- *  Font Awesome 4.0.3 by @davegandy - http://fontawesome.io - @fontawesome
- *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
- */
 /* FONT PATH
  * -------------------------- */
 @font-face {
@@ -4480,40 +4476,6 @@ h2 {
 h3 {
   color: #D19115;
 }
-header {
-  background: url(/img/wheat.jpg) center / cover;
-  min-height: 10em;
-}
-header h1 {
-  color: white;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: inline-block;
-  padding: 10px;
-  border-radius: .2em;
-}
-nav.navbar.navbar-default {
-  background-color: #AE8448;
-  border-color: #AD8347;
-}
-nav.navbar.navbar-default a {
-  color: #1C8125;
-  /* color:#5769B3; */
-}
-nav.navbar.navbar-default li a:hover,
-nav.navbar.navbar-default li.active a {
-  color: #FFFFFF;
-  background-color: #C9954A;
-}
-.navbar {
-  margin-bottom: 0;
-}
-.nav-pills > li.active a,
-.nav-pills > li.active a:hover {
-  background-color: #35B855;
-}
-#classes-nav .nav-pills {
-  border-radius: 4px;
-}
 main {
   padding-top: 1em;
 }
@@ -4548,6 +4510,9 @@ main .affix-bottom {
   margin: 0;
   border-bottom: 1px dotted rgba(0, 0, 0, 0.1);
 }
+#classes-nav .nav-pills {
+  border-radius: 4px;
+}
 #welcome {
   padding: 19px;
 }
@@ -4577,6 +4542,73 @@ article time {
   font-size: .8em;
   color: #AAA;
 }
+/*
+============================================================================
+                        Schedule
+============================================================================
+*/
+table tr {
+  background-color: #FEFEFE;
+}
+table tr:first-child {
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+}
+table th {
+  font-size: 1.2em;
+  background-color: #F5F5F5;
+}
+table th.day,
+table th.no-classes {
+  font-size: 1.1em;
+}
+table th.no-classes {
+  color: #D0D0D0;
+  font-style: italic;
+  background-color: white;
+}
+table td.class-time {
+  text-align: center;
+}
+/*
+============================================================================
+                        Admin
+============================================================================
+*/
+.note-editable {
+  background-color: white;
+}
+header {
+  background: url(/img/wheat.jpg) center / cover;
+  min-height: 10em;
+}
+header h1 {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: inline-block;
+  padding: 10px;
+  border-radius: .2em;
+}
+nav.navbar.navbar-default {
+  background-color: #AE8448;
+  border-color: #AD8347;
+}
+nav.navbar.navbar-default a {
+  color: #1C8125;
+  /* color:#5769B3; */
+}
+nav.navbar.navbar-default li a:hover,
+nav.navbar.navbar-default li.active a {
+  color: #FFFFFF;
+  background-color: #C9954A;
+}
+.navbar {
+  margin-bottom: 0;
+}
+.nav-pills > li.active a,
+.nav-pills > li.active a:hover {
+  background-color: #35B855;
+}
 footer {
   height: 4em;
   padding: 10px;
@@ -4591,58 +4623,4 @@ footer p {
 footer > a {
   margin-left: 20px;
   color: #ff0000;
-}
-/* @media screen and (max-width:768px){
-    #left, #right{
-        padding:0;
-    }
-    main{
-        padding-top:0px;
-    }
-    body{
-        background-image:none;
-    }
-    header{
-        background-image:none;
-    }
-    .card{
-        margin:0;
-        padding:1em;
-    }
-} */
-/*
-============================================================================
-                        Schedule
-============================================================================
-*/
-table th {
-  font-size: 1.2em;
-  background-color: #FEFEFE;
-}
-table tr {
-  background-color: #F5F5F5;
-}
-table tr:first-child {
-  border-bottom-width: 2px;
-  border-bottom-style: solid;
-}
-table th.day {
-  font-size: 1.1em;
-}
-table td.class-time {
-  text-align: center;
-}
-table th.no-classes {
-  font-size: 1.1em;
-  color: #D0D0D0;
-  font-style: italic;
-  background-color: #FFFFFF;
-}
-/*
-============================================================================
-                        Admin
-============================================================================
-*/
-.note-editable {
-  background-color: white;
 }
