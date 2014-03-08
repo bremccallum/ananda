@@ -35,6 +35,8 @@
                 <div id="summernote"></div>
             </fieldset>
         </div>
+        <input type="hidden" id="publish" name="publish" value="false">
+        <button type="button" id="publish-button"></button>
         {% if post%}
         <button class="btn btn-success pull-left">Update Post</button>
         <button onclick="deletepost()" class="btn btn-danger pull-right" type="button">Delete Post</button>
@@ -76,6 +78,8 @@
         ]
     });
     $summernote.code("{{post.body | regexReplace('"', "g", '\\"') | safe}}");
+    </script>
+    <script>
     //slug
     var $slug = $("#slug");
     function generateSlug(){
@@ -84,6 +88,17 @@
         $slug.val(slug);
     }
     $title = $("#title").on('keyup blur', generateSlug);
+    </script>
+    <script>
+    $("#publish-button").click(function(e){
+        $("#publish").val("true");
+        $("#form").submit();
+    });
+    </script>
+    
+    
+    
+    <script>
     //
     $('#form').submit(function(e){
         e.preventDefault();

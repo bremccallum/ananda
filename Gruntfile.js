@@ -9,7 +9,7 @@ module.exports = function (grunt) {
             }
         },
         watch: {
-            files: './less/*',
+            files: ['./less/*', './less/*/*'],
             tasks: ['less', 'cssmin']
         },
         cssmin : {

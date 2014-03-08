@@ -2,7 +2,7 @@
 
 ##Tasks
 
-* ~~login system~~
+* workshops page
 * upload files
 * edit posts
 * post versioning
@@ -12,6 +12,7 @@
 * WYSIWIG for front-page content
 * pricing & membership (see WYSIWIG)
 * retail store WYSIWIG
+* ~~login system~~
 * ~~view caching~~
 * ~~navbar activation~~
 
