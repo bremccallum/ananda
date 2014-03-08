@@ -5,12 +5,10 @@ var Page = require('./common').Page,
 module.exports = function (soap) {
     function landing(req, res) {
         console.time("Landing");
-        console.time("Moment");
         var now = moment();
         if (now.add('minutes', -30).day() != moment().day())
             now.add('minutes', 30);
         var tmrw = moment(now).add('days', 1).endOf('day');
-        console.timeEnd("Moment");
         var args = {
             Fields: [
                 {
@@ -50,14 +48,11 @@ module.exports = function (soap) {
             ],
             XMLDetail: 'Bare'
         }
-        console.time("Soap");
         //get classes
         Q.all([soap.q(soap.Classes, 'GetClasses', args),
                soap.q(soap.Classes, 'GetClasses', workshopArgs),
               Q.when(Posts.find().exec())])
             .spread(function (classes, workshops, posts) {
-                console.timeEnd("Soap");
-                console.time("Model");
                 if (classes[0].GetClassesResult.ResultCount) //no classes
                     classes = [];
                 else
@@ -80,8 +75,6 @@ module.exports = function (soap) {
                     workshops: workshops[0].GetClassesResult.Classes.Class,
                     pm: now.hours() >= 16
                 };
-                console.log(classes);
-                console.timeEnd("Model");
                 res.render('landing.html', Page("Ananda Yoga", model));
                 console.timeEnd("Landing");
             });
