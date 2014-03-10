@@ -4936,6 +4936,51 @@ button.close {
 .@{fa-css-prefix}-try:before { content: @fa-var-try; }
 .@{fa-css-prefix}-plus-square-o:before { content: @fa-var-plus-square-o; }
  */
+.colorSwatch div {
+  width: 20vmin;
+  height: 20vmin;
+  margin: 0 .5vmin;
+  float: left;
+}
+.colorSwatch .primary {
+  background-color: #ff7700;
+}
+.colorSwatch .primaryLight {
+  background-color: #ffad66;
+}
+.colorSwatch .primaryDark {
+  background-color: #a36229;
+}
+.colorSwatch .primaryFaded {
+  background-color: #dba270;
+}
+.colorSwatch .variant {
+  background-color: #0088ff;
+}
+.colorSwatch .variantLight {
+  background-color: #66b8ff;
+}
+.colorSwatch .variantDark {
+  background-color: #296aa3;
+}
+.colorSwatch .variantFaded {
+  background-color: #70a9db;
+}
+.colorSwatch .corner {
+  background-color: #5eff00;
+}
+.colorSwatch .cornerLight {
+  background-color: #9eff66;
+}
+.colorSwatch .cornerDark {
+  background-color: #56a329;
+}
+.colorSwatch .cornerFaded {
+  background-color: #97db70;
+}
+.colorSwatch hr {
+  clear: both;
+}
 #MQHelper {
   position: fixed;
   right: 20px;
