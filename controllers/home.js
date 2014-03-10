@@ -53,7 +53,7 @@ module.exports = function (soap) {
                soap.q(soap.Classes, 'GetClasses', workshopArgs),
               Q.when(Posts.find().exec())])
             .spread(function (classes, workshops, posts) {
-                if (classes[0].GetClassesResult.ResultCount) //no classes
+                if (!classes[0].GetClassesResult.ResultCount) //no classes
                     classes = [];
                 else
                     classes = classes[0].GetClassesResult.Classes.Class;

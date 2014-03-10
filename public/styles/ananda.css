@@ -5045,27 +5045,27 @@ article time {
                         Schedule
 ============================================================================
 */
-table tr {
+table.schedule tr {
   background-color: #FEFEFE;
 }
-table tr:first-child {
+table.schedule tr:first-child {
   border-bottom-width: 2px;
   border-bottom-style: solid;
 }
-table th {
+table.schedule th {
   font-size: 1.2em;
   background-color: #F5F5F5;
 }
-table th.day,
-table th.no-classes {
+table.schedule th.day,
+table.schedule th.no-classes {
   font-size: 1.1em;
 }
-table th.no-classes {
+table.schedule th.no-classes {
   color: #D0D0D0;
   font-style: italic;
   background-color: white;
 }
-table td.class-time {
+table.schedule td.class-time {
   text-align: center;
 }
 /*
