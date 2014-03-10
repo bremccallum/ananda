@@ -70,7 +70,7 @@ module.exports = function (soap) {
                         return d.isBefore(tmrwStart);
                     }),
                     tmrw: classes.filter(function (ele) {
-                        return moment(ele.StartDateTime).isAfter(now.endOf('day'));
+                        return moment(ele.StartDateTime).isAfter(moment(now).endOf('day'));
                     }),
                     workshops: workshops[0].GetClassesResult.Classes.Class,
                     pm: now.hours() >= 16
