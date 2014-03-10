@@ -53,13 +53,13 @@ module.exports = function (soap) {
                soap.q(soap.Classes, 'GetClasses', workshopArgs),
               Q.when(Posts.find().exec())])
             .spread(function (classes, workshops, posts) {
-                if (!classes[0].GetClassesResult.ResultCount) //no classes
+                if (0 == classes[0].GetClassesResult.ResultCount)
                     classes = [];
-                else
+                else {
                     classes = classes[0].GetClassesResult.Classes.Class;
-
-                if (classes.length === undefined) { //only one class
-                    classes = [classes];
+                    if (classes.length === undefined) { //only one class
+                        classes = [classes];
+                    }
                 }
                 var tmrwStart = tmrw.startOf('day');
                 var model = {

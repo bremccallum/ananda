@@ -4950,9 +4950,6 @@ button.close {
   font-size: 2em;
   padding: 5px 10px;
 }
-body {
-  background-image: linear-gradient(to bottom, #ebe0a0, #e7deb2);
-}
 a {
   color: #FFA813;
 }
@@ -4987,7 +4984,6 @@ main .affix-bottom {
 .card {
   border-radius: 4px;
   box-shadow: 5px 6px 15px -2px rgba(0, 0, 0, 0.3);
-  background-color: #F5F5F5;
   margin-bottom: 1em;
   border: 1px solid rgba(0, 0, 0, 0.3);
 }
@@ -5022,7 +5018,6 @@ main .affix-bottom {
   overflow: hidden;
 }
 article {
-  background-color: #FEFEFE;
   padding-left: 1em;
 }
 article h1 {
@@ -5038,7 +5033,6 @@ article:after {
 }
 article time {
   font-size: .8em;
-  color: #AAA;
 }
 /*
 ============================================================================
@@ -5077,40 +5071,19 @@ table.schedule td.class-time {
   background-color: white;
 }
 header {
-  background: url(/img/wheat.jpg) center / cover;
   min-height: 10em;
 }
 header h1 {
-  color: white;
-  background-color: rgba(0, 0, 0, 0.5);
   display: inline-block;
   padding: 10px;
   border-radius: .2em;
 }
-nav.navbar.navbar-default {
-  background-color: #AE8448;
-  border-color: #AD8347;
-}
-nav.navbar.navbar-default a {
-  color: #1C8125;
-  /* color:#5769B3; */
-}
-nav.navbar.navbar-default li a:hover,
-nav.navbar.navbar-default li.active a {
-  color: #FFFFFF;
-  background-color: #C9954A;
-}
 .navbar {
   margin-bottom: 0;
-}
-.nav-pills > li.active a,
-.nav-pills > li.active a:hover {
-  background-color: #35B855;
 }
 footer {
   height: 4em;
   padding: 10px;
-  color: white;
   padding-right: 20px;
 }
 footer p {
@@ -5120,5 +5093,4 @@ footer p {
 }
 footer > a {
   margin-left: 20px;
-  color: #ff0000;
 }
