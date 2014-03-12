@@ -1,23 +1,26 @@
 header {
     min-height: 10em;
     width:100%;
-    background-image:url(/img/leaf.jpg);
+    background-image:url(/img/bg_leaf_1600.jpg);
     background-size:cover;
     background-repeat: no-repeat;
-    background-position-y:33%;
+    background-position-y:50%;
 }
-
-.navbar-nav li.active, .navbar-nav li:hover{
-    border-top:2px solid @variantDark;
-}
-.blueBarredA{
-    margin-top:-2px;
-    background-color:none;
+.navbar-nav li{
+    transition:all .2s;
+    &.active, &:hover{
+        border-top:2px solid @variantDark;
+    }
+    &.active:hover{
+        color:@gray-dark;
+        margin-bottom:0px;
+    }
 }
 .navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover{
-    font-style: italic;
-    .blueBarredA();
+    background-color:none;
+    margin-bottom:-2px;
 }
 .navbar-default .navbar-nav>li>a:hover{
-    .blueBarredA();
+    margin-bottom:-2px;
+    background-color:none;
 }
