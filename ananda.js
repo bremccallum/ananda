@@ -78,7 +78,10 @@ nunjucks.addFilter('attrSort', function (arr, attr) {
     });
 
     return arr;
-})
+});
+nunjucks.addFilter("slugify", function(v){
+    return nunjucks.getFilter("replace")(nunjucks.getFilter("escape")(v), ' ', '-');
+});
 
 //
 //   Launch app

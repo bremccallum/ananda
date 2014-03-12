@@ -1,0 +1,38 @@
+.landing{
+    p.upcoming{
+        margin-bottom:1em;
+        padding-left:.3em;
+        time{
+            display:block;
+            width:100%;
+            padding-left:2em;
+            border-left:1px solid @variantDark;
+            
+        }
+    }
+    
+    #welcome {
+        padding: 19px;
+    }
+    .article-wrapper article {
+        height: 250px;
+        overflow: hidden;
+    }
+    article {
+        padding-left: 1em;
+        h1 {
+            text-align: center;
+        }
+        img {
+            float: right;
+        }
+        &:after {
+            display: block;
+            content: "";
+            clear: both;
+        }
+        time {
+            font-size: .8em;
+        }
+    }
+}

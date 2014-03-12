@@ -1,0 +1,27 @@
+.schedule{
+    table.class-schedule {
+        tr{
+            &:first-child {
+                border-bottom-width: 2px;
+                border-bottom-style: solid;
+            }
+        }
+        th {
+            background-color: @gray-lighter;
+            font-size: 1.2em;
+            &.day, &.no-classes { 
+                font-size: 1.1em;
+            }
+            &.no-classes {
+                color: @gray;
+                font-style: italic;
+            }
+        }
+        td {
+            background-color: @offwhite;
+            &.class-time {
+                text-align: center;
+            }
+        }
+    }
+}

@@ -5,12 +5,11 @@
 {{'
 <p class="upcoming no-upcoming">No classes</p>' | safe if classes.length == 0}} {% for class in classes | sort(false, false,'StartDateTime')%}
 <p class="upcoming">
-    <time>{{class.StartDateTime | prettyTime}}</time>
-    <br>&nbsp;&nbsp;{{class.ClassDescription.Name}} w/ {{ class.Staff.Name }}</p>
+    <time>{{class.StartDateTime | prettyTime}}</time><a href="/classes#{{class.ClassDescription.Name}}">{{class.ClassDescription.Name}} </a>w/ {{ class.Staff.Name }}</p>
 {% endfor %}
 <!------>
 {% endmacro %}
-
+{% block bodyattr%}class="landing"{%endblock%}
 <!-------->
 {% block main %}
 <div class="row">

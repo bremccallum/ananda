@@ -1,5 +1,6 @@
+@offwhite: #F5F5F5;
 // Single primary color that all mixins use. Str8 ballin.
-@primary: hsl(28,
+@primary: hsl(35,
 100%,
 50%);
 // Primary Variants -
@@ -25,62 +26,4 @@
 40%);
 @cornerFaded: hsl(hue(@corner), 60%,
 65%);
- .colorSwatch {
-    div {
-        width: 20vmin;
-        height: 20vmin;
-        margin:0 .5vmin;
-        float: left;
-    }
-    .primary {
-        background-color: @primary;
-
-    }
-    .primaryLight {
-        background-color: @primaryLight;
-
-    }
-    .primaryDark {
-        background-color: @primaryDark;
-
-    }
-    .primaryFaded {
-        background-color: @primaryFaded;
-
-    }
-    .variant {
-        background-color: @variant;
-
-    }
-    .variantLight {
-        background-color: @variantLight;
-
-    }
-    .variantDark {
-        background-color: @variantDark;
-
-    }
-    .variantFaded {
-        background-color: @variantFaded;
-
-    }
-    .corner {
-        background-color: @corner;
-
-    }
-    .cornerLight {
-        background-color: @cornerLight;
-
-    }
-    .cornerDark {
-        background-color: @cornerDark;
-
-    }
-    .cornerFaded {
-        background-color: @cornerFaded;
-
-    }
-    hr {
-        clear: both;
-    }
-}
+ 

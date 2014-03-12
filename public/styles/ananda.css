@@ -4936,51 +4936,6 @@ button.close {
 .@{fa-css-prefix}-try:before { content: @fa-var-try; }
 .@{fa-css-prefix}-plus-square-o:before { content: @fa-var-plus-square-o; }
  */
-.colorSwatch div {
-  width: 20vmin;
-  height: 20vmin;
-  margin: 0 .5vmin;
-  float: left;
-}
-.colorSwatch .primary {
-  background-color: #ff7700;
-}
-.colorSwatch .primaryLight {
-  background-color: #ffad66;
-}
-.colorSwatch .primaryDark {
-  background-color: #a36229;
-}
-.colorSwatch .primaryFaded {
-  background-color: #dba270;
-}
-.colorSwatch .variant {
-  background-color: #0088ff;
-}
-.colorSwatch .variantLight {
-  background-color: #66b8ff;
-}
-.colorSwatch .variantDark {
-  background-color: #296aa3;
-}
-.colorSwatch .variantFaded {
-  background-color: #70a9db;
-}
-.colorSwatch .corner {
-  background-color: #5eff00;
-}
-.colorSwatch .cornerLight {
-  background-color: #9eff66;
-}
-.colorSwatch .cornerDark {
-  background-color: #56a329;
-}
-.colorSwatch .cornerFaded {
-  background-color: #97db70;
-}
-.colorSwatch hr {
-  clear: both;
-}
 #MQHelper {
   position: fixed;
   right: 20px;
@@ -4995,23 +4950,164 @@ button.close {
   font-size: 2em;
   padding: 5px 10px;
 }
+.colorSwatch {
+  height: 100vh;
+  padding: .2vh .2vw;
+  background-color: #f5f5f5;
+}
+.colorSwatch:before,
+.colorSwatch:after {
+  content: " ";
+  display: table;
+}
+.colorSwatch:after {
+  clear: both;
+}
+.colorSwatch:before,
+.colorSwatch:after {
+  content: " ";
+  display: table;
+}
+.colorSwatch:after {
+  clear: both;
+}
+.colorSwatch div {
+  width: 24vw;
+  height: 30vh;
+  margin: .5vmin .5vmin;
+  float: left;
+}
+.colorSwatch div.offwhite {
+  width: 100%;
+  height: auto;
+}
+.colorSwatch .primary {
+  background-color: #ff9500;
+}
+.colorSwatch .primaryLight {
+  background-color: #ffbf66;
+}
+.colorSwatch .primaryDark {
+  background-color: #a37029;
+}
+.colorSwatch .primaryFaded {
+  background-color: #dbaf70;
+}
+.colorSwatch .variant {
+  background-color: #006aff;
+}
+.colorSwatch .variantLight {
+  background-color: #66a6ff;
+}
+.colorSwatch .variantDark {
+  background-color: #295ca3;
+}
+.colorSwatch .variantFaded {
+  background-color: #709ddb;
+}
+.colorSwatch .corner {
+  background-color: #40ff00;
+}
+.colorSwatch .cornerLight {
+  background-color: #8cff66;
+}
+.colorSwatch .cornerDark {
+  background-color: #47a329;
+}
+.colorSwatch .cornerFaded {
+  background-color: #8bdb70;
+}
+.colorSwatch div span.primary {
+  color: #ff9500;
+  background-color: transparent;
+}
+.colorSwatch div span.primaryLight {
+  color: #ffbf66;
+  background-color: transparent;
+}
+.colorSwatch div span.primaryDark {
+  color: #a37029;
+  background-color: transparent;
+}
+.colorSwatch div span.primaryFaded {
+  color: #dbaf70;
+  background-color: transparent;
+}
+.colorSwatch div span.variant {
+  color: #006aff;
+  background-color: transparent;
+}
+.colorSwatch div span.variantLight {
+  color: #66a6ff;
+  background-color: transparent;
+}
+.colorSwatch div span.variantDark {
+  color: #295ca3;
+  background-color: transparent;
+}
+.colorSwatch div span.variantFaded {
+  color: #709ddb;
+  background-color: transparent;
+}
+.colorSwatch div span.corner {
+  color: #40ff00;
+  background-color: transparent;
+}
+.colorSwatch div span.cornerLight {
+  color: #8cff66;
+  background-color: transparent;
+}
+.colorSwatch div span.cornerDark {
+  color: #47a329;
+  background-color: transparent;
+}
+.colorSwatch div span.cornerFaded {
+  color: #8bdb70;
+  background-color: transparent;
+}
+.colorSwatch div span.white {
+  color: white;
+}
+.colorSwatch br {
+  clear: both;
+}
+header {
+  min-height: 10em;
+}
+header h1 {
+  display: inline-block;
+  padding: 10px;
+  border-radius: .2em;
+}
+.navbar {
+  margin-bottom: 0;
+}
+body {
+  background-image: url(/img/slats.jpg);
+}
 a {
-  color: #FFA813;
+  color: #47a329;
 }
 a:hover {
-  color: #F36F22;
+  color: #ffbf66;
 }
 h1,
 h2,
 h3,
 h4,
-h5 {
-  margin-top: 0;
-  font-family: Verdana, sans-serif;
+h5,
+h6 {
+  color: #ff9500;
 }
-h1,
+h1 a {
+  color: inherit;
+}
 h2 {
-  color: #407743;
+  text-align: right;
+  font-family: Verdana, sans-serif;
+  margin: 0;
+  margin-bottom: .4em;
+  border-bottom: 1px dotted rgba(0, 0, 0, 0.1);
 }
 h3 {
   color: #D19115;
@@ -5027,104 +5123,77 @@ main .affix-bottom {
   position: absolute;
 }
 .card {
-  border-radius: 4px;
-  box-shadow: 5px 6px 15px -2px rgba(0, 0, 0, 0.3);
   margin-bottom: 1em;
   border: 1px solid rgba(0, 0, 0, 0.3);
+  padding: 1em;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  box-shadow: 5px 6px 15px -2px rgba(0, 0, 0, 0.3);
 }
 .card.no-border {
   border-style: none;
 }
-.class {
-  padding: 1em;
+.landing p.upcoming {
+  margin-bottom: 1em;
+  padding-left: .3em;
 }
-#left > div {
-  /* margin-top: 1em; */
-  /* margin-bottom: 1em; */
-  padding: 1em;
-  border-radius: 3px;
+.landing p.upcoming time {
+  display: block;
+  width: 100%;
+  padding-left: 2em;
+  border-left: 1px solid #295ca3;
 }
-#left > div > h2 {
-  font-family: Verdana, sans-serif;
-  margin: 0;
-  border-bottom: 1px dotted rgba(0, 0, 0, 0.1);
-}
-#classes-nav .nav-pills {
-  border-radius: 4px;
-}
-#welcome {
+.landing #welcome {
   padding: 19px;
 }
-#welcome > img {
-  margin: 1em 1em 1em 0;
-}
-.article-wrapper article {
+.landing .article-wrapper article {
   height: 250px;
   overflow: hidden;
 }
-article {
+.landing article {
   padding-left: 1em;
 }
-article h1 {
+.landing article h1 {
   text-align: center;
 }
-article img {
+.landing article img {
   float: right;
 }
-article:after {
+.landing article:after {
   display: block;
   content: "";
   clear: both;
 }
-article time {
+.landing article time {
   font-size: .8em;
 }
-/*
-============================================================================
-                        Schedule
-============================================================================
-*/
-table.schedule tr {
-  background-color: #FEFEFE;
-}
-table.schedule tr:first-child {
+.schedule table.class-schedule tr:first-child {
   border-bottom-width: 2px;
   border-bottom-style: solid;
 }
-table.schedule th {
+.schedule table.class-schedule th {
+  background-color: #eeeeee;
   font-size: 1.2em;
-  background-color: #F5F5F5;
 }
-table.schedule th.day,
-table.schedule th.no-classes {
+.schedule table.class-schedule th.day,
+.schedule table.class-schedule th.no-classes {
   font-size: 1.1em;
 }
-table.schedule th.no-classes {
-  color: #D0D0D0;
+.schedule table.class-schedule th.no-classes {
+  color: #555555;
   font-style: italic;
-  background-color: white;
 }
-table.schedule td.class-time {
+.schedule table.class-schedule td {
+  background-color: #f5f5f5;
+}
+.schedule table.class-schedule td.class-time {
   text-align: center;
 }
-/*
-============================================================================
-                        Admin
-============================================================================
-*/
-.note-editable {
-  background-color: white;
+.classes .class {
+  padding: 1em;
 }
-header {
-  min-height: 10em;
-}
-header h1 {
-  display: inline-block;
-  padding: 10px;
-  border-radius: .2em;
-}
-.navbar {
-  margin-bottom: 0;
+.classes #classes-nav .nav-pills {
+  border-radius: 4px;
 }
 footer {
   height: 4em;

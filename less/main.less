@@ -1,22 +1,24 @@
 body {
+    background-image:url(/img/slats.jpg);
 }
 a {
-    color: #FFA813;
+    color: @cornerDark;
 }
 a:hover {
-    color: #F36F22;
+    color: @primaryLight;
 }
-h1,
-h2,
-h3,
-h4,
-h5 {
-    margin-top: 0;
-    font-family: Verdana, sans-serif
+h1,h2,h3,h4,h5,h6{
+    color:@primary;
 }
-h1,
+h1 a {
+    color:inherit;
+}
 h2 {
-    color: #407743;
+    text-align:right;
+    font-family: Verdana, sans-serif;
+    margin: 0;
+    margin-bottom:.4em;
+    border-bottom: 1px dotted rgba(0, 0, 0, .1);
 }
 h3 {
     color: #D19115;
@@ -32,97 +34,13 @@ main .affix-bottom {
     position: absolute;
 }
 .card {
-    border-radius: 4px;
-    box-shadow: 5px 6px 15px -2px rgba(0, 0, 0, .3);
     margin-bottom: 1em;
     border: 1px solid rgba(0, 0, 0, .3);
+    padding:1em;
+    background-color:@offwhite;
+    border-radius: 4px;
+    box-shadow: 5px 6px 15px -2px rgba(0, 0, 0, .3);
 }
 .card.no-border {
     border-style: none;
-}
-.class {
-    padding: 1em;
-}
-#left > div {
-    /* margin-top: 1em; */
-    /* margin-bottom: 1em; */
-    padding: 1em;
-    border-radius: 3px;
-}
-#left>div>h2 {
-    font-family: Verdana, sans-serif;
-    margin: 0;
-    border-bottom: 1px dotted rgba(0, 0, 0, .1);
-}
-#classes-nav .nav-pills {
-    border-radius: 4px;
-}
-#welcome {
-    padding: 19px;
-}
-#welcome > img {
-    margin: 1em 1em 1em 0;
-}
-.article-wrapper article {
-    height: 250px;
-    overflow: hidden;
-}
-article {
-    padding-left: 1em;
-    h1 {
-        text-align: center;
-    }
-    img {
-        float: right;
-    }
-    &:after {
-        display: block;
-        content: "";
-        clear: both;
-    }
-    time {
-        font-size: .8em;
-    }
-}
-/*
-============================================================================
-                        Schedule
-============================================================================
-*/
-
-table.schedule {
-    tr{
-        background-color: #FEFEFE;
-        &:first-child {
-            border-bottom-width: 2px;
-            border-bottom-style: solid;
-        }
-    }
-    th {
-        font-size: 1.2em;
-        background-color: #F5F5F5;
-        &.day, &.no-classes {
-            font-size: 1.1em;
-        }
-        &.no-classes {
-            color: #D0D0D0;
-            font-style: italic;
-            background-color: white;
-        }
-    }
-    td {
-        &.class-time {
-            text-align: center;
-        }
-    }
-}
-/*
-============================================================================
-                        Admin
-============================================================================
-*/
-
-.note-editable {
-    //for summernote
-    background-color: white;
 }
