@@ -1,27 +1,36 @@
 body {
     background-image:url(/img/slats.jpg);
+    font-family:'Open Sans', sans-serif;
 }
-a {
-    color: @cornerDark;
+a{
+    &:link{
+        color: @cornerDark;
+    }
+    &:visited{
+        color: @cornerFaded;
+    }
+    &:hover {
+        color: @primaryLight;
+    }
 }
-a:hover {
-    color: @primaryLight;
-}
-h1,h2,h3,h4,h5,h6{
+h1,h2,h3{
+    font-family:'Duru Sans', sans-serif;
     color:@primary;
+    a{
+        &:link,&:visited{
+            color:@primary;
+        }
+        &:hover {
+            color: @primaryLight;
+        }
+    }
 }
-h1 a {
-    color:inherit;
-}
+
 h2 {
     text-align:right;
-    font-family: Verdana, sans-serif;
     margin: 0;
     margin-bottom:.4em;
     border-bottom: 1px dotted rgba(0, 0, 0, .1);
-}
-h3 {
-    color: #D19115;
 }
 main {
     padding-top: 1em;

@@ -1,22 +1,22 @@
 header {
     min-height: 10em;
-}
-header h1 {
-    display: inline-block;
-    padding: 10px;
-    border-radius: .2em;
-}
-nav.navbar.navbar-default{
+    background-image:url(/img/leaf.jpg);
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position-y:33%;
 }
 
-nav.navbar.navbar-default a{
+.navbar-nav li.active, .navbar-nav li:hover{
+    border-top:2px solid @variantDark;
 }
-nav.navbar.navbar-default li a:hover,
-nav.navbar.navbar-default li.active a{
+.blueBarredA{
+    margin-top:-2px;
+    background-color:none;
 }
-.navbar {
-    margin-bottom: 0;
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover{
+    font-style: italic;
+    .blueBarredA();
 }
-.nav-pills > li.active a,
-.nav-pills > li.active a:hover{
+.navbar-default .navbar-nav>li>a:hover{
+    .blueBarredA();
 }

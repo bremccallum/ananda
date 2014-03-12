@@ -4936,6 +4936,30 @@ button.close {
 .@{fa-css-prefix}-try:before { content: @fa-var-try; }
 .@{fa-css-prefix}-plus-square-o:before { content: @fa-var-plus-square-o; }
  */
+@font-face {
+  font-family: 'Duru Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Duru Sans'), local('DuruSans-Regular'), url(http://themes.googleusercontent.com/static/fonts/durusans/v4/0rnIdjSQWlqFS5KpKzVfzj8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url(http://themes.googleusercontent.com/static/fonts/opensans/v8/cJZKeOuBrn4kERxqtaUH3T8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(http://themes.googleusercontent.com/static/fonts/opensans/v8/k3k702ZOKiLJc3WVjuplzHhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Open Sans Italic'), local('OpenSans-Italic'), url(http://themes.googleusercontent.com/static/fonts/opensans/v8/xjAJXh38I15wypJXxuGMBobN6UDyHWBl620a-IRfuBk.woff) format('woff');
+}
 #MQHelper {
   position: fixed;
   right: 20px;
@@ -5073,44 +5097,67 @@ button.close {
 }
 header {
   min-height: 10em;
+  background-image: url(/img/leaf.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-y: 33%;
 }
-header h1 {
-  display: inline-block;
-  padding: 10px;
-  border-radius: .2em;
+.navbar-nav li.active,
+.navbar-nav li:hover {
+  border-top: 2px solid #295ca3;
 }
-.navbar {
-  margin-bottom: 0;
+.blueBarredA {
+  margin-top: -2px;
+  background-color: none;
+}
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:focus,
+.navbar-default .navbar-nav > .active > a:hover {
+  font-style: italic;
+  margin-top: -2px;
+  background-color: none;
+}
+.navbar-default .navbar-nav > li > a:hover {
+  margin-top: -2px;
+  background-color: none;
 }
 body {
   background-image: url(/img/slats.jpg);
+  font-family: 'Open Sans', sans-serif;
 }
-a {
+a:link {
   color: #47a329;
+}
+a:visited {
+  color: #8bdb70;
 }
 a:hover {
   color: #ffbf66;
 }
 h1,
 h2,
-h3,
-h4,
-h5,
-h6 {
+h3 {
+  font-family: 'Duru Sans', sans-serif;
   color: #ff9500;
 }
-h1 a {
-  color: inherit;
+h1 a:link,
+h2 a:link,
+h3 a:link,
+h1 a:visited,
+h2 a:visited,
+h3 a:visited {
+  color: #ff9500;
+}
+h1 a:hover,
+h2 a:hover,
+h3 a:hover {
+  color: #ffbf66;
 }
 h2 {
   text-align: right;
-  font-family: Verdana, sans-serif;
   margin: 0;
   margin-bottom: .4em;
   border-bottom: 1px dotted rgba(0, 0, 0, 0.1);
-}
-h3 {
-  color: #D19115;
 }
 main {
   padding-top: 1em;
@@ -5194,6 +5241,9 @@ main .affix-bottom {
 }
 .classes #classes-nav .nav-pills {
   border-radius: 4px;
+}
+.note-editable {
+  background-color: white;
 }
 footer {
   height: 4em;
