@@ -48,10 +48,11 @@ module.exports = function (soap) {
             ],
             XMLDetail: 'Bare'
         }
+        var postQuery = Posts.find({isPublished:true}).sort({'published':-1}).limit(4);
         //get classes
         Q.all([soap.q(soap.Classes, 'GetClasses', args),
                soap.q(soap.Classes, 'GetClasses', workshopArgs),
-              Q.when(Posts.find().exec())])
+              Q.when(postQuery.exec())])
             .spread(function (classes, workshops, posts) {
                 if (0 == classes[0].GetClassesResult.ResultCount)
                     classes = [];
