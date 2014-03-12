@@ -4,19 +4,24 @@
 <!------>
 {{'
 <p class="upcoming no-upcoming">No classes</p>' | safe if classes.length == 0}} {% for class in classes | sort(false, false,'StartDateTime')%}
-<p class="upcoming">
-    <time>{{class.StartDateTime | prettyTime}}</time><a href="/classes#{{class.ClassDescription.Name}}">{{class.ClassDescription.Name}} </a>w/ {{ class.Staff.Name }}</p>
+<p class="upcoming clearfix">
+    <time>{{class.StartDateTime | prettyTime}}</time>
+    <a href="/classes#{{class.ClassDescription.Name}}">{{class.ClassDescription.Name}}</a>
+    <span class="pull-right class-instructor">with
+        <a class="link-instructor" href="/instructors#{{class.Staff.Name | slugify}}">{{ class.Staff.Name }}</a>
+    </span>
+</p>
 {% endfor %}
 <!------>
-{% endmacro %}
-{% block bodyattr%}class="landing"{%endblock%}
+{% endmacro %} {% block bodyattr%}class="landing"{%endblock%}
 <!-------->
 {% block main %}
 <div class="row">
 
     <div id="left" class="col-xs-12 col-sm-4">
         <div id="next" class="next card">
-            <h2><i class="fa fa-calendar"></i>Upcoming Classes</h2>
+            <h2>
+                <i class="fa fa-calendar"></i>Upcoming Classes</h2>
             <h3>{{'Tonight' if pm else 'Today'}}</h3>
             {{upcomingPrinter(today)}}
             <h3>Tomorrow</h3>
@@ -26,7 +31,8 @@
             </a>
         </div>
         <div id="special" class="special card">
-            <h2><i class="fa fa-bullhorn"></i>Special Events</h2>
+            <h2>
+                <i class="fa fa-bullhorn"></i>Special Events</h2>
             <ol class="list-unstyled">
                 {%for ws in workshops |attrSort("StartDateTime") %}
                 <li>
@@ -38,7 +44,8 @@
             </ol>
         </div>
         <div id="contact" class="clearfix card">
-            <h2><i class="fa fa-map-marker"></i>Visit Us</h2>
+            <h2>
+                <i class="fa fa-map-marker"></i>Visit Us</h2>
             <img class="pull-right img-responsive" src="http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyCOyv-a1uHs4R15mdf87cdA-j8zU3GN7Qk&center=Lander,WY&zoom=16&size=100x100&sensor=false" alt="">
             <span>Ananda Yoga Lander</span>
             <br>
