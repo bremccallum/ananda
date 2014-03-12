@@ -62,19 +62,17 @@ module.exports = function (soap) {
                     }
                 }
                 var tmrwStart = tmrw.startOf('day');
-                var model = {
-                    posts: posts,
-
-                    today: classes.filter(function (ele) {
-                        var d = moment(ele.StartDateTime);
-                        return d.isBefore(tmrwStart);
-                    }),
-                    tmrw: classes.filter(function (ele) {
-                        return moment(ele.StartDateTime).isAfter(moment(now).endOf('day'));
-                    }),
-                    workshops: workshops[0].GetClassesResult.Classes.Class,
-                    pm: now.hours() >= 16
-                };
+                var model = {};
+                model.posts = posts;
+                model.today = classes.filter(function (ele) {
+                    var d = moment(ele.StartDateTime);
+                    return d.isBefore(tmrwStart);
+                });
+                model.tmrw = classes.filter(function (ele) {
+                    return moment(ele.StartDateTime).isAfter(moment(now).endOf('day'));
+                });
+                model.workshops = workshops[0].GetClassesResult.Classes.Class;
+                model.pm = (model.today[0] ? moment(model.today[0].StartDateTime).hours() : now.hours()) >= 16;
                 res.render('landing.html', Page("Ananda Yoga", model));
                 console.timeEnd("Landing");
             });
