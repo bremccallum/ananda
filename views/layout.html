@@ -17,18 +17,18 @@
 </head>
 
 <body {%block bodyattr%}{%endblock%}>
-    
-    {%if not prod%} <ul id="MQHelper">
+    {%if not prod%}
+    <ul id="MQHelper">
         <li class="visible-xs">XS</li>
         <li class="visible-sm">SM</li>
         <li class="visible-md">MD</li>
         <li class="visible-lg">LG</li>
-    </ul> {%endif%}
-    <header class="container-fluid">
-        <div class="row">
-            <div class="col-xs-12" id="site-name">
-                <h1><a href="/">Ananda Yoga</a></h1>
-            </div>
+    </ul>{%endif%}
+    <header>
+        <div class="container">
+            <h1>
+                <a href="/">Ananda Yoga</a>
+            </h1>
         </div>
     </header>
     <nav class="navbar navbar-default" role="navigation">
@@ -77,14 +77,18 @@
         {%block main%}{%endblock%}
     </main>
     <footer>
-        <a href="/admin" class="pull-right"><i class="fa fa-cogs"></i></a>
-        <p class="pull-right">Site by <a href="//novaugust.net/blog">Matt Enlow</a></p>
+        <a href="/admin" class="pull-right">
+            <i class="fa fa-cogs"></i>
+        </a>
+        <p class="pull-right">Site by
+            <a href="//novaugust.net/blog">Matt Enlow</a>
+        </p>
     </footer>
     <!-- scripts -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
     <script>
-        $('#navbar li a[href="'+window.location.pathname+'"]').parent().addClass('active');
+        $('#navbar li a[href="' + window.location.pathname + '"]').parent().addClass('active');
     </script>
     {%block scripts%} {%endblock%}
     <!-- /scripts -->
