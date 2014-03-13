@@ -4,7 +4,8 @@
 
 * workshops page
 * upload files
-* edit posts
+* reset cache button on admin. Should cache reset on publish/unpublish?
+* ~~edit posts~~
 * post versioning
 * delete posts
 * add photos to posts
