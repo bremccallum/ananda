@@ -1,9 +1,6 @@
-var soap = require("soap");
-//Load dependencies
-var express = require('express'),
-    moment = require("moment");
-var app = module.exports = express();
-
+//
+//  DB & Models
+//
 var mongoose = require("mongoose");
 var mongoUri = process.env.MONGOLAB_URI ||
     process.env.MONGOHQ_URL ||
@@ -11,13 +8,12 @@ var mongoUri = process.env.MONGOLAB_URI ||
 mongoose.connect(mongoUri);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-var models = require("./models");
-
-
-
+require("./models");
 //
-//  App Settings
+//  App Init
 //
+var express = require('express'),
+    app = module.exports = express();
 app.configure(function () {
     app.use(express.bodyParser());
     app.use(express.cookieParser('super secret string'));
@@ -41,6 +37,7 @@ var nunjucks = require("nunjucks").configure('views', {
     autoescape: true,
     express: app
 });
+var moment = require("moment");
 nunjucks.addFilter('prettyDate', function (v) {
     return (moment(v).format("M-DD-YY"));
 });
@@ -79,7 +76,7 @@ nunjucks.addFilter('attrSort', function (arr, attr) {
 
     return arr;
 });
-nunjucks.addFilter("slugify", function(v){
+nunjucks.addFilter("slugify", function (v) {
     return nunjucks.getFilter("replace")(nunjucks.getFilter("escape")(v), ' ', '-');
 });
 
