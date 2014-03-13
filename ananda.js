@@ -4,7 +4,6 @@ var express = require('express'),
     moment = require("moment");
 var app = module.exports = express();
 
-
 var mongoose = require("mongoose");
 var mongoUri = process.env.MONGOLAB_URI ||
     process.env.MONGOHQ_URL ||
@@ -12,6 +11,7 @@ var mongoUri = process.env.MONGOLAB_URI ||
 mongoose.connect(mongoUri);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
+var models = require("./models");
 
 
 

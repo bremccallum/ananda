@@ -1,26 +1,28 @@
-var common = require('./common'),
-    Posts = require("../models/post"),
-    Users = require("../models/user"),
-    moment = require("moment");
-var Page = common.Page,
-    Q = common.Q;
+var Q = require('q'),
+    moment = require("moment"),
+    mongoose = require("mongoose-q")(),
+    Posts = mongoose.model('Post'),
+    Users = mongoose.model("User"),
+    Page = require('./common').Page;
 module.exports = function (soap) {
 
-    function login(req, res){
-        Users.authenticate(req.body.email, req.body.password, function(err, isMatch){
-            if(isMatch){
-                res.cookie("loggedin", "true", {maxAge: 1000*60*60*5, signed:true})
+    function login(req, res) {
+        Users.authenticate(req.body.email, req.body.password, function (err, isMatch) {
+            if (isMatch) {
+                res.cookie("loggedin", "true", {
+                    maxAge: 1000 * 60 * 60 * 5,
+                    signed: true
+                })
                 res.redirect("/admin");
-            }
-            else{
+            } else {
                 res.redirect("/login");
             }
         });
     }
-    
+    //'/admin'
     function dashboard(req, res) {
-        Q.all([Q.when(Users.find().exec()),
-            Q.when(Posts.find().exec())])
+        Q.all([Users.find().execQ(),
+            Posts.find().execQ()])
             .spread(function (users, posts) {
                 var model = {
                     posts: posts,
@@ -32,15 +34,6 @@ module.exports = function (soap) {
             });
     }
 
-    //Posts from here
-    function parseBody(body) {
-        return {
-            title: body.title,
-            slug: body.slug,
-            author: body.author,
-            body: body.body
-        }
-    }
 
     function teachersToNames(staff) {
         staff = staff[0].GetStaffResult.StaffMembers.Staff
@@ -65,6 +58,61 @@ module.exports = function (soap) {
         return soap.q(soap.Staff, 'GetStaff', args);
     }
 
+    ////////////////////////////////
+    /////////// POSTS  /////////////
+    ////////////////////////////////
+
+    function parseBody(body) {
+        var post = {
+            title: body.title,
+            slug: body.slug,
+            author: body.author,
+            body: body.body
+        };
+        if (body._id)
+            post._id = body._id;
+        return post;
+    }
+
+    function doPost(post, options) {
+        var deferred = Q.defer();
+
+        function saveToPromise(err, post) {
+            if (err)
+                deferred.reject(err)
+            else
+                deferred.resolve({
+                    success: true,
+                    post: post
+                })
+        }
+
+        if (options.publish) {
+            post.isPublished = true;
+            post.published = moment().toDate();
+        } else if (options.unpublish) {
+            post.isPublished = false;
+        }
+
+        if (options.create) {
+            post = new Posts(post);
+            post.save(saveToPromise);
+            return deferred.promise;
+        }
+        Posts.findById(post._id, "+versions").execQ()
+            .then(function (_post) {
+                _post.versions.push({
+                    date: _post.modified,
+                    body: _post.body
+                });
+                _post.set(post);
+                _post.save(saveToPromise);
+            }).fail(function (err) {
+                deferred.reject(err);
+            });
+        return deferred.promise;
+    }
+
     function newPost(req, res) {
         getTeacherPromise().then(function (teachers) {
             var model = {
@@ -77,9 +125,9 @@ module.exports = function (soap) {
     function editPost(req, res) {
         var slug = req.params.slug;
         Q.all([getTeacherPromise(),
-               Q.when(Posts.findOne({
+           Posts.findOne({
                 slug: slug
-            }).exec())])
+            }).execQ()])
             .spread(function (teachers, post) {
                 var model = {
                     teacherNames: teachersToNames(teachers),
@@ -91,35 +139,40 @@ module.exports = function (soap) {
     //put
     function updatePost(req, res) {
         var p = parseBody(req.body);
-        Posts.findById(req.body._id, function (err, post) {
-            post.title = p.title;
-            post.author = p.author;
-            
-            
-            post.body = p.body;
-        });
-    }
+        var publish = false,
+            unpublish = false;
+        if (req.body.publish == "true") {
+            publish = true;
+        } else if (req.body.unpublish == "true") {
+            unpublish = true;
+        }
 
-    function addPost(req, res) {
-        var post = new Posts(parseBody(req.body));
-        post.save(function (err) {
-            if (err)
-                res.send(err);
-            else
+        doPost(p, {
+            publish: publish,
+            unpublish: unpublish,
+            create: !! req.body.create //from addPost
+        })
+            .then(function (post) {
                 res.send({
                     success: true
                 });
-        });
+            }).fail(function (err) {
+                res.send({
+                    err: err
+                });
+            });
     }
 
-    function deletePost(req, res) {
-        res.send("under construction");
+    function addPost(req, res) {
+        req.body.create = true;
+        updatePost(req, res);
     }
+
 
     ///////////////////////////////////////////////////////
     ///////////////// USER ///////////////////////////////
     /////////////////////////////////////////////////////
-    
+
     function newUser(req, res) {
         var model = {};
         res.render("admin/user.html", Page("Add User", model));
@@ -141,14 +194,14 @@ module.exports = function (soap) {
     //exports
     var out = {};
     out.dashboard = dashboard;
-    
+
     out.login = login;
 
     out.newPost = newPost;
     out.addPost = addPost;
-    out.updatePost = updatePost;
+
     out.editPost = editPost;
-    out.deletePost = deletePost;
+    out.updatePost = updatePost;
 
     out.newUser = newUser;
     out.addUser = addUser;

@@ -3,20 +3,20 @@
 {%block styles%}
 <link rel="stylesheet" href="/styles/summernote.css">
 <!----->
-{%endblock%}
+{%endblock%} {% block bodyattr %} class="post {{'post-edit' if post}} {{'post-published' if post.published}}"{% endblock %}
 <!----->
 {%block main%}
-<div class="row">
-    <h1 class="col-sm-9 col-sm-offset-1">{{'Edit Post' if sub else 'Add Post'}}</h1>
+<div class="post-head">
+    <h1>{{'Edit Post' if post else 'Add Post'}}</h1>
 </div>
-<div class="row">
-    <div id="form-alert" class="col-xs-12 alert alert-dismissable {{'alert-danger' if error}}{{'alert-success' if success}}{{ 'hidden' if not error and not success}}">
+<div class="alertBox">
+    <div id="form-alert" class="alert alert-dismissable {{'alert-danger' if error}}{{'alert-success' if success}}{{ 'hidden' if not error and not success}}">
         <button class="close" type="button" onclick="$('#form-alert').addClass('hidden')">&times;</button>
-        <p class="message text-center">{{error or success | safe}}</p>
+        <p class="message">{{error or success | safe}}</p>
     </div>
 </div>
-<div class="row">
-    <form id="form" class="col-sm-8 col-sm-offset-2 form-horizontal" action="" method="post" autocomplete="{{ 'off' if not post}}">
+<div class="form-holder">
+    <form id="form" action="" method="post" autocomplete="{{ 'off' if not post}}">
         <input type="hidden" name="_id" id="isUpdate" value="{{post._id}}">
         <div class="form-group">
             <fieldset>
@@ -36,12 +36,10 @@
             </fieldset>
         </div>
         <input type="hidden" id="publish" name="publish" value="false">
-        <div class="row">
-            <button class="btn btn-primary col-xs-12 col-sm-4">{{'Update Post' if post else 'Save Post'}}</button>
-            {%if not post.isPublished%}
-                    <button class="btn btn-success col-xs-12 col-sm-4" type="button" id="publish-button">Publish</button>
-            {%endif%} 
-            <button onclick="deletepost()" class="btn btn-danger col-xs-12 col-sm-4 {{'col-sm-offset-4' if post.published}}" type="button">Delete Post</button>
+        <input type="hidden" id="unpublish" name="unpublish" value="false">
+        <div class="submit-buttons">
+            <button class="btn-save">{{'Update Post' if post else 'Save Post'}}</button>
+            <button class="btn-publish" type="button">{{"Unpublish" if post.published else ("Publish" if post else "Save &amp; publish") | safe}}</button>
         </div>
     </form>
 </div>
@@ -53,20 +51,21 @@
 <script>
     //AlertBox
     var $alert = $("#form-alert");
-    function bootstrapAlert(alertClass, msg){
-            $alert.find(".message").html(msg);
-            $alert.removeClass("hidden alert-info alert-danger alert-warning alert-success").addClass(alertClass).css("display", "block").alert();
-            location.hash = "#form-alert";
-        }
+
+    function bootstrapAlert(alertClass, msg) {
+        $alert.find(".message").html(msg);
+        $alert.removeClass("hidden alert-info alert-danger alert-warning alert-success").addClass(alertClass).css("display", "block").alert();
+        location.hash = "#form-alert";
+    }
 </script>
 <script>
     //summernote
     $summernote = $("#summernote");
     $summernote.summernote({
-        height:300,
+        height: 300,
         toolbar: [
             //['table', ['table']], // no table button
-            ['style', ['style']], 
+            ['style', ['style']],
             ['style', ['bold', 'italic', 'underline', 'clear']],
             ['fontsize', ['fontsize']],
             ['color', ['color']],
@@ -76,12 +75,13 @@
             ['help', ['help']]
         ]
     });
-    $summernote.code("{{post.body | regexReplace('"', "g", '\\"') | safe}}");
+    $summernote.code("{{post.body | regexReplace('"', "g", "\\\"") | safe}}");
 </script>
 <script>
     //slug
     var $slug = $("#slug");
-    function generateSlug(){
+
+    function generateSlug() {
         var title = $title.val();
         var slug = title.toLowerCase().replace(/\W+/g, '-').replace(/^-/, '').replace(/-$/, '');
         $slug.val(slug);
@@ -89,8 +89,8 @@
     $title = $("#title").on('keyup blur', generateSlug);
 </script>
 <script>
-    $("#publish-button").click(function(e){
-        $("#publish").val("true");
+    $(".btn-publish").click(function(e) {
+        $("#{{'unpublish' if post.published else 'publish'}}").val("true");
         $("#form").submit();
     });
 </script>
@@ -99,31 +99,47 @@
 
 <script>
     //
-    $('#form').submit(function(e){
+    $('#form').submit(function(e) {
         e.preventDefault();
         $("#body").val($summernote.code());
-        var method = $("#isUpdate").val() ? $.put : $.post;
-        method("/admin/post", $(this).serialize(), function(data){
+
+        function handleData(data) {
             console.log(data);
-            if(data.success){
-                bootstrapAlert("alert-success", "Post successfully saved.");
+            if (data.success) {
+                bootstrapAlert("alert-success", "Post successfully saved. If the post was (un)published, you will be redirected to the home page in 5 seconds. <br>Don't forget to reset the cache on the <a href='/admin'>admin page</a> if your changes aren't showing up on the home page.");
+                var timeoutfunction;
+                if ($("#publish").val() == "true" || $("#unpublish").val() == "true") {
+                    timeoutfunction = function() {
+                        window.location = "/";
+                    }
+                } else {
+                    timeoutfunction = function() {
+                        $("form-alert").addClass("hidden");
+                    }
+                }
+                setTimeout(timeoutfunction, 5000);
+                return;
             }
-            else if(data.name === "ValidationError"){
-                 if(data.errors){
-                     bootstrapAlert("alert-danger", "Error");
-                 }
-            }
-            else if(data.name ==="MongoError"){
-                if(data.code == 11000 && (data.err.indexOf("slug") != -1)){
+            if (data.err.name === "ValidationError") {
+                if (data.err.errors) {
+                    bootstrapAlert("alert-info", "Title and body text are required.");
+                }
+            } else if (data.err.name === "MongoError") {
+                if (data.code == 11000 && (data.err.indexOf("slug") != -1)) {
                     console.log("Slug error")
-                    
-                    bootstrapAlert("alert-info",'There\'s already <a class="alert-link" href="/news/'+$slug.val()+'" target="_blank">a post</a> whose name generates the same slug. Please come up with a new title.')
-                
+                    bootstrapAlert("alert-info", 'There\'s already <a class="alert-link" href="/news/' + $slug.val() + '" target="_blank">a post</a> whose name generates the same slug. Please come up with a new title.')
                 }
             }
-        }).fail(function(err){
-            console.log(err);
-             bootstrapAlert("alert-danger", "Error");
+        };
+        $.ajax({
+            type: "{{'PUT' if post else 'POST'}}",
+            url: "/admin/post",
+            data: $(this).serialize(),
+            success: handleData,
+            error: function(err) {
+                console.log(err);
+            },
+            dataType: "json"
         });
     });
 </script>

@@ -30,13 +30,23 @@ var postSchema = Schema({
         index: true
     },
     published: Date,
-    versions: [{
-        date: Date,
-        body: String
+    versions: {
+        type: [{
+            date: Date,
+            body: String
     }],
+        select: false
+    },
     created: {
         type: Date,
-        default: Date.now
+        default: Date.now,
+        select: false
     }
 })
+postSchema.pre('save', function (next) {
+    if (this.isModified("body")) {
+        this.modified = Date.now;
+    }
+    next();
+});
 module.exports = mongoose.model("Post", postSchema);

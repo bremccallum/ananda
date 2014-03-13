@@ -5,7 +5,7 @@ var extend = require("extend"),
 require("./soap")(function (cli) {
 
     var home = require("./controllers/home")(cli),
-        admin = require("./controllers/admin")(cli);
+        admin = require("./controllers/admin")(cli);    
     var cache = require('./cache')(app);
 
     app.use('/', cache(CACHE_TIME, '/'));
@@ -29,8 +29,6 @@ require("./soap")(function (cli) {
     app.get('/admin/post/:slug', admin.editPost);
     app.put('/admin/post', admin.updatePost);
     app.post('/admin/post', admin.addPost);
-    app.delete('/admin/post', admin.deletePost);
-    app.post('/admin/post/delete', admin.deletePost);
     
     app.get('/admin/addUser', admin.newUser);
     app.post("/admin/addUser", admin.addUser);

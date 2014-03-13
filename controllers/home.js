@@ -1,7 +1,7 @@
-var Page = require('./common').Page,
-    Posts = require("../models/post"),
+var Q = require('q'),
     moment = require("moment"),
-    Q = require("q");
+    Posts = require("mongoose-q")().model('Post'),
+    Page = require('./common').Page;
 module.exports = function (soap) {
     function landing(req, res) {
         console.time("Landing");
@@ -48,11 +48,16 @@ module.exports = function (soap) {
             ],
             XMLDetail: 'Bare'
         }
-        var postQuery = Posts.find({isPublished:true}).sort({'published':-1}).limit(4);
+        var postQuery = Posts.find({
+            isPublished: true
+        }).select('title body published').sort({
+            'published': -1
+        }).limit(4);
         //get classes
+        //TODO: Is two requests really faster than one giant request?
         Q.all([soap.q(soap.Classes, 'GetClasses', args),
                soap.q(soap.Classes, 'GetClasses', workshopArgs),
-              Q.when(postQuery.exec())])
+              postQuery.execQ()])
             .spread(function (classes, workshops, posts) {
                 if (0 == classes[0].GetClassesResult.ResultCount)
                     classes = [];
@@ -73,9 +78,13 @@ module.exports = function (soap) {
                     return moment(ele.StartDateTime).isAfter(moment(now).endOf('day'));
                 });
                 model.workshops = workshops[0].GetClassesResult.Classes.Class;
+                console.log(model.today);
                 model.pm = (model.today[0] ? moment(model.today[0].StartDateTime).hours() : now.hours()) >= 16;
                 res.render('landing.html', Page("Ananda Yoga", model));
                 console.timeEnd("Landing");
+            }).fail(function (err) {
+                res.send("err:" + err);
+                console.error(err);
             });
     }
 
@@ -196,6 +205,7 @@ module.exports = function (soap) {
             res.render("news.html", Page(post.title, model));
         })
     }
+    
     //exports
     var out = {};
     out.landing = landing;
