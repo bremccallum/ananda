@@ -7,7 +7,7 @@
 ####Posts
 
 * ~~edit posts~~
-* post versioning
+* post versioning - saving, just need to load/display
 * delete posts
 * add photos to posts
 * Sort posts by published/draft on admin
