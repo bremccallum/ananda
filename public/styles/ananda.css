@@ -4239,7 +4239,17 @@ button.close {
 .panel-body:before,
 .panel-body:after,
 .modal-footer:before,
-.modal-footer:after {
+.modal-footer:after,
+.post .post-head:before,
+.post .post-head:after,
+.post .alertBox:before,
+.post .alertBox:after,
+.post .form-holder:before,
+.post .form-holder:after,
+.post .form-holder > form .form-group:before,
+.post .form-holder > form .form-group:after,
+.post .form-holder > form .submit-buttons:before,
+.post .form-holder > form .submit-buttons:after {
   content: " ";
   display: table;
 }
@@ -4255,7 +4265,12 @@ button.close {
 .navbar-header:after,
 .navbar-collapse:after,
 .panel-body:after,
-.modal-footer:after {
+.modal-footer:after,
+.post .post-head:after,
+.post .alertBox:after,
+.post .form-holder:after,
+.post .form-holder > form .form-group:after,
+.post .form-holder > form .submit-buttons:after {
   clear: both;
 }
 .center-block {
@@ -5162,15 +5177,6 @@ h2 a:hover,
 h3 a:hover {
   color: #ffbf66;
 }
-h2 {
-  text-align: right;
-  margin: 0;
-  margin-bottom: .4em;
-  border-bottom: 1px dotted rgba(0, 0, 0, 0.1);
-}
-h2 i {
-  float: left !important;
-}
 main {
   padding-top: 1em;
 }
@@ -5192,11 +5198,20 @@ main .affix-bottom {
 .card.no-border {
   border-style: none;
 }
-.landing p.upcoming {
+.landing #left h2 {
+  text-align: right;
+  margin: 0;
+  margin-bottom: .4em;
+  border-bottom: 1px dotted rgba(0, 0, 0, 0.1);
+}
+.landing #left h2 i {
+  float: left !important;
+}
+.landing #left p.upcoming {
   margin-top: 1.5em;
   padding-left: .3em;
 }
-.landing p.upcoming time {
+.landing #left p.upcoming time {
   display: block;
   width: 100%;
   padding-left: 2em;
@@ -5212,7 +5227,9 @@ main .affix-bottom {
 .landing article {
   padding-left: 1em;
 }
-.landing article h1 {
+.landing article > h1 {
+  font-size: 1.6em;
+  margin-top: 0;
   text-align: center;
 }
 .landing article img {
@@ -5256,6 +5273,330 @@ main .affix-bottom {
 }
 .note-editable {
   background-color: white;
+}
+.post .post-head {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+.post .post-head h1 {
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+@media (min-width: 768px) {
+  .post .post-head h1 {
+    float: left;
+    width: 75%;
+  }
+}
+@media (min-width: 768px) {
+  .post .post-head h1 {
+    margin-left: 8.33333333%;
+  }
+}
+.post .alertBox {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+.post .alertBox > div {
+  position: relative;
+  float: left;
+  width: 100%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.post .alertBox > div > p {
+  text-align: center;
+}
+.post .form-holder {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+.post .form-holder > form {
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+@media (min-width: 768px) {
+  .post .form-holder > form {
+    float: left;
+    width: 66.66666667%;
+  }
+}
+@media (min-width: 768px) {
+  .post .form-holder > form {
+    margin-left: 16.66666667%;
+  }
+}
+.post .form-holder > form .control-label,
+.post .form-holder > form .radio,
+.post .form-holder > form .checkbox,
+.post .form-holder > form .radio-inline,
+.post .form-holder > form .checkbox-inline {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 7px;
+}
+.post .form-holder > form .radio,
+.post .form-holder > form .checkbox {
+  min-height: 27px;
+}
+.post .form-holder > form .form-group {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+.post .form-holder > form .form-control-static {
+  padding-top: 7px;
+}
+@media (min-width: 768px) {
+  .post .form-holder > form .control-label {
+    text-align: right;
+  }
+}
+.post .form-holder > form .has-feedback .form-control-feedback {
+  top: 0;
+  right: 15px;
+}
+.post .form-holder > form .submit-buttons {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+.post .form-holder > form .submit-buttons .btn-save {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #ffffff;
+  background-color: #428bca;
+  border-color: #357ebd;
+  position: relative;
+  float: left;
+  width: 33.33333333%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.post .form-holder > form .submit-buttons .btn-save:focus,
+.post .form-holder > form .submit-buttons .btn-save:active:focus,
+.post .form-holder > form .submit-buttons .btn-save.active:focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+.post .form-holder > form .submit-buttons .btn-save:hover,
+.post .form-holder > form .submit-buttons .btn-save:focus {
+  color: #333333;
+  text-decoration: none;
+}
+.post .form-holder > form .submit-buttons .btn-save:active,
+.post .form-holder > form .submit-buttons .btn-save.active {
+  outline: 0;
+  background-image: none;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+.post .form-holder > form .submit-buttons .btn-save.disabled,
+.post .form-holder > form .submit-buttons .btn-save[disabled],
+fieldset[disabled] .post .form-holder > form .submit-buttons .btn-save {
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.post .form-holder > form .submit-buttons .btn-save:hover,
+.post .form-holder > form .submit-buttons .btn-save:focus,
+.post .form-holder > form .submit-buttons .btn-save:active,
+.post .form-holder > form .submit-buttons .btn-save.active,
+.open .dropdown-toggle.post .form-holder > form .submit-buttons .btn-save {
+  color: #ffffff;
+  background-color: #3276b1;
+  border-color: #285e8e;
+}
+.post .form-holder > form .submit-buttons .btn-save:active,
+.post .form-holder > form .submit-buttons .btn-save.active,
+.open .dropdown-toggle.post .form-holder > form .submit-buttons .btn-save {
+  background-image: none;
+}
+.post .form-holder > form .submit-buttons .btn-save.disabled,
+.post .form-holder > form .submit-buttons .btn-save[disabled],
+fieldset[disabled] .post .form-holder > form .submit-buttons .btn-save,
+.post .form-holder > form .submit-buttons .btn-save.disabled:hover,
+.post .form-holder > form .submit-buttons .btn-save[disabled]:hover,
+fieldset[disabled] .post .form-holder > form .submit-buttons .btn-save:hover,
+.post .form-holder > form .submit-buttons .btn-save.disabled:focus,
+.post .form-holder > form .submit-buttons .btn-save[disabled]:focus,
+fieldset[disabled] .post .form-holder > form .submit-buttons .btn-save:focus,
+.post .form-holder > form .submit-buttons .btn-save.disabled:active,
+.post .form-holder > form .submit-buttons .btn-save[disabled]:active,
+fieldset[disabled] .post .form-holder > form .submit-buttons .btn-save:active,
+.post .form-holder > form .submit-buttons .btn-save.disabled.active,
+.post .form-holder > form .submit-buttons .btn-save[disabled].active,
+fieldset[disabled] .post .form-holder > form .submit-buttons .btn-save.active {
+  background-color: #428bca;
+  border-color: #357ebd;
+}
+.post .form-holder > form .submit-buttons .btn-save .badge {
+  color: #428bca;
+  background-color: #ffffff;
+}
+.post .form-holder > form .submit-buttons .btn-publish {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  position: relative;
+  float: left;
+  width: 33.33333333%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.post .form-holder > form .submit-buttons .btn-publish:focus,
+.post .form-holder > form .submit-buttons .btn-publish:active:focus,
+.post .form-holder > form .submit-buttons .btn-publish.active:focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+.post .form-holder > form .submit-buttons .btn-publish:hover,
+.post .form-holder > form .submit-buttons .btn-publish:focus {
+  color: #333333;
+  text-decoration: none;
+}
+.post .form-holder > form .submit-buttons .btn-publish:active,
+.post .form-holder > form .submit-buttons .btn-publish.active {
+  outline: 0;
+  background-image: none;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+.post .form-holder > form .submit-buttons .btn-publish.disabled,
+.post .form-holder > form .submit-buttons .btn-publish[disabled],
+fieldset[disabled] .post .form-holder > form .submit-buttons .btn-publish {
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+@media (min-width: 480px) {
+  .post .form-holder > form .submit-buttons .btn-publish {
+    margin-left: 33.33333333%;
+  }
+}
+.post .btn-publish {
+  color: #ffffff;
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+.post .btn-publish:hover,
+.post .btn-publish:focus,
+.post .btn-publish:active,
+.post .btn-publish.active,
+.open .dropdown-toggle.post .btn-publish {
+  color: #ffffff;
+  background-color: #47a447;
+  border-color: #398439;
+}
+.post .btn-publish:active,
+.post .btn-publish.active,
+.open .dropdown-toggle.post .btn-publish {
+  background-image: none;
+}
+.post .btn-publish.disabled,
+.post .btn-publish[disabled],
+fieldset[disabled] .post .btn-publish,
+.post .btn-publish.disabled:hover,
+.post .btn-publish[disabled]:hover,
+fieldset[disabled] .post .btn-publish:hover,
+.post .btn-publish.disabled:focus,
+.post .btn-publish[disabled]:focus,
+fieldset[disabled] .post .btn-publish:focus,
+.post .btn-publish.disabled:active,
+.post .btn-publish[disabled]:active,
+fieldset[disabled] .post .btn-publish:active,
+.post .btn-publish.disabled.active,
+.post .btn-publish[disabled].active,
+fieldset[disabled] .post .btn-publish.active {
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+.post .btn-publish .badge {
+  color: #5cb85c;
+  background-color: #ffffff;
+}
+.post-edit.post-published .btn-publish {
+  color: #ffffff;
+  background-color: #f0ad4e;
+  border-color: #eea236;
+}
+.post-edit.post-published .btn-publish:hover,
+.post-edit.post-published .btn-publish:focus,
+.post-edit.post-published .btn-publish:active,
+.post-edit.post-published .btn-publish.active,
+.open .dropdown-toggle.post-edit.post-published .btn-publish {
+  color: #ffffff;
+  background-color: #ed9c28;
+  border-color: #d58512;
+}
+.post-edit.post-published .btn-publish:active,
+.post-edit.post-published .btn-publish.active,
+.open .dropdown-toggle.post-edit.post-published .btn-publish {
+  background-image: none;
+}
+.post-edit.post-published .btn-publish.disabled,
+.post-edit.post-published .btn-publish[disabled],
+fieldset[disabled] .post-edit.post-published .btn-publish,
+.post-edit.post-published .btn-publish.disabled:hover,
+.post-edit.post-published .btn-publish[disabled]:hover,
+fieldset[disabled] .post-edit.post-published .btn-publish:hover,
+.post-edit.post-published .btn-publish.disabled:focus,
+.post-edit.post-published .btn-publish[disabled]:focus,
+fieldset[disabled] .post-edit.post-published .btn-publish:focus,
+.post-edit.post-published .btn-publish.disabled:active,
+.post-edit.post-published .btn-publish[disabled]:active,
+fieldset[disabled] .post-edit.post-published .btn-publish:active,
+.post-edit.post-published .btn-publish.disabled.active,
+.post-edit.post-published .btn-publish[disabled].active,
+fieldset[disabled] .post-edit.post-published .btn-publish.active {
+  background-color: #f0ad4e;
+  border-color: #eea236;
+}
+.post-edit.post-published .btn-publish .badge {
+  color: #f0ad4e;
+  background-color: #ffffff;
 }
 footer {
   height: 4em;

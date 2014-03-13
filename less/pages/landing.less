@@ -1,13 +1,24 @@
 .landing{
-    p.upcoming{
-        margin-top:1.5em;
-        padding-left:.3em;
-        time{
-            display:block;
-            width:100%;
-            padding-left:2em;
-            border-left:1px solid @variantDark;
-            
+    #left {
+        h2 {
+            text-align:right;
+            margin: 0;
+            margin-bottom:.4em;
+            border-bottom: 1px dotted rgba(0, 0, 0, .1);
+            i{
+                .pull-left();
+            }
+        }
+        p.upcoming{
+            margin-top:1.5em;
+            padding-left:.3em;
+            time{
+                display:block;
+                width:100%;
+                padding-left:2em;
+                border-left:1px solid @variantDark;
+
+            }
         }
     }
     #welcome {
@@ -19,7 +30,9 @@
     }
     article {
         padding-left: 1em;
-        h1 {
+        & > h1 {
+            font-size:1.6em;
+            margin-top:0;
             text-align: center;
         }
         img {
