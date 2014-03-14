@@ -4,5 +4,26 @@
     }
     #classes-nav .nav-pills {
         border-radius: 4px;
+        /* Small devices (tablets, 768px and up) */
+        @media (min-width: @screen-sm-min) { 
+            &#affix{
+                width:220px;
+            }
+            
+        }
+
+        /* Medium devices (desktops, 992px and up) */
+        @media (min-width: @screen-md-min) { 
+            &#affix{
+                width:220px;
+            }
+        }
+
+        /* Large devices (large desktops, 1200px and up) */
+        @media (min-width: @screen-lg-min) {
+            &#affix{
+                width:263px;
+            }
+        }
     }
 }
