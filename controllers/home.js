@@ -65,7 +65,6 @@ module.exports = function (soap) {
             postQuery.execQ()
         ])
             .spread(function (classes, workshops, posts) {
-                console.log(classes, workshops);
                 if (0 == classes.GetClassesResult.ResultCount)
                     classes = [];
                 else {
@@ -85,7 +84,6 @@ module.exports = function (soap) {
                     return moment(ele.StartDateTime).isAfter(moment(now).endOf('day'));
                 });
                 model.workshops = workshops.GetClassesResult.Classes.Class;
-                console.log(model.today);
                 model.pm = (model.today[0] ? moment(model.today[0].StartDateTime).hours() : now.hours()) >= 16;
                 res.render('landing.html', Page("Ananda Yoga", model));
                 console.timeEnd("Landing");
