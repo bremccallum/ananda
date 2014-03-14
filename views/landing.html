@@ -6,8 +6,8 @@
 <p class="upcoming no-upcoming">No classes</p>' | safe if classes.length == 0}} {% for class in classes | sort(false, false,'StartDateTime')%}
 <p class="upcoming clearfix">
     <time>{{class.StartDateTime | prettyTime}}</time>
-    <a href="/classes#{{class.ClassDescription.Name}}">{{class.ClassDescription.Name}}</a>
-    <span class="pull-right class-instructor">with
+    <a class="class-name" href="/classes#{{class.ClassDescription.Name}}">{{class.ClassDescription.Name}}</a>
+    <span class="class-instructor">with
         <a class="link-instructor" href="/instructors#{{class.Staff.Name | slugify}}">{{ class.Staff.Name }}</a>
     </span>
 </p>
@@ -32,7 +32,7 @@
         </div>
         <div id="special" class="special card">
             <h2>
-                <i class="fa fa-bullhorn"></i>Special Events</h2>
+                <i class="fa fa-bell-o"></i>Special Events</h2>
             <ol class="list-unstyled">
                 {%for ws in workshops |attrSort("StartDateTime") %}
                 <li>
