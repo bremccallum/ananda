@@ -1,26 +1,13 @@
-var soap = require('soap'),
+var soap = require('soap-q')(),
     extend = require('extend'),
     Q = require("q");
 var classUrl = 'http://clients.mindbodyonline.com/api/0_5/ClassService.asmx?wsdl';
 var staffUrl = 'http://clients.mindbodyonline.com/api/0_5/StaffService.asmx?wsdl';
 
 module.exports = function (callback) {
-    function createClient(url) {
-        var d = Q.defer();
-        soap.createClient(url, function (err, client) {
-            var service = url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('.'));
-            console.log("Creating soap client for +" + service + "+");
-            if (err) {
-                console.log("Error creating " + service + " client.")
-                d.reject(err);
-            } else {
-                d.resolve(client);
-            }
-        });
-        return d.promise;
-    }
-    Q.all([createClient(classUrl), createClient(staffUrl)])
+    Q.all([soap.createClientQ(classUrl), soap.createClientQ(staffUrl)])
         .spread(function (c, s) {
+            console.log("SOAP initialized.")
             var clients = {
                 Classes: c,
                 Staff: s,
@@ -40,10 +27,8 @@ module.exports = function (callback) {
                         args)
                 };
             };
-            //Promise-ify soap client functions
-            clients.q = function (client, method, args) {
-                return (Q.nbind(client[method], client)(clients.setArgs(args)));
-            }
             callback(clients);
+        }).fail(function (err) {
+            throw err;
         });
 }

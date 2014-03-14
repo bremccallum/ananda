@@ -3,13 +3,17 @@ var Q = require('q'),
     Posts = require("mongoose-q")().model('Post'),
     Page = require('./common').Page;
 module.exports = function (soap) {
+    var Classes = soap.Classes,
+        Staff = soap.Staff,
+        SArgs = soap.setArgs;
+
     function landing(req, res) {
         console.time("Landing");
         var now = moment();
         if (now.add('minutes', -30).day() != moment().day())
             now.add('minutes', 30);
         var tmrw = moment(now).add('days', 1).endOf('day');
-        var args = {
+        var args = SArgs({
             Fields: [
                 {
                     string: 'Classes.ClassDescription.Name'
@@ -21,12 +25,12 @@ module.exports = function (soap) {
                     string: 'Classes.Staff.Name'
                 }
             ],
-            StartDateTime: now.format('YYYY-MM-DD[T]HH:mm:ss'),
-            EndDateTime: tmrw.format('YYYY-MM-DD[T]HH:mm:ss'),
+            StartDateTime: now.format(soap.DateFormat),
+            EndDateTime: tmrw.format(soap.DateFormat),
             SchedulingWindow: true,
             XMLDetail: 'Bare'
-        };
-        var workshopArgs = {
+        });
+        var workshopArgs = SArgs({
             Fields: [
                 {
                     string: 'Classes.ClassDescription.Name'
@@ -38,8 +42,8 @@ module.exports = function (soap) {
                     string: 'Classes.Staff.Name'
                 }
             ],
-            StartDateTime: now.format('YYYY-MM-DD[T]HH:mm:ss'),
-            EndDateTime: moment(tmrw).add('months', 2).format('YYYY-MM-DD[T]HH:mm:ss'),
+            StartDateTime: now.format(soap.DateFormat),
+            EndDateTime: moment(tmrw).add('months', 2).format(soap.DateFormat),
             SchedulingWindow: true,
             ProgramIDs: [
                 {
@@ -47,7 +51,7 @@ module.exports = function (soap) {
                 }
             ],
             XMLDetail: 'Bare'
-        }
+        });
         var postQuery = Posts.find({
             isPublished: true
         }).select('title body published').sort({
@@ -55,14 +59,17 @@ module.exports = function (soap) {
         }).limit(4);
         //get classes
         //TODO: Is two requests really faster than one giant request?
-        Q.all([soap.q(soap.Classes, 'GetClasses', args),
-               soap.q(soap.Classes, 'GetClasses', workshopArgs),
-              postQuery.execQ()])
+        Q.all([
+            Classes.GetClassesQ(args),
+            Classes.GetClassesQ(workshopArgs),
+            postQuery.execQ()
+        ])
             .spread(function (classes, workshops, posts) {
-                if (0 == classes[0].GetClassesResult.ResultCount)
+                console.log(classes, workshops);
+                if (0 == classes.GetClassesResult.ResultCount)
                     classes = [];
                 else {
-                    classes = classes[0].GetClassesResult.Classes.Class;
+                    classes = classes.GetClassesResult.Classes.Class;
                     if (classes.length === undefined) { //only one class
                         classes = [classes];
                     }
@@ -77,7 +84,7 @@ module.exports = function (soap) {
                 model.tmrw = classes.filter(function (ele) {
                     return moment(ele.StartDateTime).isAfter(moment(now).endOf('day'));
                 });
-                model.workshops = workshops[0].GetClassesResult.Classes.Class;
+                model.workshops = workshops.GetClassesResult.Classes.Class;
                 console.log(model.today);
                 model.pm = (model.today[0] ? moment(model.today[0].StartDateTime).hours() : now.hours()) >= 16;
                 res.render('landing.html', Page("Ananda Yoga", model));
@@ -106,9 +113,9 @@ module.exports = function (soap) {
             ],
             XMLDetail: 'Bare'
         };
-        soap.q(soap.Staff, 'GetStaff', args)
+        Staff.GetStaffQ(SArgs(args))
             .done(function (staff) {
-                staff = staff[0].GetStaffResult.StaffMembers.Staff
+                staff = staff.GetStaffResult.StaffMembers.Staff
                     .filter(function (staff) {
                         return staff.ID > 1; //they have weird testing data at lower ID
                     });
@@ -141,9 +148,9 @@ module.exports = function (soap) {
                 }
             ]
         };
-        soap.q(soap.Classes, 'GetClassDescriptions', args)
+        Classes.GetClassDescriptionsQ(SArgs(args))
             .done(function (classes) {
-                classes = classes[0].GetClassDescriptionsResult.ClassDescriptions.ClassDescription;
+                classes = classes.GetClassDescriptionsResult.ClassDescriptions.ClassDescription;
                 classes.map(function (o, i) {
                     o.Description = (typeof o.Description == 'object') ? '' : o.Description;
                 });
@@ -176,7 +183,7 @@ module.exports = function (soap) {
                 }
             ]
         };
-        soap.q(soap.Classes, 'GetClasses', args)
+        Classes.GetClassesQ(SArgs(args))
             .done(function (classes) {
                 var model = {
                     classes: {},
@@ -187,7 +194,7 @@ module.exports = function (soap) {
                     model.days.push(m);
                     model.classes[m] = [];
                 }
-                classes[0].GetClassesResult.Classes.Class.forEach(function (c) {
+                classes.GetClassesResult.Classes.Class.forEach(function (c) {
                     model.classes[moment(c.StartDateTime).format("dddd [the] Do")].push(c);
                 });
 
@@ -205,7 +212,7 @@ module.exports = function (soap) {
             res.render("news.html", Page(post.title, model));
         })
     }
-    
+
     //exports
     var out = {};
     out.landing = landing;
