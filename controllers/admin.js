@@ -36,7 +36,7 @@ module.exports = function (soap) {
 
 
     function teachersToNames(staff) {
-        staff = staff[0].GetStaffResult.StaffMembers.Staff
+        staff = staff.GetStaffResult.StaffMembers.Staff
             .filter(function (staff) {
                 return staff.ID > 1; //they have weird testing data at lower ID
             });
@@ -55,7 +55,7 @@ module.exports = function (soap) {
             ],
             XMLDetail: 'Bare'
         };
-        return soap.q(soap.Staff, 'GetStaff', args);
+        return soap.Staff.GetStaffQ(soap.setArgs(args));
     }
 
     ////////////////////////////////
