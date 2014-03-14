@@ -1,10 +1,6 @@
 #################
 ## Project Specific
 #################
-bootstrap/*
-styles/font-awesome/less/*
-styles/font-awesome/scss/*
-fonts/*
 node_modules/*
 
 #################
