@@ -87,9 +87,9 @@ module.exports = function (soap) {
                 model.pm = (model.today[0] ? moment(model.today[0].StartDateTime).hours() : now.hours()) >= 16;
                 res.render('landing.html', Page("Ananda Yoga", model));
                 console.timeEnd("Landing");
-            }).fail(function (err) {
-                res.send("err:" + err);
+            }).fail(function(err){
                 console.error(err);
+                res.redirect("/error");
             });
     }
 
@@ -112,7 +112,7 @@ module.exports = function (soap) {
             XMLDetail: 'Bare'
         };
         Staff.GetStaffQ(SArgs(args))
-            .done(function (staff) {
+            .then(function (staff) {
                 staff = staff.GetStaffResult.StaffMembers.Staff
                     .filter(function (staff) {
                         return staff.ID > 1; //they have weird testing data at lower ID
@@ -123,6 +123,9 @@ module.exports = function (soap) {
                 var model = {};
                 model.staff = staff;
                 res.render('instructors.html', Page("Instructors | Ananda Yoga", model))
+            }).fail(function(err){
+                console.error(err);
+                res.redirect("/error");
             });
     }
 
@@ -147,7 +150,7 @@ module.exports = function (soap) {
             ]
         };
         Classes.GetClassDescriptionsQ(SArgs(args))
-            .done(function (classes) {
+            .then(function (classes) {
                 classes = classes.GetClassDescriptionsResult.ClassDescriptions.ClassDescription;
                 classes.map(function (o, i) {
                     o.Description = (typeof o.Description == 'object') ? '' : o.Description;
@@ -155,6 +158,9 @@ module.exports = function (soap) {
                 res.render('classes.html', Page("Classes", {
                     classes: classes
                 }));
+            }).fail(function(err){
+                console.error(err);
+                res.redirect("/error");
             });
     }
 
@@ -182,7 +188,7 @@ module.exports = function (soap) {
             ]
         };
         Classes.GetClassesQ(SArgs(args))
-            .done(function (classes) {
+            .then(function (classes) {
                 var model = {
                     classes: {},
                     days: []
@@ -197,6 +203,9 @@ module.exports = function (soap) {
                 });
 
                 res.render("schedule.html", Page("Schedule | Ananda Yoga", model));
+            }).fail(function(err){
+                console.error(err);
+                res.redirect("/error");
             });
     }
 

@@ -23,6 +23,9 @@ var cache = module.exports = function (app) {
                     //shouldn't happen as long as etag is disabled
                     console.log("CACHE: !ERROR! no data:" + myRoute);
                 }
+                else if(res.statusCode >=300){
+                    console.log("CACHE: Abort Cache: " + myRoute + " - " + res.statusCode);
+                }
                 else{
                     res.on('finish', function () {
                         console.log("CACHE: SAVING:'" + route);

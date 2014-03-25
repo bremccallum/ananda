@@ -33,6 +33,14 @@ require("./soap")(function (cli) {
     app.get('/admin/addUser', admin.newUser);
     app.post("/admin/addUser", admin.addUser);
     
-    app.get("/cache", function(req,res){});
+    app.get("/cache", function(req,res){
+        res.send("Whoa, you found a secret that does nothing");
+    });
+    app.get("/error", function(req, res){
+        res.render("error.html", {code:500}, function(err, html){
+            res.statusCode = 500;
+            res.send(500, html);
+        });
+    })
     
 });
