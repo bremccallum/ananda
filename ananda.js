@@ -37,6 +37,7 @@ var nunjucks = require("nunjucks").configure('views', {
     autoescape: true,
     express: app
 });
+app.locals.prod = process.env.NODE_ENV == "production";
 var moment = require("moment");
 nunjucks.addFilter('prettyDate', function (v) {
     return (moment(v).format("M-DD-YY"));

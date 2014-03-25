@@ -1,7 +1,6 @@
 var Q = require('q'),
     moment = require("moment"),
-    Posts = require("mongoose-q")().model('Post'),
-    Page = require('./common').Page;
+    Posts = require("mongoose-q")().model('Post');
 module.exports = function (soap) {
     var Classes = soap.Classes,
         Staff = soap.Staff,
@@ -85,9 +84,9 @@ module.exports = function (soap) {
                 });
                 model.workshops = workshops.GetClassesResult.Classes.Class;
                 model.pm = (model.today[0] ? moment(model.today[0].StartDateTime).hours() : now.hours()) >= 16;
-                res.render('landing.html', Page("Ananda Yoga", model));
+                res.render('landing.html', model);
                 console.timeEnd("Landing");
-            }).fail(function(err){
+            }).fail(function (err) {
                 console.error(err);
                 res.redirect("/error");
             });
@@ -122,8 +121,9 @@ module.exports = function (soap) {
                 });
                 var model = {};
                 model.staff = staff;
-                res.render('instructors.html', Page("Instructors | Ananda Yoga", model))
-            }).fail(function(err){
+                model.title = "Instructors";
+                res.render('instructors.html', model)
+            }).fail(function (err) {
                 console.error(err);
                 res.redirect("/error");
             });
@@ -151,81 +151,83 @@ module.exports = function (soap) {
         };
         Classes.GetClassDescriptionsQ(SArgs(args))
             .then(function (classes) {
-                classes = classes.GetClassDescriptionsResult.ClassDescriptions.ClassDescription;
-                classes.map(function (o, i) {
-                    o.Description = (typeof o.Description == 'object') ? '' : o.Description;
-                });
-                res.render('classes.html', Page("Classes", {
-                    classes: classes
-                }));
-            }).fail(function(err){
-                console.error(err);
-                res.redirect("/error");
-            });
-    }
+                    classes = classes.GetClassDescriptionsResult.ClassDescriptions.ClassDescription;
+                    classes.map(function (o, i) {
+                        o.Description = (typeof o.Description == 'object') ? '' : o.Description;
+                    });
+                    res.render('classes.html', {
+                        title: "Classes",
+                        classes: classes
+                    });
+        }).fail(function (err) {
+        console.error(err);
+        res.redirect("/error");
+    });
+}
 
-    function schedule(req, res) {
-        var now = moment();
-        var future = moment().add('weeks', 2)
-        var args = {
-            StartDateTime: now.format(soap.DateFormat),
-            EndDateTime: future.format(soap.DateFormat),
-            SchedulingWindow: true,
-            XMLDetail: 'Bare',
-            Fields: [
-                {
-                    string: 'Classes.Staff.Name'
+function schedule(req, res) {
+    var now = moment();
+    var future = moment().add('weeks', 2)
+    var args = {
+        StartDateTime: now.format(soap.DateFormat),
+        EndDateTime: future.format(soap.DateFormat),
+        SchedulingWindow: true,
+        XMLDetail: 'Bare',
+        Fields: [
+            {
+                string: 'Classes.Staff.Name'
                 },
-                {
-                    string: 'Classes.ClassDescription.Name'
+            {
+                string: 'Classes.ClassDescription.Name'
                 },
-                {
-                    string: 'Classes.StartDateTime'
+            {
+                string: 'Classes.StartDateTime'
                 },
-                {
-                    string: 'Classes.EndDateTime'
+            {
+                string: 'Classes.EndDateTime'
                 }
             ]
-        };
-        Classes.GetClassesQ(SArgs(args))
-            .then(function (classes) {
-                var model = {
-                    classes: {},
-                    days: []
-                };
-                for (var i = 0; i <= future.diff(now, 'days'); i++) {
-                    var m = moment(now).add('days', i).format("dddd [the] Do");
-                    model.days.push(m);
-                    model.classes[m] = [];
-                }
-                classes.GetClassesResult.Classes.Class.forEach(function (c) {
-                    model.classes[moment(c.StartDateTime).format("dddd [the] Do")].push(c);
-                });
-
-                res.render("schedule.html", Page("Schedule | Ananda Yoga", model));
-            }).fail(function(err){
-                console.error(err);
-                res.redirect("/error");
-            });
-    }
-
-    function viewPost(req, res) {
-        Posts.findOne({
-            slug: req.params.slug
-        }, function (err, post) {
+    };
+    Classes.GetClassesQ(SArgs(args))
+        .then(function (classes) {
             var model = {
-                post: post
+                classes: {},
+                days: []
             };
-            res.render("news.html", Page(post.title, model));
-        })
-    }
+            for (var i = 0; i <= future.diff(now, 'days'); i++) {
+                var m = moment(now).add('days', i).format("dddd [the] Do");
+                model.days.push(m);
+                model.classes[m] = [];
+            }
+            classes.GetClassesResult.Classes.Class.forEach(function (c) {
+                model.classes[moment(c.StartDateTime).format("dddd [the] Do")].push(c);
+            });
+            model.title = "Schedule";
+            res.render("schedule.html", model);
+        }).fail(function (err) {
+            console.error(err);
+            res.redirect("/error");
+        });
+}
 
-    //exports
-    var out = {};
-    out.landing = landing;
-    out.instructors = instructors;
-    out.classes = classes;
-    out.schedule = schedule;
-    out.viewPost = viewPost;
-    return out;
+function viewPost(req, res) {
+    Posts.findOne({
+        slug: req.params.slug
+    }, function (err, post) {
+        var model = {
+            title: post.title,
+            post: post
+        };
+        res.render("news.html", model);
+    })
+}
+
+//exports
+var out = {};
+out.landing = landing;
+out.instructors = instructors;
+out.classes = classes;
+out.schedule = schedule;
+out.viewPost = viewPost;
+return out;
 }

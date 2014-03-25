@@ -2,8 +2,7 @@ var Q = require('q'),
     moment = require("moment"),
     mongoose = require("mongoose-q")(),
     Posts = mongoose.model('Post'),
-    Users = mongoose.model("User"),
-    Page = require('./common').Page;
+    Users = mongoose.model("User");
 module.exports = function (soap) {
 
     function login(req, res) {
@@ -28,7 +27,7 @@ module.exports = function (soap) {
                     posts: posts,
                     users: users
                 }
-                res.render('/admin/admin.html', Page("Admin | Ananda Yoga", model));
+                res.render('/admin/admin.html', model);
             }).done(function (err) {
                 if (err) res.send("Error loading posts. Try reloading the page.\nError:" + err);
             });
@@ -116,9 +115,10 @@ module.exports = function (soap) {
     function newPost(req, res) {
         getTeacherPromise().then(function (teachers) {
             var model = {
+                title: "New Post",
                 teacherNames: teachersToNames(teachers)
             };
-            res.render('/admin/post.html', Page('New Post', model))
+            res.render('/admin/post.html', model);
         });
     }
     //get
@@ -130,10 +130,11 @@ module.exports = function (soap) {
             }).execQ()])
             .spread(function (teachers, post) {
                 var model = {
+                    title: 'Edit Post',
                     teacherNames: teachersToNames(teachers),
                     post: post
                 };
-                res.render('/admin/post.html', Page('Edit Post', model));
+                res.render('/admin/post.html', model);
             });
     }
     //put
@@ -174,8 +175,10 @@ module.exports = function (soap) {
     /////////////////////////////////////////////////////
 
     function newUser(req, res) {
-        var model = {};
-        res.render("admin/user.html", Page("Add User", model));
+        var model = {
+            title: "Add User"
+        };
+        res.render("admin/user.html", model);
     }
 
     function addUser(req, res) {
