@@ -1,8 +1,8 @@
 var soap = require('soap-q')(),
     extend = require('extend'),
     Q = require("q");
-var classUrl = 'http://clients.mindbodyonline.com/api/0_5/ClassService.asmx?wsdl';
-var staffUrl = 'http://clients.mindbodyonline.com/api/0_5/StaffService.asmx?wsdl';
+var classUrl = __dirname + '/controllers/soap/ClassService.wsdl';
+var staffUrl = __dirname + '/controllers/soap/StaffService.wsdl';
 
 module.exports = function (callback) {
     Q.all([soap.createClientQ(classUrl), soap.createClientQ(staffUrl)])
@@ -29,6 +29,7 @@ module.exports = function (callback) {
             };
             callback(clients);
         }).fail(function (err) {
+            console.error(err);
             throw err;
         });
-}
+};
