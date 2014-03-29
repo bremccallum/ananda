@@ -1,19 +1,36 @@
-{% extends "/layout.html" %}
-{%block styles%}
-<link rel="stylesheet" href="/styles/summernote.css">
-{%endblock%}
+{% extends "/layout.html" %} {%block styles%}
+<link rel="stylesheet" href="/styles/summernote.css">{%endblock%}
 <!----->
 {%block main%}
 <div class="row">
     <div class="col-sm-4">
-        <div class="admin-box">
-            <a href="/admin/addUser" class="btn btn-primary pull-right">New User</a>
-            <h2>Users</h2>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2>Pages</h2>
+            </div>
+            <div class="panel-body">Click on a page to edit its heading, text, and/or image</div>
+            <ul class="list-group">
+                {% for page in pages %}
+                <li class="list-group-item">
+                    <h3>
+                        <a href="/admin/page/{{page.page}}">{{page.page}}</a>
+                    </h3>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="admin-box panel panel-default">
+            <div class="panel-heading">
+                <a href="/admin/user" class="btn btn-primary pull-right">New User</a>
+                <h2>Users</h2>
+            </div>
             <ul class="list-group">
                 {% for user in users %}
                 <li class="list-group-item">
-                        <a href="#" onclick="deleteUser('{{user.email}}')" class="pull-right"><i class="fa fa-trash-o fa-2x"></i></a>
-                        <h3 class="list-group-item-heading">{{user.email}}</h3>
+                    <a href="#" onclick="deleteUser(this, '{{user.email}}')" class="pull-right">
+                        <i class="fa fa-trash-o fa-2x"></i>
+                    </a>
+                    <h4 class="list-group-item-heading"><a href="/admin/user/{{user.email}}"></a>{{user.email}}</h4>
                 </li>
                 {% endfor %}
                 <!----->
@@ -21,9 +38,12 @@
         </div>
     </div>
     <div class="col-sm-7 col-sm-offset-1">
-        <div class="admin-box">
-            <a href="/admin/post" class="btn btn-primary pull-right">New Post</a>
-            <h2>News Posts</h2>
+        <div class="admin-box panel panel-default">
+            <div class="panel-heading">
+                <a href="/admin/post" class="btn btn-primary pull-right">New Post</a>
+                <h2>News Posts</h2>
+            </div>
+            <div class="panel-body">Click on a post title to edit, publish, or unpublish that post.</div>
             <ul class="list-group">
                 {% for post in posts %}
                 <li class="list-group-item {{'published' if post.published}}">
@@ -44,5 +64,15 @@
 </div>
 {% endblock %} {% block finally%}
 <script>
+    function deleteUser(a, email){
+        $.post('/admin/user/delete', {email:email}, function(data){
+            console.log("Delete user callback")
+            console.log(data);
+            if(data.success){
+                $(a).parent().fadeOut();
+            }
+
+        });
+    }
 </script>
 {% endblock %}

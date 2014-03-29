@@ -46,6 +46,11 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="nav navbar-nav">
+                    {%if admin%}
+                    <li>
+                        <a href="/admin" >Admin Home</a>
+                    </li>
+                    {%endif%}
                     <li>
                         <a href="/">Home</a>
                     </li>
@@ -63,6 +68,7 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+
                     <li>
                         <a href="/store">Store</a>
                     </li>

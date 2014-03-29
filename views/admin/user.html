@@ -1,5 +1,4 @@
-{%extends 'layout.html'%}
-{%block main%}
+{%extends 'layout.html'%} {%block main%}
 <div class="row">
     <h1 class="col-sm-9 col-sm-offset-1">Add User</h1>
 </div>
@@ -10,59 +9,67 @@
     </div>
 </div>
 <div class="row">
-        <form action="" class="col-sm-8 col-sm-offset-3 form-vertical">
-            <label for="email">Email <small>(this will be your login)</small>:</label><input class="form-control" type="email" required name="email" id="email">
-            
-            <label for="password">Password:</label><input class="form-control" type="password" required name="password" id="password">
-            <label for="confirm">Confirm password:</label><input class="form-control" type="password" id="confirm">
-            <button class='btn btn-primary'>Add User</button>
-        </form>
+    <form action="" class="col-sm-8 col-sm-offset-3 form-vertical">
+        {%if edit%}
+        <input type="hidden" value="{{id}}" name="id">{% endif %}
+        <label for="name">Name:</label>
+        <input class="form-control" type="email" required name="email" id="email" value="{{name}}">
+
+        <label for="email">Email
+            <small>(this will be your login)</small>:</label>
+        <input class="form-control" type="email" required name="email" id="email" value="{{email}}">
+        <fieldset>
+            <legend>Password</legend>
+            <label for="password">Password:</label>
+            <input class="form-control" type="password" required name="password" id="password">
+            <label for="confirm">Confirm password:</label>
+            <input class="form-control" type="password" id="confirm">
+        </fieldset>
+        <button class='btn btn-primary'>Add User</button>
+    </form>
 </div>
-{%endblock%}
-
-
-{%block finally%}
+{%endblock%} {%block finally%}
 <script>
     //AlertBox
     var $alert = $("#form-alert");
-    function bootstrapAlert(alertClass, msg){
-            $alert.find(".message").html(msg);
-            $alert.removeClass("hidden alert-info alert-danger alert-warning alert-success").addClass(alertClass).css("display", "block").alert();
-            location.hash = "#form-alert";
-    }    
+
+    function bootstrapAlert(alertClass, msg) {
+        $alert.find(".message").html(msg);
+        $alert.removeClass("hidden alert-info alert-danger alert-warning alert-success").addClass(alertClass).css("display", "block").alert();
+        location.hash = "#form-alert";
+    }
 </script>
 
 <script>
     var $pw = $('#password'),
         $conf = $("#confirm");
-    $('form').submit(function(e){
+    $('form').submit(function(e) {
         e.preventDefault();
-        if($pw.val() != $conf.val())
+        if ($pw.val() != $conf.val())
             bootstrapAlert("alert-danger", "Passwords do not match.");
-        else{
-            $.post("/admin/addUser", $('form').serialize(), function(data){console.log(data);
-                if(data.success){
+        else {
+            $.post("/admin/user", $('form').serialize(), function(data) {
+                console.log(data);
+                if (data.success) {
                     bootstrapAlert("alert-success", "User successfully added. Sending you back to admin...");
-                    setTimeout(function(){
-                        window.location="/admin";
+                    setTimeout(function() {
+                        window.location = "/admin";
                     }, 1500);
-                }
-                else if(data.name === "ValidationError"){
-                     if(data.errors){
-                         bootstrapAlert("alert-danger", "Error");
-                     }
-                }
-                else if(data.name ==="MongoError"){
-                    if(data.code == 11000 && (data.err.indexOf("email") != -1)){
+                } else if (data.name === "ValidationError") {
+                    if (data.errors) {
+                        bootstrapAlert("alert-danger", "Error");
+                    }
+                } else if (data.name === "MongoError") {
+                    if (data.code == 11000 && (data.err.indexOf("email") != -1)) {
                         console.log("Slug error")
 
-                        bootstrapAlert("alert-info",'That email already has an account with us, yo!')                
+                        bootstrapAlert("alert-info", 'That email already has an account with us, yo!')
                     }
-                    
+
                 }
-            }).fail(function(err){
+            }).fail(function(err) {
                 console.log(err);
-                 bootstrapAlert("alert-danger", "Error");
+                bootstrapAlert("alert-danger", "Error");
             });
         }
     });
