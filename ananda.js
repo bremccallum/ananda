@@ -1,24 +1,20 @@
-//
-//  DB & Models
-//
-var mongoose = require("mongoose");
-var mongoUri = process.env.MONGOLAB_URI ||
-    process.env.MONGOHQ_URL ||
-    process.env.ANANDA_MONGO_DEV;
-mongoose.connect(mongoUri);
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-require("./models");
-//
-//  App Init
-//
 var express = require('express'),
-    app = module.exports = express();
+    app = express(),
+    cache = require('./cache'),
+    moment = require("moment"),
+    nunjucks = require("nunjucks"),
+
+    CACHE_TIME = 1000 * 60 * 30;
+
 app.configure(function () {
+    //Connect to database
+    require("./models");
+    app.locals.prod = process.env.NODE_ENV == "production";
     app.use(express.bodyParser());
     app.use(express.cookieParser('super secret string'));
-    app.use('/admin', function (req, res, next) { //Do security shit here someday maybe!
+    app.use('/admin', function (req, res, next) {
         if (req.signedCookies.loggedin === "true") {
+            res.locals.admin = true;
             next();
         } else {
             console.log("redirecting to login");
@@ -26,19 +22,22 @@ app.configure(function () {
         }
     });
     app.disable("etag");
+    app.use('/', cache(CACHE_TIME, '/'));
+    app.use('/instructors', cache(CACHE_TIME, '/instructors'));
+    app.use('/classes', cache(CACHE_TIME, '/classes'));
+    app.use('/schedule', cache(CACHE_TIME, '/schedule'));
+    //half an hour?
     require('./routes');
     app.use(express.static(__dirname + "/public"));
 });
 //
 //   Templating
 //
-var nunjucks = require("nunjucks").configure('views', {
+nunjucks = nunjucks.configure('views', {
     watch: true,
     autoescape: true,
     express: app
 });
-app.locals.prod = process.env.NODE_ENV == "production";
-var moment = require("moment");
 nunjucks.addFilter('prettyDate', function (v) {
     return (moment(v).format("M-DD-YY"));
 });
@@ -88,3 +87,4 @@ var port = Number(process.env.PORT || 6969)
 app.listen(port, function () {
     console.log('Listening on port ' + port);
 });
+module.exports = app;
