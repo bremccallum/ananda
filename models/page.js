@@ -9,10 +9,14 @@ var pageSchema = Schema({
     page: {
         type: String,
         required: true,
-        index:true
+        index: true
     },
-    image:{
+    image: {
         type: String
+    },
+    heading: {
+        type: String,
+        required: true
     },
     body: {
         type: String,
