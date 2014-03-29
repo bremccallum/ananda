@@ -37,7 +37,7 @@
 ## Pages
 Anticipated pages include
 
-* ~~Landing/Home page~~
+* ~~Home page~~
 * ~~Instructors page~~
 * ~~Schedule~~
 * ~~Class descriptions~~

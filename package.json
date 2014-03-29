@@ -1,29 +1,32 @@
 {
-  "name": "ananda-yoga-site",
-  "description": "a prototype website for ananda yoga",
-  "version": "0.0.1",
-  "private": true,
-  "main": "package.json",
-  "engines": {
-    "node": "0.10.x"
-  },
-  "dependencies": {
-    "express": "3.x",
-    "mongoose": "3.8.x",
-    "nunjucks": "~1.0.1",
-    "extend": "~1.2.1",
-    "moment": "~2.5.1",
-    "soap": "~0.4.0",
-    "q": "~1.0.1",
-    "sendgrid": "~1.0.2",
-    "bcrypt-nodejs": "0.0.3",
-    "mongoose-q": "0.0.9",
-    "soap-q": "~0.1.2"
-  },
-  "devDependencies": {
-    "grunt": "~0.4.2",
-    "grunt-contrib-less": "~0.10.0",
-    "grunt-contrib-watch": "~0.5.3",
-    "grunt-contrib-cssmin": "~0.9.0"
-  }
+    "name": "ananda-yoga-site",
+    "description": "a prototype website for ananda yoga",
+    "version": "0.0.1",
+    "private": true,
+    "main": "package.json",
+    "scripts": {
+        "start": "node ananda.js"
+    },
+    "engines": {
+        "node": "0.10.x"
+    },
+    "dependencies": {
+        "express": "3.x",
+        "mongoose": "3.8.x",
+        "nunjucks": "~1.0.1",
+        "extend": "~1.2.1",
+        "moment": "~2.5.1",
+        "soap": "~0.4.0",
+        "q": "~1.0.1",
+        "sendgrid": "~1.0.2",
+        "bcrypt-nodejs": "0.0.3",
+        "mongoose-q": "0.0.9",
+        "soap-q": "~0.1.2"
+    },
+    "devDependencies": {
+        "grunt": "~0.4.2",
+        "grunt-contrib-less": "~0.10.0",
+        "grunt-contrib-watch": "~0.5.3",
+        "grunt-contrib-cssmin": "~0.9.0"
+    }
 }
