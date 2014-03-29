@@ -1,13 +1,14 @@
 var Q = require('q'),
     moment = require("moment"),
-    Posts = require("mongoose-q")().model('Post');
+    mongoose = require("mongoose-q")(),
+    Posts = mongoose.model('Post'),
+    Pages = mongoose.model('Page');
 module.exports = function (soap) {
     var Classes = soap.Classes,
         Staff = soap.Staff,
         SArgs = soap.setArgs;
 
-    function landing(req, res) {
-        console.time("Landing");
+    function home(req, res) {
         var now = moment();
         if (now.add('minutes', -30).day() != moment().day())
             now.add('minutes', 30);
@@ -56,14 +57,18 @@ module.exports = function (soap) {
         }).select('title body published').sort({
             'published': -1
         }).limit(4);
+        var pageQuery = Pages.findOne({
+            page:"home"
+        });
         //get classes
         //TODO: Is two requests really faster than one giant request?
         Q.all([
             Classes.GetClassesQ(args),
             Classes.GetClassesQ(workshopArgs),
-            postQuery.execQ()
+            postQuery.execQ(),
+            pageQuery.execQ()
         ])
-            .spread(function (classes, workshops, posts) {
+            .spread(function (classes, workshops, posts, page) {
                 if (0 == classes.GetClassesResult.ResultCount)
                     classes = [];
                 else {
@@ -72,9 +77,11 @@ module.exports = function (soap) {
                         classes = [classes];
                     }
                 }
-                var tmrwStart = tmrw.startOf('day');
                 var model = {};
+                model.page = page;
                 model.posts = posts;
+
+                var tmrwStart = tmrw.startOf('day');
                 model.today = classes.filter(function (ele) {
                     var d = moment(ele.StartDateTime);
                     return d.isBefore(tmrwStart);
@@ -84,8 +91,8 @@ module.exports = function (soap) {
                 });
                 model.workshops = workshops.GetClassesResult.Classes.Class;
                 model.pm = (model.today[0] ? moment(model.today[0].StartDateTime).hours() : now.hours()) >= 16;
-                res.render('landing.html', model);
-                console.timeEnd("Landing");
+
+                res.render('home.html', model);
             }).fail(function (err) {
                 console.error(err);
                 res.redirect("/error");
@@ -151,83 +158,83 @@ module.exports = function (soap) {
         };
         Classes.GetClassDescriptionsQ(SArgs(args))
             .then(function (classes) {
-                    classes = classes.GetClassDescriptionsResult.ClassDescriptions.ClassDescription;
-                    classes.map(function (o, i) {
-                        o.Description = (typeof o.Description == 'object') ? '' : o.Description;
-                    });
-                    res.render('classes.html', {
-                        title: "Classes",
-                        classes: classes
-                    });
-        }).fail(function (err) {
-        console.error(err);
-        res.redirect("/error");
-    });
-}
+                classes = classes.GetClassDescriptionsResult.ClassDescriptions.ClassDescription;
+                classes.map(function (o, i) {
+                    o.Description = (typeof o.Description == 'object') ? '' : o.Description;
+                });
+                res.render('classes.html', {
+                    title: "Classes",
+                    classes: classes
+                });
+            }).fail(function (err) {
+                console.error(err);
+                res.redirect("/error");
+            });
+    }
 
-function schedule(req, res) {
-    var now = moment();
-    var future = moment().add('weeks', 2)
-    var args = {
-        StartDateTime: now.format(soap.DateFormat),
-        EndDateTime: future.format(soap.DateFormat),
-        SchedulingWindow: true,
-        XMLDetail: 'Bare',
-        Fields: [
-            {
-                string: 'Classes.Staff.Name'
+    function schedule(req, res) {
+        var now = moment();
+        var future = moment().add('weeks', 2)
+        var args = {
+            StartDateTime: now.format(soap.DateFormat),
+            EndDateTime: future.format(soap.DateFormat),
+            SchedulingWindow: true,
+            XMLDetail: 'Bare',
+            Fields: [
+                {
+                    string: 'Classes.Staff.Name'
                 },
-            {
-                string: 'Classes.ClassDescription.Name'
+                {
+                    string: 'Classes.ClassDescription.Name'
                 },
-            {
-                string: 'Classes.StartDateTime'
+                {
+                    string: 'Classes.StartDateTime'
                 },
-            {
-                string: 'Classes.EndDateTime'
+                {
+                    string: 'Classes.EndDateTime'
                 }
             ]
-    };
-    Classes.GetClassesQ(SArgs(args))
-        .then(function (classes) {
-            var model = {
-                classes: {},
-                days: []
-            };
-            for (var i = 0; i <= future.diff(now, 'days'); i++) {
-                var m = moment(now).add('days', i).format("dddd [the] Do");
-                model.days.push(m);
-                model.classes[m] = [];
-            }
-            classes.GetClassesResult.Classes.Class.forEach(function (c) {
-                model.classes[moment(c.StartDateTime).format("dddd [the] Do")].push(c);
-            });
-            model.title = "Schedule";
-            res.render("schedule.html", model);
-        }).fail(function (err) {
-            console.error(err);
-            res.redirect("/error");
-        });
-}
-
-function viewPost(req, res) {
-    Posts.findOne({
-        slug: req.params.slug
-    }, function (err, post) {
-        var model = {
-            title: post.title,
-            post: post
         };
-        res.render("news.html", model);
-    })
-}
+        Classes.GetClassesQ(SArgs(args))
+            .then(function (classes) {
+                var model = {
+                    classes: {},
+                    days: []
+                };
+                for (var i = 0; i <= future.diff(now, 'days'); i++) {
+                    var m = moment(now).add('days', i).format("dddd [the] Do");
+                    model.days.push(m);
+                    model.classes[m] = [];
+                }
+                classes.GetClassesResult.Classes.Class.forEach(function (c) {
+                    model.classes[moment(c.StartDateTime).format("dddd [the] Do")].push(c);
+                });
+                model.title = "Schedule";
+                res.render("schedule.html", model);
+            }).fail(function (err) {
+                console.error(err);
+                res.redirect("/error");
+            });
+    }
 
-//exports
-var out = {};
-out.landing = landing;
-out.instructors = instructors;
-out.classes = classes;
-out.schedule = schedule;
-out.viewPost = viewPost;
-return out;
+    function viewPost(req, res) {
+        Posts.findOne({
+            slug: req.params.slug
+        }, function (err, post) {
+            var model = {
+                title: post.title,
+                post: post
+            };
+            res.render("news.html", model);
+        })
+    }
+
+    //exports
+    var out = {};
+    out.home = home;
+    out.instructors = instructors;
+    out.classes = classes;
+    out.schedule = schedule;
+    out.viewPost = viewPost;
+    return out;
 }

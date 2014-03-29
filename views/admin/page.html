@@ -1,0 +1,107 @@
+{%extends "layout.html"%}
+<!----->
+{%block styles%}
+<link rel="stylesheet" href="/styles/summernote.css">
+<!----->
+{%endblock%} {% block bodyattr %} class="page page-edit"{% endblock %}
+<!----->
+{%block main%}
+<div class="page-head">
+    <h1>Edit Page: {{page.heading}}<h1>
+</div>
+<div class="alertBox">
+    <div id="form-alert" class="alert alert-dismissable {{'alert-danger' if error}}{{'alert-success' if success}}{{ 'hidden' if not error and not success}}">
+        <button class="close" type="button" onclick="$('#form-alert').addClass('hidden')">&times;</button>
+        <p class="message">{{error or success | safe}}</p>
+    </div>
+</div>
+<div class="form-holder">
+    <form id="form" action="" method="page" autocomplete="off">
+        <div class="form-group">
+            <fieldset>
+                <input type="hidden" name="page" value="{{page}}">
+                <label for="heading">Heading</label>
+                <input type="text" class="form-control" id="heading" name="heading" value="{{heading}}">
+                <label for="image">Image url</label>
+                <input type="text" name="image" class="form-control" value="{{image}}" placeholder="//example.com/image.png">
+                <input type="hidden" id="body" name="body">
+                <label for="summernote">Content</label>
+                <div id="summernote"></div>
+            </fieldset>
+        </div>
+        <div class="submit-buttons">
+            <button class="btn btn-default">Save Changes</button>
+        </div>
+    </form>
+</div>
+{%endblock%} {%block scripts%}
+<script src="/js/summernote.min.js"></script>
+{%endblock%}
+<!----->
+{%block finally%}
+<script>
+    //AlertBox
+    var $alert = $("#form-alert");
+
+    function bootstrapAlert(alertClass, msg) {
+        $alert.find(".message").html(msg);
+        $alert.removeClass("hidden alert-info alert-danger alert-warning alert-success").addClass(alertClass).css("display", "block").alert();
+        location.hash = "#form-alert";
+        setTimeout(function(){
+            $alert.addClass('hidden');
+        }, 3000);
+    }
+</script>
+<script>
+    //summernote
+    $summernote = $("#summernote");
+    $summernote.summernote({
+        height: 300,
+        toolbar: [
+            //['table', ['table']], // no table button
+            ['style', ['style']],
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+            ['insert', ['picture', 'link']],
+            ['help', ['help']]
+        ]
+    });
+    $summernote.code("{{body | regexReplace('"', "g", "\\\"") | safe}}");
+</script>
+<script>
+    //
+    $('#form').submit(function(e) {
+        e.preventDefault();
+        $("#body").val($summernote.code());
+
+        function handleData(data) {
+            console.log(data);
+            if (data.success) {
+                bootstrapAlert("alert-success", "Changes successfully saved.");
+                return;
+            }
+            console.log(data);
+            if (data.name === "ValidationError") {
+                if (data.err.errors) {
+                    bootstrapAlert("alert-info", "Heading and body text are required.");
+                }
+            } else if (data.name === "MongoError") {
+                bootstrapAlert("alert-danger", "There was a database error.");
+            }
+        };
+        $.ajax({
+            type: "PUT",
+            url: "/admin/page",
+            data: $(this).serialize(),
+            success: handleData,
+            error: function(err) {
+                console.log(err);
+            },
+            dataType: "json"
+        });
+    });
+</script>
+{% endblock %}

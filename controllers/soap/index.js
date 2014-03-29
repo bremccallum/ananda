@@ -1,13 +1,14 @@
 var soap = require('soap-q')(),
     extend = require('extend'),
     Q = require("q");
-var classUrl = __dirname + '/controllers/soap/ClassService.wsdl';
-var staffUrl = __dirname + '/controllers/soap/StaffService.wsdl';
+
+if (process.env.NODE_ENV === "development") {
+    Q.longStackSupport = true;
+}
 
 module.exports = function (callback) {
-    if (process.env.NODE_ENV === "development") {
-        Q.longStackSupport = true;
-    }
+    var classUrl = __dirname + '/ClassService.wsdl';
+    var staffUrl = __dirname + '/StaffService.wsdl';
     Q.all([soap.createClientQ(classUrl), soap.createClientQ(staffUrl)])
         .spread(function (c, s) {
             console.log("SOAP initialized.")

@@ -1,39 +1,9 @@
-var Q = require('q'),
-    moment = require("moment"),
-    mongoose = require("mongoose-q")(),
-    Posts = mongoose.model('Post'),
-    Users = mongoose.model("User");
+var Posts = require("mongoose-q")().model('Post'),
+    Q = require('q');
+
 module.exports = function (soap) {
 
-    function login(req, res) {
-        Users.authenticate(req.body.email, req.body.password, function (err, isMatch) {
-            if (isMatch) {
-                res.cookie("loggedin", "true", {
-                    maxAge: 1000 * 60 * 60 * 5,
-                    signed: true
-                })
-                res.redirect("/admin");
-            } else {
-                res.redirect("/login");
-            }
-        });
-    }
-    //'/admin'
-    function dashboard(req, res) {
-        Q.all([Users.find().execQ(),
-            Posts.find().execQ()])
-            .spread(function (users, posts) {
-                var model = {
-                    posts: posts,
-                    users: users
-                }
-                res.render('/admin/admin.html', model);
-            }).done(function (err) {
-                if (err) res.send("Error loading posts. Try reloading the page.\nError:" + err);
-            });
-    }
-
-
+    //#Helpers
     function teachersToNames(staff) {
         staff = staff.GetStaffResult.StaffMembers.Staff
             .filter(function (staff) {
@@ -50,16 +20,12 @@ module.exports = function (soap) {
             Fields: [
                 {
                     string: 'Staff.Name'
-                }
-            ],
+            }
+        ],
             XMLDetail: 'Bare'
         };
         return soap.Staff.GetStaffQ(soap.setArgs(args));
     }
-
-    ////////////////////////////////
-    /////////// POSTS  /////////////
-    ////////////////////////////////
 
     function parseBody(body) {
         var post = {
@@ -73,17 +39,18 @@ module.exports = function (soap) {
         return post;
     }
 
+    // #Routes
     function doPost(post, options) {
         var deferred = Q.defer();
 
         function saveToPromise(err, post) {
             if (err)
-                deferred.reject(err)
+                deferred.reject(err);
             else
                 deferred.resolve({
                     success: true,
                     post: post
-                })
+                });
         }
 
         if (options.publish) {
@@ -112,7 +79,7 @@ module.exports = function (soap) {
         return deferred.promise;
     }
 
-    function newPost(req, res) {
+    function addPost(req, res) {
         getTeacherPromise().then(function (teachers) {
             var model = {
                 title: "New Post",
@@ -164,50 +131,14 @@ module.exports = function (soap) {
             });
     }
 
-    function addPost(req, res) {
+    function doAddPost(req, res) {
         req.body.create = true;
         updatePost(req, res);
     }
-
-
-    ///////////////////////////////////////////////////////
-    ///////////////// USER ///////////////////////////////
-    /////////////////////////////////////////////////////
-
-    function newUser(req, res) {
-        var model = {
-            title: "Add User"
-        };
-        res.render("admin/user.html", model);
-    }
-
-    function addUser(req, res) {
-        var body = req.body;
-        var user = new Users({
-            email: body.email,
-            password: body.password
-        });
-        user.save(function (err, user) {
-            if (err) res.send(err);
-            else res.send({
-                success: true
-            });
-        });
-    }
-    //exports
     var out = {};
-    out.dashboard = dashboard;
-
-    out.login = login;
-
-    out.newPost = newPost;
-    out.addPost = addPost;
-
-    out.editPost = editPost;
-    out.updatePost = updatePost;
-
-    out.newUser = newUser;
-    out.addUser = addUser;
-
+    out.add = addPost;
+    out.doAdd = doAddPost;
+    out.edit = editPost;
+    out.update = updatePost;
     return out;
 }
