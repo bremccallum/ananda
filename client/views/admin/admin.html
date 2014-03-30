@@ -3,7 +3,7 @@
 <!----->
 {%block main%}
 <div class="row">
-    <div class="col-sm-4">
+    <div class="col-sm-5">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h2>Pages</h2>
@@ -27,17 +27,17 @@
             <ul class="list-group">
                 {% for user in users %}
                 <li class="list-group-item">
-                    <a href="#" onclick="deleteUser(this, '{{user.email}}')" class="pull-right">
+                    <a href="#" onclick="deleteUser(this, '{{user._id}}')" class="pull-right">
                         <i class="fa fa-trash-o fa-2x"></i>
                     </a>
-                    <h4 class="list-group-item-heading"><a href="/admin/user/{{user.email}}"></a>{{user.email}}</h4>
+                    <h4 class="list-group-item-heading"><a href="/admin/user/{{user._id}}">{{user.email}}</a></h4>
                 </li>
                 {% endfor %}
                 <!----->
             </ul>
         </div>
     </div>
-    <div class="col-sm-7 col-sm-offset-1">
+    <div class="col-sm-7">
         <div class="admin-box panel panel-default">
             <div class="panel-heading">
                 <a href="/admin/post" class="btn btn-primary pull-right">New Post</a>
@@ -48,7 +48,8 @@
                 {% for post in posts %}
                 <li class="list-group-item {{'published' if post.published}}">
                     <a href="/admin/post/{{post.slug}}">
-                        <h3 class="list-group-item-heading">{{post.title}}</h3>
+                        <h4
+ class="list-group-item-heading">{{post.title}}</h4>
                     </a>
                     {% if post.isPublished %}
                     <p>Published {{post.published | prettyDate}}</p>
@@ -64,8 +65,8 @@
 </div>
 {% endblock %} {% block finally%}
 <script>
-    function deleteUser(a, email){
-        $.post('/admin/user/delete', {email:email}, function(data){
+    function deleteUser(a, id){
+        $.post('/admin/user/delete', {id:id}, function(data){
             console.log("Delete user callback")
             console.log(data);
             if(data.success){

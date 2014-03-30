@@ -31,6 +31,18 @@ module.exports = function (callback) {
                         args)
                 };
             };
+            clients.cleanClasses = function (rawClasses){
+                var cleanedClasses;
+                if (0 == rawClasses.GetClassesResult.ResultCount)
+                    cleanedClasses = [];
+                else {
+                    cleanedClasses = rawClasses.GetClassesResult.Classes.Class;
+                    if (cleanedClasses.length === undefined) { //only one class
+                        cleanedClasses = [rawClasses];
+                    }
+                }
+                return cleanedClasses;
+            };
             callback(clients);
         }).fail(function (err) {
             console.error(err);

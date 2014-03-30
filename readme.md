@@ -14,10 +14,12 @@
 * post paging on admin?
 
 #### General Site Stuff
-* style
-* WYSIWIG for front-page content
-* pricing & membership (see WYSIWIG)
 * workshops page
+* workshops: group by month, then name, on home page
+* ~~workshops: group by name on home~~
+* style
+* ~~WYSIWIG for front-page content~~
+* pricing & membership (see WYSIWIG)
 * retail store WYSIWIG
 * ~~login system~~
 * ~~view caching~~

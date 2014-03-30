@@ -28,10 +28,7 @@ function doAddUser(req, res) {
 }
 
 function editUser(req, res) {
-    var email = req.body.id;
-    Users.findOneQ({
-        email: email
-    }).then(function (user) {
+    Users.findByIdQ(req.body.id).then(function (user) {
         res.render('admin/user.html', {
             edit: true,
             name: user.name,
@@ -47,7 +44,16 @@ function updateUser(req, res) {
     var email = req.body.email,
         password = req.body.password,
         newPassword = req.body.newPassword || password;
-
+    var user = Users.findByIdQ(req.body.id).then(function (user) {
+        user.email = req.body.email || user.email;
+        user.password = req.body.password || user.password;
+        user.name = req.body.name || user.name;
+        user.save(function (err) {
+            res.send(err || {
+                success: true
+            });
+        });
+    })
     Users.authenticate(email, password, function (err, isMatch) {
         if (isMatch) {
             Users.updateQ({
@@ -72,7 +78,7 @@ function updateUser(req, res) {
 
 function deleteUser(req, res) {
     Users.remove({
-        email: req.body.email
+        _id: req.body.id
     }, function (err) {
         if (err)
             res.send(err);

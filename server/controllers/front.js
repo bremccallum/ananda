@@ -3,6 +3,15 @@ var Q = require('q'),
     mongoose = require("mongoose-q")(),
     Posts = mongoose.model('Post'),
     Pages = mongoose.model('Page');
+
+function Workshop(mboWorkshop) {
+    this.id = mboWorkshop.ClassDescription.ID;
+    this.date = mboWorkshop.StartDateTime;
+    this.name = mboWorkshop.ClassDescription.Name;
+    this.desc = mboWorkshop.ClassDescription.Description;
+    return this;
+}
+
 module.exports = function (soap) {
     var Classes = soap.Classes,
         Staff = soap.Staff,
@@ -58,7 +67,7 @@ module.exports = function (soap) {
             'published': -1
         }).limit(4);
         var pageQuery = Pages.findOne({
-            page:"home"
+            page: "home"
         });
         //get classes
         //TODO: Is two requests really faster than one giant request?
@@ -69,18 +78,20 @@ module.exports = function (soap) {
             pageQuery.execQ()
         ])
             .spread(function (classes, workshops, posts, page) {
-                if (0 == classes.GetClassesResult.ResultCount)
-                    classes = [];
-                else {
-                    classes = classes.GetClassesResult.Classes.Class;
-                    if (classes.length === undefined) { //only one class
-                        classes = [classes];
-                    }
-                }
+                classes = soap.cleanClasses(classes);
                 var model = {};
                 model.page = page;
                 model.posts = posts;
-
+                model.workshops = function () {
+                    var result = {};
+                    soap.cleanClasses(workshops).forEach(function (ws) {
+                        var month = moment(ws.StartDateTime).format('MM');
+                        if ((result[month] || result[month] = []).indexOf(ws.name) == -1) {
+                            result[month].push(ws.name);
+                        }
+                    });
+                    return result;
+                }
                 var tmrwStart = tmrw.startOf('day');
                 model.today = classes.filter(function (ele) {
                     var d = moment(ele.StartDateTime);
@@ -89,7 +100,6 @@ module.exports = function (soap) {
                 model.tmrw = classes.filter(function (ele) {
                     return moment(ele.StartDateTime).isAfter(moment(now).endOf('day'));
                 });
-                model.workshops = workshops.GetClassesResult.Classes.Class;
                 model.pm = (model.today[0] ? moment(model.today[0].StartDateTime).hours() : now.hours()) >= 16;
 
                 res.render('home.html', model);

@@ -1,4 +1,4 @@
-var app = require('./ananda');
+var app = require('../ananda');
 app._cache = {};
 module.exports = function (milliseconds, myRoute) {
     myRoute = myRoute.toLowerCase();

@@ -1,6 +1,6 @@
 {%extends 'layout.html'%} {%block main%}
 <div class="row">
-    <h1 class="col-sm-9 col-sm-offset-1">Add User</h1>
+    <h1 class="col-sm-9 col-sm-offset-1">{{'Edit' if edit else 'Add'}} User</h1>
 </div>
 <div class="row">
     <div id="form-alert" class="col-xs-12 alert alert-dismissable {{'alert-danger' if error}}{{'alert-success' if success}}{{ 'hidden' if not error and not success}}">
@@ -9,10 +9,10 @@
     </div>
 </div>
 <div class="row">
-    <form action="" class="col-sm-8 col-sm-offset-3 form-vertical">
+    <form action="" class="col-sm-8 col-sm-offset-2 form-vertical">
         {%if edit%}
         <input type="hidden" value="{{id}}" name="id">{% endif %}
-        <label for="name">Name:</label>
+        <label for="name">Name <small>(optional)</small></label>
         <input class="form-control" type="email" required name="email" id="email" value="{{name}}">
 
         <label for="email">Email

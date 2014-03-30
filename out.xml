@@ -1,0 +1,32 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:tns="http://clients.mindbodyonline.com/api/0_5">
+    <soap:Header></soap:Header>
+    <soap:Body>
+        <tns:GetClasses xmlns:tns="http://clients.mindbodyonline.com/api/0_5" xmlns="http://clients.mindbodyonline.com/api/0_5">
+            <tns:Request>
+                <tns:SourceCredentials>
+                    <tns:SourceName>NovaugustWebDesign</tns:SourceName>
+                    <tns:Password>5qNInG8NEsagui9L35ujs51wz5s=</tns:Password>
+                    <tns:SiteIDs>
+                        <tns:int>29280</tns:int>
+                    </tns:SiteIDs>
+                </tns:SourceCredentials>
+                <tns:Fields>
+                    <tns:string>Classes.ClassDescription.Name</tns:string>
+                </tns:Fields>
+                <tns:Fields>
+                    <tns:string>Classes.StartDateTime</tns:string>
+                </tns:Fields>
+                <tns:Fields>
+                    <tns:string>Classes.Staff.Name</tns:string>
+                </tns:Fields>
+                <tns:StartDateTime>2014-03-30T13:40:47</tns:StartDateTime>
+                <tns:EndDateTime>2014-05-31T23:59:59</tns:EndDateTime>
+                <tns:SchedulingWindow>true</tns:SchedulingWindow>
+                <tns:ProgramIDs>
+                    <tns:int>27</tns:int>
+                </tns:ProgramIDs>
+                <tns:XMLDetail>Bare</tns:XMLDetail>
+            </tns:Request>
+        </tns:GetClasses>
+    </soap:Body>
+</soap:Envelope>
