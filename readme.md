@@ -14,6 +14,8 @@
 * post paging on admin?
 
 #### General Site Stuff
+* posts: add a header-image field. set that as the post's background, and give it a pretty top.
+* posts: come up with a default header image
 * workshops page
 * workshops: group by month, then name, on home page
 * ~~workshops: group by name on home~~
