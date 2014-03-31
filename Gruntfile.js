@@ -3,17 +3,17 @@ module.exports = function (grunt) {
         less: {
             development: {
                 files: {
-                    "public/styles/ananda.css": "less/ananda.less"
+                    "client/public/styles/ananda.css": "client/less/ananda.less"
                 },
                 cleancss: true
             }
         },
         watch: {
-            files: ['./less/*', './less/*/*'],
+            files: ['./client/less/**'],
             tasks: ['less', 'cssmin']
         },
         cssmin : {
-            files:{src:'public/styles/ananda.css', dest:'public/styles/ananda.min.css'}
+            files:{src:'client/public/styles/ananda.css', dest:'client/public/styles/ananda.min.css'}
         }
     })
     grunt.loadNpmTasks('grunt-contrib-less');
