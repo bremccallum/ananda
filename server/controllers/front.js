@@ -7,7 +7,6 @@ var Q = require('q'),
 function Workshop(mboWorkshop) {
     this.id = mboWorkshop.ClassDescription.ID;
     this.date = mboWorkshop.StartDateTime;
-    console.log(mboWorkshop.StartDateTime)
     this.name = mboWorkshop.ClassDescription.Name;
     this.desc = mboWorkshop.ClassDescription.Description;
     return this;
@@ -64,7 +63,7 @@ module.exports = function (soap) {
         });
         var postQuery = Posts.find({
             isPublished: true
-        }).select('title body published').sort({
+        }).select('title body published slug').sort({
             'published': -1
         }).limit(4);
         var pageQuery = Pages.findOne({
@@ -95,7 +94,6 @@ module.exports = function (soap) {
                             result[month].push(ws.name);
                         }
                     });
-                        console.log(result);
                     return result;
                 })()
                 var tmrwStart = tmrw.startOf('day');
