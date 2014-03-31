@@ -4446,6 +4446,9 @@ button.close {
 /* @import "stacked"; */
 /* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
    readers do not read off random characters that represent icons */
+.fa-bell-o:before {
+  content: "\f0a2";
+}
 .fa-unlink:before,
 .fa-chain-broken:before {
   content: "\f127";
@@ -4787,7 +4790,6 @@ button.close {
 .@{fa-css-prefix}-user-md:before { content: @fa-var-user-md; }
 .@{fa-css-prefix}-stethoscope:before { content: @fa-var-stethoscope; }
 .@{fa-css-prefix}-suitcase:before { content: @fa-var-suitcase; }
-.@{fa-css-prefix}-bell-o:before { content: @fa-var-bell-o; }
 .@{fa-css-prefix}-coffee:before { content: @fa-var-coffee; }
 .@{fa-css-prefix}-cutlery:before { content: @fa-var-cutlery; }
 .@{fa-css-prefix}-file-text-o:before { content: @fa-var-file-text-o; }
