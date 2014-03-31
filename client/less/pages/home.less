@@ -1,31 +1,32 @@
-.home{
+.home {
     #left {
         h2 {
-            text-align:right;
+            text-align: right;
             margin: 0;
-            margin-bottom:.4em;
+            margin-bottom: .4em;
             border-bottom: 1px dotted rgba(0, 0, 0, .1);
-            i{
+            i {
                 .pull-left();
             }
         }
-        p.upcoming{
-            margin-top:1.5em;
-            padding-left:.3em;
-            .class-name{
-                font-family:@title-font;
-            }
-            time{
-                display:block;
-                width:100%;
-                padding-left:2em;
-                border-left:1px solid @variantDark;
+        p.upcoming {
+            margin-top: 1.5em;
+            padding-left: .3em;
+            .class-name {
+                font-family: @title-font;
 
             }
-            .class-instructor{
+            time {
+                display: block;
+                width: 100%;
+                padding-left: 2em;
+                border-left: 1px solid@variantDark;
+
+            }
+            .class-instructor {
                 .pull-right();
                 font-style: italic;
-                font-sizes:.98;
+                font-sizes: .98;
             }
         }
     }
@@ -38,21 +39,28 @@
     }
     article {
         padding-left: 1em;
-        & > h1 {
-            font-size:1.6em;
-            margin-top:0;
-            text-align: center;
-        }
+        position: relative;
+        z-index: -1;
         img {
-            float: right;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            opacity: .2;
         }
-        &:after {
-            display: block;
-            content: "";
-            clear: both;
-        }
-        time {
-            font-size: .8em;
+        & > article-content {
+            position: relative;
+            z-index: 1;
+            h1 {
+                font-size: 1.6em;
+                margin-top: 0;
+                text-align: center;
+            }
+            time {
+                font-size: .8em;
+                color: @gray-light;
+
+            }
         }
     }
 }

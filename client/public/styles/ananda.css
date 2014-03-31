@@ -5174,6 +5174,11 @@ h2 a:hover,
 h3 a:hover {
   color: #ffbf66;
 }
+h1 i.fa,
+h2 i.fa,
+h3 i.fa {
+  color: #295ca3;
+}
 main {
   padding-top: 1em;
 }
@@ -5231,22 +5236,28 @@ main .affix-bottom {
 }
 .home article {
   padding-left: 1em;
+  position: relative;
+  z-index: -1;
 }
-.home article > h1 {
+.home article img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: .2;
+}
+.home article > article-content {
+  position: relative;
+  z-index: 1;
+}
+.home article > article-content h1 {
   font-size: 1.6em;
   margin-top: 0;
   text-align: center;
 }
-.home article img {
-  float: right;
-}
-.home article:after {
-  display: block;
-  content: "";
-  clear: both;
-}
-.home article time {
+.home article > article-content time {
   font-size: .8em;
+  color: #999999;
 }
 .schedule table.class-schedule tr:first-child {
   border-bottom-width: 2px;
