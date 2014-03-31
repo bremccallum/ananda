@@ -5237,25 +5237,23 @@ main .affix-bottom {
 .home article {
   padding-left: 1em;
   position: relative;
-  z-index: -1;
 }
 .home article img {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  opacity: .2;
+  opacity: .15;
 }
-.home article > article-content {
+.home article > .article-content {
   position: relative;
-  z-index: 1;
 }
-.home article > article-content h1 {
+.home article > .article-content h1 {
   font-size: 1.6em;
   margin-top: 0;
   text-align: center;
 }
-.home article > article-content time {
+.home article > .article-content time {
   font-size: .8em;
   color: #999999;
 }

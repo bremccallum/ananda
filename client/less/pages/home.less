@@ -40,17 +40,15 @@
     article {
         padding-left: 1em;
         position: relative;
-        z-index: -1;
         img {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            opacity: .2;
+            opacity: .15;
         }
-        & > article-content {
+        & > .article-content {
             position: relative;
-            z-index: 1;
             h1 {
                 font-size: 1.6em;
                 margin-top: 0;
@@ -59,7 +57,6 @@
             time {
                 font-size: .8em;
                 color: @gray-light;
-
             }
         }
     }
