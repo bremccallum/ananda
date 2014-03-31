@@ -18,14 +18,11 @@
 * posts: come up with a default header image
 * workshops page
 * workshops: group by month, then name, on home page
-* ~~workshops: group by name on home~~
-* style
-* ~~WYSIWIG for front-page content~~
 * pricing & membership (see WYSIWIG)
 * retail store WYSIWIG
-* ~~login system~~
-* ~~view caching~~
-* ~~navbar activation~~
+
+##### style
+* Media queries for cards for 100% mobile width
 
 ##Getting Started
 <code>npm install</code> will get dependencies out of packages.json
