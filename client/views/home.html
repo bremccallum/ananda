@@ -33,10 +33,10 @@
         <div id="special" class="special card">
             <h2>
                 <i class="fa fa-bell-o"></i>Workshops</h2>
-            {%for month in workshops%}
-            <h4>{{month}}</h4>
+            {%for month, classes in workshops%}
+            <h3>{{month}}</h3>
             <ol class="list-unstyled">
-                {%for workshop in workshops[month]%}
+                {% for workshop in classes %}
                 <li class="align-right">
                     <a href="/workshops#{{workshop | slugify}}">{{workshop}}</a>
                 </li>

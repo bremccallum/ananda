@@ -7,6 +7,7 @@ var Q = require('q'),
 function Workshop(mboWorkshop) {
     this.id = mboWorkshop.ClassDescription.ID;
     this.date = mboWorkshop.StartDateTime;
+    console.log(mboWorkshop.StartDateTime)
     this.name = mboWorkshop.ClassDescription.Name;
     this.desc = mboWorkshop.ClassDescription.Description;
     return this;
@@ -82,16 +83,21 @@ module.exports = function (soap) {
                 var model = {};
                 model.page = page;
                 model.posts = posts;
-                model.workshops = function () {
+                model.workshops = (function () {
                     var result = {};
                     soap.cleanClasses(workshops).forEach(function (ws) {
-                        var month = moment(ws.StartDateTime).format('MM');
-                        if ((result[month] || result[month] = []).indexOf(ws.name) == -1) {
+                        ws = new Workshop(ws);
+                        var month = moment(ws.date).format('MMMM');
+                        if (!result[month]) {
+                            result[month] = [];
+                        }
+                        if (result[month].indexOf(ws.name) == -1) {
                             result[month].push(ws.name);
                         }
                     });
+                        console.log(result);
                     return result;
-                }
+                })()
                 var tmrwStart = tmrw.startOf('day');
                 model.today = classes.filter(function (ele) {
                     var d = moment(ele.StartDateTime);
