@@ -63,7 +63,7 @@ module.exports = function (soap) {
         });
         var postQuery = Posts.find({
             isPublished: true
-        }).select('title body published slug').sort({
+        }).select('title body published slug headerImg').sort({
             'published': -1
         }).limit(4);
         var pageQuery = Pages.findOne({

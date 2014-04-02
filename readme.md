@@ -6,7 +6,6 @@
 * reset cache button on admin. Should cache reset on publish/unpublish?
 ####Posts
 
-* ~~edit posts~~
 * post versioning - saving, just need to load/display
 * delete posts
 * add photos to posts

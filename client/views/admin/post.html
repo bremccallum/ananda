@@ -24,6 +24,8 @@
                 <input type="text" class="form-control" id="title" name="title" value="{{post.title}}">
                 <label for="slug">Post's Slug</label>
                 <input type="text" id="slug" name="slug" value="{{post.slug}}" class="form-control">
+                <label for="headerImg">Header Image</label>
+                <input type="text" id="headerImg" name="headerImg" value="{{post.headerImg}}" class="form-control">
                 <label for="author">Post as:</label>
                 <select required name="author" id="author" class="form-control">
                     {% for author in teacherNames | sort %}

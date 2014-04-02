@@ -32,7 +32,8 @@ module.exports = function (soap) {
             title: body.title,
             slug: body.slug,
             author: body.author,
-            body: body.body
+            body: body.body,
+            headerImg: body.headerImg
         };
         if (body._id)
             post._id = body._id;
