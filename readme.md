@@ -21,9 +21,6 @@
 * pricing & membership (see WYSIWIG)
 * retail store WYSIWIG
 
-##### style
-* Media queries for cards for 100% mobile width
-
 ##Getting Started
 <code>npm install</code> will get dependencies out of packages.json
 

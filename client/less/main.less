@@ -1,6 +1,9 @@
 body {
-    background-image:url(/img/slats.jpg);
+    background-color:@offwhite;
     font-family:@body-font, sans-serif;
+    @media(min-width:@screen-xs-max){
+        background-image:url(/img/slats.jpg);
+    }
 }
 a{
     &:link{
@@ -37,15 +40,4 @@ main .affix {
 }
 main .affix-bottom {
     position: absolute;
-}
-.card {
-    margin-bottom: 1em;
-    border: 1px solid rgba(0, 0, 0, .3);
-    padding:1em;
-    background-color:@offwhite;
-    border-radius: 4px;
-    box-shadow: 5px 6px 15px -2px rgba(0, 0, 0, .3);
-}
-.card.no-border {
-    border-style: none;
 }

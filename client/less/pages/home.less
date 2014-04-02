@@ -1,4 +1,21 @@
 .home {
+
+    .card {
+        margin-bottom: 1em;
+        margin-top: 1em;
+        border-bottom: 1px solid rgba(0, 0, 0, .3);
+        @media(min-width:@screen-xs-max){
+            margin-top:0;
+            padding:1em;
+            background-color:@offwhite;
+            border-radius: 4px;
+            border: 1px solid rgba(0, 0, 0, .3);
+            box-shadow: 5px 6px 15px -2px rgba(0, 0, 0, .3);
+        }
+    }
+    .card.no-border {
+        border-style: none;
+    }
     #left {
         h2 {
             text-align: right;
@@ -31,32 +48,54 @@
         }
     }
     #welcome {
-        padding: 19px;
-    }
-    .article-wrapper article {
-        height: 250px;
-        overflow: hidden;
-    }
-    article {
-        padding-left: 1em;
-        position: relative;
-        img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            opacity: .15;
-        }
-        & > .article-content {
-            position: relative;
-            h1 {
-                font-size: 1.6em;
-                margin-top: 0;
-                text-align: center;
+        &.card{
+            @media(max-width:@screen-xs-max){
+                    margin-bottom:0;
             }
-            time {
-                font-size: .8em;
-                color: @gray-light;
+        }
+        @media(min-width:@screen-xs-max){
+            padding: 19px;
+        }
+        img{
+            max-width:50%;
+        }
+    }
+    .article-wrapper{
+        @media(max-width:@screen-xs-max){
+            padding-left:0;
+            padding-right:0;
+        }
+        article{
+            height: 250px;
+            overflow: hidden;
+            padding-left: 1em;
+            position: relative;
+            &.card{
+                @media(max-width:@screen-xs-max){
+                    margin:0;
+                }
+            }
+            img {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                opacity: .15;
+            }
+            & > .article-content {
+                position: relative;
+                h1 {
+                    font-size: 1.6em;
+                    margin-top: 0;
+                    text-align: center;
+                    @media(max-width:@screen-xs-max){
+                        margin-top:.5em;
+                    }
+                }
+                time {
+                    font-size: .8em;
+                    color: @gray-light;
+                }
             }
         }
     }

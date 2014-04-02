@@ -7,20 +7,24 @@ header {
     background-position-y:50%;
 }
 .navbar-nav li{
-    transition:all .2s;
+    @media(min-width:@screen-xs-max){
+        transition:all .2s;
+    }
     &.active, &:hover{
         border-top:2px solid @variantDark;
+        @media(max-width:@screen-xs-max){
+            font-weight:700;
+            border-bottom:2px solid @variantDark;
+        }
     }
     &.active:hover{
         color:@gray-dark;
         margin-bottom:0px;
     }
 }
-.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover{
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover, .navbar-default .navbar-nav>li>a:hover{
     background-color:none;
-    margin-bottom:-2px;
-}
-.navbar-default .navbar-nav>li>a:hover{
-    margin-bottom:-2px;
-    background-color:none;
+    @media(min-width:@screen-xs){
+        margin-bottom:-2px;
+    }
 }
