@@ -36,13 +36,7 @@ module.exports = function (app, soap) {
     app.get("/cache", function (req, res) {
         res.send("Whoa, you found a secret that does nothing");
     });
-    app.get("/error", function (req, res) {
-        res.statusCode = 500;
-        res.render("error.html", {
-            code: 500,
-            message: "That means somethings go wrong on our side - sorry about that. We'll strive to get things working again ASAP!"
-        });
-    })
+
     app.all("*", function (req, res) {
         res.statusCode = 404;
         res.render("error.html", {

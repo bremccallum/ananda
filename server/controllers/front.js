@@ -12,6 +12,14 @@ function Workshop(mboWorkshop) {
     return this;
 }
 
+function Error(req, res) {
+    res.statusCode = 500;
+    res.render("error.html", {
+        code: 500,
+        message: "That means somethings go wrong on our side - sorry about that. We'll strive to get things working again ASAP!"
+    });
+}
+
 module.exports = function (soap) {
     var Classes = soap.Classes,
         Staff = soap.Staff,
@@ -109,7 +117,7 @@ module.exports = function (soap) {
                 res.render('home.html', model);
             }).fail(function (err) {
                 console.error(err);
-                res.redirect("/error");
+                Error(req,res);
             });
     }
 
@@ -146,12 +154,16 @@ module.exports = function (soap) {
                 res.render('instructors.html', model)
             }).fail(function (err) {
                 console.error(err);
-                res.redirect("/error");
+                Error(req, res);
             });
     }
 
     function classes(req, res) {
+        var now = moment();
+        var future = moment().add('weeks', 2);
         var args = {
+            StartDateTime: now.format(soap.DateFormat),
+            EndDateTime: future.format(soap.DateFormat),
             XMLDetail: 'Bare',
             ProgramIDs: [
                 {
@@ -160,29 +172,34 @@ module.exports = function (soap) {
             ],
             Fields: [
                 {
-                    string: 'ClassDescriptions.ImageURL'
+                    string: 'Classes.ClassDescription.ImageURL'
                 },
                 {
-                    string: 'ClassDescriptions.Name'
+                    string: 'Classes.ClassDescription.Name'
                 },
                 {
-                    string: 'ClassDescriptions.Description'
+                    string: 'Classes.ClassDescription.Description'
                 }
             ]
         };
-        Classes.GetClassDescriptionsQ(SArgs(args))
+        Classes.GetClassesQ(SArgs(args))
             .then(function (classes) {
-                classes = classes.GetClassDescriptionsResult.ClassDescriptions.ClassDescription;
-                classes.map(function (o, i) {
-                    o.Description = (typeof o.Description == 'object') ? '' : o.Description;
+                classes = soap.cleanClasses(classes);
+                descriptions = {};
+                classes.forEach(function (c) {
+                    descriptions[c.ClassDescription.ID] = c.ClassDescription;
                 });
+                model = [];
+                for(var prop in descriptions){
+                    model.push(descriptions[prop]);
+                }
                 res.render('classes.html', {
                     title: "Classes",
-                    classes: classes
+                    classes: model
                 });
             }).fail(function (err) {
                 console.error(err);
-                res.redirect("/error");
+                res.render("error.html");
             });
     }
 
@@ -227,7 +244,7 @@ module.exports = function (soap) {
                 res.render("schedule.html", model);
             }).fail(function (err) {
                 console.error(err);
-                res.redirect("/error");
+                Error(req, res);
             });
     }
 
