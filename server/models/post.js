@@ -41,6 +41,9 @@ var postSchema = Schema({
         type: Date,
         default: Date.now,
         select: false
+    },
+    headerImg: {
+        type:String
     }
 })
 postSchema.pre('save', function (next) {
