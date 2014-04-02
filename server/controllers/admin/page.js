@@ -7,7 +7,7 @@ function edit(req, res) {
     Pages.findOne({
         page: page
     }, function (err, page) {
-        res.render('/admin/page', err || page);
+        res.render('/admin/page.html', err || page);
     });
 }
 
