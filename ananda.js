@@ -20,8 +20,9 @@ app.configure(function () {
     app.use('/uploads', express.static(__dirname + '/client/uploads'));
 });
 
-
-var port = Number(process.env.PORT || 6969)
+console.log("PORT:", process.env.PORT,
+           "\nport:", process.env.port);
+var port = Number(process.env.PORT || '6969')
 app.listen(port, function () {
     console.log('Listening on port ' + port);
 });
