@@ -38,7 +38,7 @@ module.exports = function (callback) {
                 else {
                     cleanedClasses = rawClasses.GetClassesResult.Classes.Class;
                     if (cleanedClasses.length === undefined) { //only one class
-                        cleanedClasses = [rawClasses];
+                        cleanedClasses = [cleanedClasses];
                     }
                 }
                 return cleanedClasses;
