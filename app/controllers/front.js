@@ -12,6 +12,8 @@ function Workshop(mboWorkshop) {
     return this;
 }
 
+
+
 function Error(req, res) {
     res.statusCode = 500;
     res.render("error.html", {
@@ -25,42 +27,19 @@ module.exports = function (soap) {
         Staff = soap.Staff,
         SArgs = soap.setArgs;
 
-    function home(req, res) {
-        var now = moment();
-        if (now.add('minutes', -30).day() != moment().day())
-            now.add('minutes', 30);
-        var tmrw = moment(now).add('days', 1).endOf('day');
-        var args = SArgs({
+    // ## Soap Argument Builders
+    function workshopArgs(start, end, details) {
+        var workshopArgs = {
             Fields: [
                 {
                     string: 'Classes.ClassDescription.Name'
                 },
                 {
                     string: 'Classes.StartDateTime'
-                },
-                {
-                    string: 'Classes.Staff.Name'
                 }
             ],
-            StartDateTime: now.format(soap.DateFormat),
-            EndDateTime: tmrw.format(soap.DateFormat),
-            SchedulingWindow: true,
-            XMLDetail: 'Bare'
-        });
-        var workshopArgs = SArgs({
-            Fields: [
-                {
-                    string: 'Classes.ClassDescription.Name'
-                },
-                {
-                    string: 'Classes.StartDateTime'
-                },
-                {
-                    string: 'Classes.Staff.Name'
-                }
-            ],
-            StartDateTime: now.format(soap.DateFormat),
-            EndDateTime: moment(tmrw).add('months', 2).format(soap.DateFormat),
+            StartDateTime: start.format(soap.DateFormat),
+            EndDateTime: end.format(soap.DateFormat),
             SchedulingWindow: true,
             ProgramIDs: [
                 {
@@ -68,7 +47,53 @@ module.exports = function (soap) {
                 }
             ],
             XMLDetail: 'Bare'
-        });
+        };
+        if (details) {
+            workshopArgs.Fields.push({
+                string: "Classes.ClassDescription.Description"
+            });
+        }
+        return SArgs(workshopArgs);
+    }
+
+    function classArgs(start, end, program, details) {
+        var args = {
+            Fields: [
+                {
+                    string: 'Classes.ClassDescription.Name'
+                },
+                {
+                    string: 'Classes.StartDateTime'
+                },
+                {
+                    string: 'Classes.Staff.Name'
+                }
+            ],
+            StartDateTime: start.format(soap.DateFormat),
+            EndDateTime: end.format(soap.DateFormat),
+            SchedulingWindow: true,
+            XMLDetail: 'Bare'
+        };
+        if (details) {
+            args.Fields.push({
+                string: 'Classes.ClassDescription.ImageURL'
+            });
+            args.Fields.push({
+                string: 'Classes.ClassDescription.Description'
+            });
+            args.ProgramIDs = [{
+                int: 22
+            }];
+        }
+        return SArgs(args);
+    }
+
+    function home(req, res) {
+        var now = moment();
+        if (now.add('minutes', -30).day() != moment().day())
+            now.add('minutes', 30);
+        var tmrw = moment(now).add('days', 1).endOf('day');
+
         var postQuery = Posts.find({
             isPublished: true
         }).select('title body published slug headerImg').sort({
@@ -77,11 +102,11 @@ module.exports = function (soap) {
         var pageQuery = Pages.findOne({
             page: "home"
         });
-        //get classes
+
         //TODO: Is two requests really faster than one giant request?
         Q.all([
-            Classes.GetClassesQ(args),
-            Classes.GetClassesQ(workshopArgs),
+            Classes.GetClassesQ(classArgs(now, tmrw)),
+            Classes.GetClassesQ(workshopArgs(now, moment().add('months', 2))),
             postQuery.execQ(),
             pageQuery.execQ()
         ])
@@ -117,12 +142,12 @@ module.exports = function (soap) {
                 res.render('home.html', model);
             }).fail(function (err) {
                 console.error(err);
-                Error(req,res);
+                Error(req, res);
             });
     }
 
     function instructors(req, res) {
-        var args = {
+        var args = SArgs({
             Fields: [
                 {
                     string: 'Staff.Bio'
@@ -138,8 +163,8 @@ module.exports = function (soap) {
                 }
             ],
             XMLDetail: 'Bare'
-        };
-        Staff.GetStaffQ(SArgs(args))
+        });
+        Staff.GetStaffQ(args)
             .then(function (staff) {
                 staff = staff.GetStaffResult.StaffMembers.Staff
                     .filter(function (staff) {
@@ -148,10 +173,10 @@ module.exports = function (soap) {
                 staff.map(function (s, i) { //clear empty Bio's
                     s.Bio = (typeof s.Bio == 'object') ? '' : s.Bio;
                 });
-                var model = {};
-                model.staff = staff;
-                model.title = "Instructors";
-                res.render('instructors.html', model)
+                res.render('instructors.html', {
+                    staff: staff,
+                    title: "Instructors"
+                });
             }).fail(function (err) {
                 console.error(err);
                 Error(req, res);
@@ -159,30 +184,12 @@ module.exports = function (soap) {
     }
 
     function classes(req, res) {
-        var now = moment();
-        var future = moment().add('weeks', 2);
-        var args = {
-            StartDateTime: now.format(soap.DateFormat),
-            EndDateTime: future.format(soap.DateFormat),
-            XMLDetail: 'Bare',
-            ProgramIDs: [
-                {
-                    int: 22 //Dropins
-                }
-            ],
-            Fields: [
-                {
-                    string: 'Classes.ClassDescription.ImageURL'
-                },
-                {
-                    string: 'Classes.ClassDescription.Name'
-                },
-                {
-                    string: 'Classes.ClassDescription.Description'
-                }
-            ]
-        };
-        Classes.GetClassesQ(SArgs(args))
+        var now = moment(),
+            future = moment().add('weeks', 2),
+            program = 22, //regular classes
+            details = true;
+
+        Classes.GetClassesQ(classArgs(now, future, program, details))
             .then(function (classes) {
                 classes = soap.cleanClasses(classes);
                 descriptions = {};
@@ -190,7 +197,7 @@ module.exports = function (soap) {
                     descriptions[c.ClassDescription.ID] = c.ClassDescription;
                 });
                 model = [];
-                for(var prop in descriptions){
+                for (var prop in descriptions) {
                     model.push(descriptions[prop]);
                 }
                 res.render('classes.html', {
@@ -204,48 +211,28 @@ module.exports = function (soap) {
     }
 
     function schedule(req, res) {
-        var now = moment();
-        var future = moment().add('weeks', 2)
-        var args = {
-            StartDateTime: now.format(soap.DateFormat),
-            EndDateTime: future.format(soap.DateFormat),
-            SchedulingWindow: true,
-            XMLDetail: 'Bare',
-            Fields: [
-                {
-                    string: 'Classes.Staff.Name'
-                },
-                {
-                    string: 'Classes.ClassDescription.Name'
-                },
-                {
-                    string: 'Classes.StartDateTime'
-                },
-                {
-                    string: 'Classes.EndDateTime'
-                }
-            ]
-        };
-        Classes.GetClassesQ(SArgs(args))
-            .then(function (classes) {
-                var model = {
-                    classes: {},
-                    days: []
-                };
-                for (var i = 0; i <= future.diff(now, 'days'); i++) {
-                    var m = moment(now).add('days', i).format("dddd [the] Do");
-                    model.days.push(m);
-                    model.classes[m] = [];
-                }
-                classes.GetClassesResult.Classes.Class.forEach(function (c) {
-                    model.classes[moment(c.StartDateTime).format("dddd [the] Do")].push(c);
+        var now = moment(),
+            future = moment().add('weeks', 2)
+            Classes.GetClassesQ(classArgs(now, future))
+                .then(function (classes) {
+                    var model = {
+                        classes: {},
+                        days: []
+                    };
+                    for (var i = 0; i <= future.diff(now, 'days'); i++) {
+                        var m = moment(now).add('days', i).format("dddd [the] Do");
+                        model.days.push(m);
+                        model.classes[m] = [];
+                    }
+                    classes.GetClassesResult.Classes.Class.forEach(function (c) {
+                        model.classes[moment(c.StartDateTime).format("dddd [the] Do")].push(c);
+                    });
+                    model.title = "Schedule";
+                    res.render("schedule.html", model);
+                }).fail(function (err) {
+                    console.error(err);
+                    Error(req, res);
                 });
-                model.title = "Schedule";
-                res.render("schedule.html", model);
-            }).fail(function (err) {
-                console.error(err);
-                Error(req, res);
-            });
     }
 
     function viewPost(req, res) {
@@ -257,7 +244,7 @@ module.exports = function (soap) {
                 post: post
             };
             res.render("news.html", model);
-        })
+        });
     }
 
     //exports
