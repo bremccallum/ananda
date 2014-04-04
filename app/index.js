@@ -46,6 +46,7 @@ var nunjucksInit = function (app) {
         return arr;
     });
     nunjucks.addFilter("slugify", function (v) {
+        if(!v){ return v; }
         return nunjucks.getFilter("replace")(nunjucks.getFilter("escape")(v), ' ', '-');
     });
 }
