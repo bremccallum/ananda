@@ -1,6 +1,6 @@
 var express = require('express'),
     app = express(),
-    server = require('./app');
+    server = require('./server');
 
 app.configure(function () {
     app.locals.prod = process.env.NODE_ENV == "production";
