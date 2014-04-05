@@ -170,11 +170,18 @@ module.exports = function (soap) {
                     .filter(function (staff) {
                         return staff.ID > 1; //they have weird testing data at lower ID
                     });
-                staff.map(function (s, i) { //clear empty Bio's
+                staff = staff.map(function (s) { //clear empty Bio's
                     s.Bio = (typeof s.Bio == 'object') ? '' : s.Bio;
+                    var m = {
+                        Name: s.Name,
+                        Email: s.Email,
+                        Image: s.ImageURL,
+                        Description: s.Bio
+                    }
+                    return m;
                 });
-                res.render('instructors.html', {
-                    staff: staff,
+                res.render('list-enum.html', {
+                    objectList: staff,
                     title: "Instructors"
                 });
             }).fail(function (err) {
@@ -193,16 +200,21 @@ module.exports = function (soap) {
             .then(function (classes) {
                 classes = soap.cleanClasses(classes);
                 descriptions = {};
-                classes.forEach(function (c) {
+                classes.forEach(function (c) { //unique-ify
                     descriptions[c.ClassDescription.ID] = c.ClassDescription;
                 });
-                model = [];
-                for (var prop in descriptions) {
-                    model.push(descriptions[prop]);
+                classes = []
+                for (var key in descriptions) { //list-ify
+                    var d = descriptions[key];
+                    classes.push({
+                        Name: d.Name,
+                        Image: d.ImageURL,
+                        Description: d.Description
+                    });
                 }
-                res.render('classes.html', {
+                res.render('list-enum.html', {
                     title: "Classes",
-                    classes: model
+                    objectList: classes
                 });
             }).fail(function (err) {
                 console.error(err);

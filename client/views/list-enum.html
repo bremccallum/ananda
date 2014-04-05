@@ -1,0 +1,43 @@
+{%extends 'layout.html'%}
+<!---->
+{%block bodyattr%}data-spy="scroll" data-target="#item-nav" class="items"{%endblock%}
+<!---->
+{%block main%}
+<div class="row">
+    <nav id="item-nav" class="hidden-xs col-sm-4 col-md-3">
+        <ul id='affix' class="card no-border nav nav-pills nav-stacked">
+            {%for item in objectList | attrSort('Name')%}
+            <li>
+                <a href="#{{item.Name | escape | replace(' ', '-')}}">{{item.Name}}</a>
+            </li>
+            {%endfor%}
+        </ul>
+    </nav>
+    <div class="col-xs-12 col-sm-8 col-md-9">
+        <div class="row">
+            {%for item in objectList | attrSort('Name')%}
+            <div id="{{item.Name | escape | replace(' ', '-') }}" class="card item clearfix">
+                {%if item.Image %}
+                <img src="{{item.Image}}" class="pull-right img-circle" alt="{{item.Name}} Image">{%endif%}
+                <h1>{%if item.Email %}
+                    <a href="mailto:{{item.Email}}" title="Email {{item.Name}}">{% endif %} {{item.Name}}{%if item.Email %}</a>{% endif %}
+                </h1>
+                {{item.Description | safe}}
+                <a href="#">Back to top</a>
+            </div>
+            {%endfor%}
+        </div>
+    </div>
+</div>
+{%endblock%} {% block finally%}
+<script>
+    $('#affix').affix({
+        offset: {
+            top: 190,
+            bottom: function() {
+                return (this.bottom = $('footer').outerHeight(true) + 14)
+            }
+        }
+    });
+</script>
+{%endblock%}
