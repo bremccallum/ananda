@@ -23,6 +23,7 @@
                     <a href="mailto:{{item.Email}}" title="Email {{item.Name}}">{% endif %} {{item.Name}}{%if item.Email %}</a>{% endif %}
                 </h1>
                 {{item.Description | safe}}
+                <br>
                 <a href="#">Back to top</a>
             </div>
             {%endfor%}
