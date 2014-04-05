@@ -7,10 +7,11 @@ module.exports = function (app, soap) {
             res.redirect(where);
         }
     }
-    
+
     app.get('/', front.home);
     app.get('/instructors', front.instructors);
     app.get('/classes', front.classes);
+    app.get('/workshops', front.workshops);
     app.get('/schedule', front.schedule);
     app.get('/news/:slug', front.viewPost);
 

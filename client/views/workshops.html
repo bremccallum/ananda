@@ -1,0 +1,65 @@
+{%extends 'layout.html'%}
+<!---->
+{%block bodyattr%}data-spy="scroll" data-target="#item-nav" class="items"{%endblock%}
+<!---->
+{%block main%}
+<div class="row">
+    <nav id="item-nav" class="hidden-xs col-sm-4 col-md-3">
+        <ul id='affix' class="card no-border nav nav-pills nav-stacked">
+            {%for workshop in workshops | attrSort('name')%}
+            <li>
+                <a href="#{{workshop.name | escape | replace(' ', '-')}}">{{workshop.name}}</a>
+            </li>
+            {%endfor%}
+        </ul>
+    </nav>
+    <div class="col-xs-12 col-sm-8 col-md-9">
+        <div class="row">
+            {%for workshop in workshops | attrSort('name')%}
+            <div id="{{workshop.name | escape | replace(' ', '-') }}" class="card item clearfix">
+                {%if workshop.image %}
+                <img src="{{workshop.image}}" class="pull-right img-thumbnail" alt="{{workshop.name}} Image">{%endif%}
+                <h1>{{workshop.name}}
+                </h1>
+                <dl class="dl-horizontal">
+                    <dt>Dates</dt>
+                    <dd>
+                        <ol class="list-inline list-unstyled">
+                            {%for date in workshop.dates%}
+                            <li class="label label-corner-dark">{{date}}</li>
+                            {%endfor%}
+                        </ol>
+                    </dd>
+                    <dt>Time</dt>
+                    <dd>
+                        <time>{{workshop.startTime | prettyTime}}</time>-
+                        <time>{{workshop.endTime | prettyTime}}</time>
+                    </dd>
+                    <dt>With</dt>
+                    <dd>
+                        <a href="/teachers#{{workshop.teacher}}">{{workshop.teacher}}</a>
+                    </dd>
+                </dl>
+                {% if workshop.description %}
+                {{workshop.description | safe}}
+                {% else %}
+                <p><i>Sorry, we haven't written up a description for this class yet.</i></p>
+                {% endif %}
+                <a href="#">Back to top</a>
+            </div>
+            {%endfor%}
+        </div>
+    </div>
+</div>
+{%endblock%} {% block finally%}
+<script>
+    $('#affix').affix({
+        offset: {
+            top: 190,
+            bottom: function() {
+                return (this.bottom = $('footer').outerHeight(true) + 14)
+            }
+        }
+    });
+</script>
+{%endblock%}

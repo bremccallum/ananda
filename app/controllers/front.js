@@ -12,9 +12,8 @@ function Workshop(mboWorkshop) {
     return this;
 }
 
-
-
-function Error(req, res) {
+function fail(res, err) {
+    console.error(err);
     res.statusCode = 500;
     res.render("error.html", {
         code: 500,
@@ -22,39 +21,14 @@ function Error(req, res) {
     });
 }
 
+
 module.exports = function (soap) {
     var Classes = soap.Classes,
         Staff = soap.Staff,
         SArgs = soap.setArgs;
 
+
     // ## Soap Argument Builders
-    function workshopArgs(start, end, details) {
-        var workshopArgs = {
-            Fields: [
-                {
-                    string: 'Classes.ClassDescription.Name'
-                },
-                {
-                    string: 'Classes.StartDateTime'
-                }
-            ],
-            StartDateTime: start.format(soap.DateFormat),
-            EndDateTime: end.format(soap.DateFormat),
-            SchedulingWindow: true,
-            ProgramIDs: [
-                {
-                    int: 27
-                }
-            ],
-            XMLDetail: 'Bare'
-        };
-        if (details) {
-            workshopArgs.Fields.push({
-                string: "Classes.ClassDescription.Description"
-            });
-        }
-        return SArgs(workshopArgs);
-    }
 
     function classArgs(start, end, program, details) {
         var args = {
@@ -74,6 +48,11 @@ module.exports = function (soap) {
             SchedulingWindow: true,
             XMLDetail: 'Bare'
         };
+        if (program) {
+            args.ProgramIDs = [{
+                int: program
+            }];
+        }
         if (details) {
             args.Fields.push({
                 string: 'Classes.ClassDescription.ImageURL'
@@ -81,11 +60,15 @@ module.exports = function (soap) {
             args.Fields.push({
                 string: 'Classes.ClassDescription.Description'
             });
-            args.ProgramIDs = [{
-                int: 22
-            }];
+            args.Fields.push({
+                string: 'Classes.EndDateTime'
+            });
         }
         return SArgs(args);
+    }
+
+    function workshopArgs(details) {
+        return classArgs(moment(), moment().add('months', 2), 27, details);
     }
 
     function home(req, res) {
@@ -106,7 +89,7 @@ module.exports = function (soap) {
         //TODO: Is two requests really faster than one giant request?
         Q.all([
             Classes.GetClassesQ(classArgs(now, tmrw)),
-            Classes.GetClassesQ(workshopArgs(now, moment().add('months', 2))),
+            Classes.GetClassesQ(workshopArgs()),
             postQuery.execQ(),
             pageQuery.execQ()
         ])
@@ -140,10 +123,48 @@ module.exports = function (soap) {
                 model.pm = (model.today[0] ? moment(model.today[0].StartDateTime).hours() : now.hours()) >= 16;
 
                 res.render('home.html', model);
-            }).fail(function (err) {
-                console.error(err);
-                Error(req, res);
+            }).fail(fail.bind(null, res));
+    }
+
+    function workshops(req, res) {
+        Classes.GetClassesQ(workshopArgs(true)).then(function (workshopClasses) {
+            workshopClasses = soap.cleanClasses(workshopClasses);
+            var classIds = []
+            workshopClasses.forEach(function (ws) {
+                if (classIds.indexOf(ws.ClassDescription.ID) == -1)
+                    classIds.push(ws.ClassDescription.ID);
             });
+            var workshops = [];
+            classIds.forEach(function (id) {
+                var workshop = {
+                    dates: []
+                }
+                //add each workshopClass to its workshop
+                workshopClasses.forEach(function (ws) {
+                    if (ws.ClassDescription.ID == id) {
+                        if (!workshop.name) { //set defaults
+                            workshop.name = ws.ClassDescription.Name;
+                            workshop.teacher = ws.Staff.Name;
+                            workshop.image = ws.ClassDescription.ImageURL;
+                            workshop.startTime = ws.StartDateTime;
+                            workshop.endTime = ws.EndDateTime;
+                            //empty descriptions appear as objects.
+                            workshop.description = typeof ws.ClassDescription.Description == "object" ? "" : ws.ClassDescription.Description;
+                        }
+                        workshop.dates.push(ws.StartDateTime);
+                    }
+                });
+                //sort and beautify dates
+                workshop.dates = workshop.dates.sort().map(function (date) {
+                    return moment(date).format('dddd[,] MMMM Do');
+                });
+                workshops.push(workshop);
+            });
+            res.render("workshops.html", {
+                workshops: workshops,
+                title: "Workshops"
+            });
+        }).fail(fail.bind(null, res))
     }
 
     function instructors(req, res) {
@@ -184,10 +205,7 @@ module.exports = function (soap) {
                     objectList: staff,
                     title: "Instructors"
                 });
-            }).fail(function (err) {
-                console.error(err);
-                Error(req, res);
-            });
+            }).fail(fail.bind(null, res));
     }
 
     function classes(req, res) {
@@ -216,10 +234,7 @@ module.exports = function (soap) {
                     title: "Classes",
                     objectList: classes
                 });
-            }).fail(function (err) {
-                console.error(err);
-                res.render("error.html");
-            });
+            }).fail(fail.bind(null, res));
     }
 
     function schedule(req, res) {
@@ -241,10 +256,7 @@ module.exports = function (soap) {
                     });
                     model.title = "Schedule";
                     res.render("schedule.html", model);
-                }).fail(function (err) {
-                    console.error(err);
-                    Error(req, res);
-                });
+                }).fail(fail.bind(null, res));
     }
 
     function viewPost(req, res) {
@@ -266,5 +278,6 @@ module.exports = function (soap) {
     out.classes = classes;
     out.schedule = schedule;
     out.viewPost = viewPost;
+    out.workshops = workshops;
     return out;
 }
