@@ -1,6 +1,7 @@
 var Q = require('q'),
-    moment = require("moment"),
     mongoose = require("mongoose-q")(),
+    moment = require("moment"),
+    _ = require("lodash"),
     Posts = mongoose.model('Post'),
     Pages = mongoose.model('Page');
 

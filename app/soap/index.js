@@ -1,6 +1,6 @@
 var soap = require('soap-q')(),
-    extend = require('extend'),
-    Q = require("q");
+    _ = require('lodash'),
+    Q = require('q');
 
 if (process.env.NODE_ENV === "development") {
     Q.longStackSupport = true;
@@ -19,7 +19,7 @@ module.exports = function (callback) {
             };
             clients.setArgs = function (args) {
                 return {
-                    Request: extend({
+                    Request: _.assign({
                             SourceCredentials: {
                                 'SourceName': 'NovaugustWebDesign',
                                 'Password': '5qNInG8NEsagui9L35ujs51wz5s=',
@@ -31,7 +31,7 @@ module.exports = function (callback) {
                         args)
                 };
             };
-            clients.cleanClasses = function (rawClasses){
+            clients.cleanClasses = function (rawClasses) {
                 var cleanedClasses;
                 if (0 == rawClasses.GetClassesResult.ResultCount)
                     cleanedClasses = [];
