@@ -8,7 +8,7 @@ var nunjucksInit = function (app) {
         express: app
     });
     nunjucks.addFilter('prettyDate', function (v) {
-        return (moment(v).format("M-DD-YY"));
+        return (moment(v).format("M/DD/YY"));
     });
     nunjucks.addFilter('prettyTime', function (v) {
         return (moment(v).format("h:mm a"));

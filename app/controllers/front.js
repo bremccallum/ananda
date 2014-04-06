@@ -9,7 +9,15 @@ function Workshop(mboWorkshop) {
     this.id = mboWorkshop.ClassDescription.ID;
     this.date = mboWorkshop.StartDateTime;
     this.name = mboWorkshop.ClassDescription.Name;
-    this.desc = mboWorkshop.ClassDescription.Description;
+    this.teacher = mboWorkshop.Staff.Name;
+    this.image = mboWorkshop.ClassDescription.ImageURL;
+    this.start = mboWorkshop.StartDateTime;
+    this.end = mboWorkshop.EndDateTime;
+    //empty descriptions appear as objects.
+    this.description = mboWorkshop.ClassDescription.Description;
+    if (_.isUndefined(this.description) || _.isObject(this.description)) {
+        this.description = "";
+    }
     return this;
 }
 
@@ -130,37 +138,33 @@ module.exports = function (soap) {
     function workshops(req, res) {
         Classes.GetClassesQ(workshopArgs(true)).then(function (workshopClasses) {
             workshopClasses = soap.cleanClasses(workshopClasses);
-            var classIds = []
-            workshopClasses.forEach(function (ws) {
-                if (classIds.indexOf(ws.ClassDescription.ID) == -1)
-                    classIds.push(ws.ClassDescription.ID);
+            workshops = workshopClasses.map(function (ws) {
+                return new Workshop(ws);
             });
-            var workshops = [];
-            classIds.forEach(function (id) {
-                var workshop = {
-                    dates: []
+            workshops = _.map(_.groupBy(workshops, 'name'), function (classes) {
+                console.log(classes);
+                //make each workshop a pretty object rather than a list of.
+                var starts = _.pluck(classes, 'start'),
+                    days = [],
+                    daySorter = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+
+                _.forEach(starts, function (start) {
+                    var day = moment(start).format('dddd');
+                    days[daySorter.indexOf(day)] = day;
+                });
+                days = _.reject(days, _.isUndefined);
+                function dateToUnix (dateString) {
+                    return moment(dateString).valueOf();
                 }
-                //add each workshopClass to its workshop
-                workshopClasses.forEach(function (ws) {
-                    if (ws.ClassDescription.ID == id) {
-                        if (!workshop.name) { //set defaults
-                            workshop.name = ws.ClassDescription.Name;
-                            workshop.teacher = ws.Staff.Name;
-                            workshop.image = ws.ClassDescription.ImageURL;
-                            workshop.startTime = ws.StartDateTime;
-                            workshop.endTime = ws.EndDateTime;
-                            //empty descriptions appear as objects.
-                            workshop.description = typeof ws.ClassDescription.Description == "object" ? "" : ws.ClassDescription.Description;
-                        }
-                        workshop.dates.push(ws.StartDateTime);
-                    }
+                return _.assign(classes[0], {
+                    days: days,
+                    start: _.min(starts, dateToUnix),
+                    end: _.max(_.pluck(classes, 'end'), dateToUnix),
+                    singleton: classes.length == 1//used for prettier printing
                 });
-                //sort and beautify dates
-                workshop.dates = workshop.dates.sort().map(function (date) {
-                    return moment(date).format('dddd[,] MMMM Do');
-                });
-                workshops.push(workshop);
             });
+            console.log(workshops);
             res.render("workshops.html", {
                 workshops: workshops,
                 title: "Workshops"

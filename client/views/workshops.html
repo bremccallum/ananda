@@ -22,28 +22,33 @@
                 <h1>{{workshop.name}}
                 </h1>
                 <dl class="dl-horizontal">
-                    <dt>Dates</dt>
+                    <dt>Days</dt>
                     <dd>
                         <ol class="list-inline list-unstyled">
-                            {%for date in workshop.dates%}
-                            <li class="label label-corner-dark">{{date}}</li>
+                            {%for day in workshop.days%}
+                            <li class="label label-corner-dark">{{day}}{{'s' if not workshop.singleton}}</li>
                             {%endfor%}
                         </ol>
                     </dd>
+                    <dt>Date{{'s' if not workshop.singleton}}</dt>
+                    <dd>
+                        <time>{{workshop.start | prettyDate}}</time>{% if not workshop.singleton %} -
+                        <time>{{workshop.end | prettyDate}}</time>{% endif %}
+                    </dd>
                     <dt>Time</dt>
                     <dd>
-                        <time>{{workshop.startTime | prettyTime}}</time> -
-                        <time>{{workshop.endTime | prettyTime}}</time>
+                        <time>{{workshop.start | prettyTime}}</time>{{' '}}-
+                        <time>{{workshop.end | prettyTime}}</time>
                     </dd>
                     <dt>With</dt>
                     <dd>
                         <a href="/teachers#{{workshop.teacher}}">{{workshop.teacher}}</a>
                     </dd>
                 </dl>
-                {% if workshop.description %}
-                {{workshop.description | safe}}
-                {% else %}
-                <p><i>Sorry, we haven't written up a description for this class yet.</i></p>
+                {% if workshop.description %} {{workshop.description | safe}} {% else %}
+                <p>
+                    <i>Sorry, we haven't written up a description for this class yet.</i>
+                </p>
                 {% endif %}
                 <a href="#">Back to top</a>
             </div>
