@@ -1,5 +1,5 @@
-var cache = require('./cache'),
-    nunjucks = require('nunjucks'),
+var nunjucks = require('nunjucks'),
+    cache = require('./cache'),
     moment = require('moment');
 var nunjucksInit = function (app) {
     nunjucks = nunjucks.configure('client/views', {
@@ -46,19 +46,21 @@ var nunjucksInit = function (app) {
         return arr;
     });
     nunjucks.addFilter("slugify", function (v) {
-        if(!v){ return v; }
+        if (!v) {
+            return v;
+        }
         return nunjucks.getFilter("replace")(nunjucks.getFilter("escape")(v), ' ', '-');
     });
 }
-var cacheInit = function(app) {
-    cache = require('./cache'),
+var cacheInit = function (app) {
+    var CACHE_TIME = 1000 * 60 * 60; //1 hour
 
-    CACHE_TIME = 1000 * 60 * 30;
     app.disable("etag");
     app.use('/', cache(CACHE_TIME, '/'));
     app.use('/instructors', cache(CACHE_TIME, '/instructors'));
     app.use('/classes', cache(CACHE_TIME, '/classes'));
     app.use('/schedule', cache(CACHE_TIME, '/schedule'));
+    app.use('/workshops', cache(CACHE_TIME, '/workshops'));
 }
 
 var routesInit = function (app) {
