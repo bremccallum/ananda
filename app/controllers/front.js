@@ -3,7 +3,9 @@ var Q = require('q'),
     moment = require("moment"),
     _ = require("lodash"),
     Posts = mongoose.model('Post'),
-    Pages = mongoose.model('Page');
+    Pages = mongoose.model('Page'),
+
+    WORKSHOPS_ID = 27;
 
 function Workshop(mboWorkshop) {
     this.id = mboWorkshop.ClassDescription.ID;
@@ -50,6 +52,9 @@ module.exports = function (soap) {
                 },
                 {
                     string: 'Classes.Staff.Name'
+                },
+                {
+                    string: 'Classes.ClassDescription.Program'
                 }
             ],
             StartDateTime: start.format(soap.DateFormat),
@@ -77,7 +82,7 @@ module.exports = function (soap) {
     }
 
     function workshopArgs(details) {
-        return classArgs(moment(), moment().add('months', 2), 27, details);
+        return classArgs(moment(), moment().add('months', 2), WORKSHOPS_ID, details);
     }
 
     function home(req, res) {
@@ -103,8 +108,22 @@ module.exports = function (soap) {
             pageQuery.execQ()
         ])
             .spread(function (classes, workshops, posts, page) {
-                classes = soap.cleanClasses(classes);
-                var model = {};
+                var model = {},
+                    tmrwStart = tmrw.startOf('day');
+
+                classes = soap.cleanClasses(classes).map(function(c) {
+                    c.isWorkshop = c.ClassDescription.Program.ID == WORKSHOPS_ID;
+                    console.log(c);
+                    return c;
+                });
+                model.today = classes.filter(function (ele) {
+                    var d = moment(ele.StartDateTime);
+                    return d.isBefore(tmrwStart);
+                });
+                model.tmrw = classes.filter(function (ele) {
+                    return moment(ele.StartDateTime).isAfter(moment(now).endOf('day'));
+                });
+
                 model.page = page;
                 model.posts = posts;
                 model.workshops = (function () {
@@ -121,14 +140,7 @@ module.exports = function (soap) {
                     });
                     return result;
                 })()
-                var tmrwStart = tmrw.startOf('day');
-                model.today = classes.filter(function (ele) {
-                    var d = moment(ele.StartDateTime);
-                    return d.isBefore(tmrwStart);
-                });
-                model.tmrw = classes.filter(function (ele) {
-                    return moment(ele.StartDateTime).isAfter(moment(now).endOf('day'));
-                });
+
                 model.pm = (model.today[0] ? moment(model.today[0].StartDateTime).hours() : now.hours()) >= 16;
 
                 res.render('home.html', model);

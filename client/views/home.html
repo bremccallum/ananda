@@ -6,7 +6,7 @@
 <p class="upcoming no-upcoming">No classes</p>' | safe if classes.length == 0}} {% for class in classes | sort(false, false,'StartDateTime')%}
 <p class="upcoming clearfix">
     <time>{{class.StartDateTime | prettyTime}}</time>
-    <a class="class-name" href="/classes#{{class.ClassDescription.Name | slugify}}">{{class.ClassDescription.Name}}</a>
+    {% if class.isWorkshop %}<span class="label label-default">Workshop</span>{%endif%}<a class="class-name" href="/{{'workshops' if class.isWorkshop else 'classes'}}#{{class.ClassDescription.Name | slugify}}">{{class.ClassDescription.Name}}</a>
     <span class="class-instructor">with
         <a class="link-instructor" href="/instructors#{{class.Staff.Name | slugify}}">{{ class.Staff.Name }}</a>
     </span>

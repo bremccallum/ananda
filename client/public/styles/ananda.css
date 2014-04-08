@@ -5307,6 +5307,9 @@ main .affix-bottom {
 .home #left p.upcoming .class-name {
   font-family: 'Duru Sans';
 }
+.home #left p.upcoming .label {
+  margin-right: 10px;
+}
 .home #left p.upcoming time {
   display: block;
   width: 100%;
