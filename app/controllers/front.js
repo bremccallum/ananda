@@ -28,7 +28,7 @@ function fail(res, err) {
     res.statusCode = 500;
     res.render("error.html", {
         code: 500,
-        message: "That means somethings go wrong on our side - sorry about that. We'll strive to get things working again ASAP!"
+        message: "That means something's gone wrong on our side - sorry about that. We'll strive to get things working again ASAP!"
     });
 }
 
@@ -113,7 +113,6 @@ module.exports = function (soap) {
 
                 classes = soap.cleanClasses(classes).map(function(c) {
                     c.isWorkshop = c.ClassDescription.Program.ID == WORKSHOPS_ID;
-                    console.log(c);
                     return c;
                 });
                 model.today = classes.filter(function (ele) {
@@ -154,7 +153,6 @@ module.exports = function (soap) {
                 return new Workshop(ws);
             });
             workshops = _.map(_.groupBy(workshops, 'name'), function (classes) {
-                console.log(classes);
                 //make each workshop a pretty object rather than a list of.
                 var starts = _.pluck(classes, 'start'),
                     days = [],
@@ -176,7 +174,6 @@ module.exports = function (soap) {
                     singleton: classes.length == 1//used for prettier printing
                 });
             });
-            console.log(workshops);
             res.render("workshops.html", {
                 workshops: workshops,
                 title: "Workshops"
