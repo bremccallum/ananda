@@ -4,7 +4,8 @@ var express = require('express'),
 
 app.configure(function () {
     app.locals.prod = process.env.NODE_ENV == "production";
-    app.use(express.bodyParser());
+    app.use(express.json());
+    app.use(express.urlencoded());
     app.use(express.cookieParser('super secret string'));
     app.use('/admin', function (req, res, next) {
         if (req.signedCookies.loggedin === "true") {
