@@ -6,6 +6,7 @@
 * reset cache button on admin. Should cache reset on publish/unpublish?
 ####Posts
 
+* style post page
 * post versioning - saving, just need to load/display
 * delete posts
 * add photos to posts
@@ -19,6 +20,12 @@
 * workshops: group by month, then name, on home page
 * pricing & membership (see WYSIWIG)
 * retail store WYSIWIG
+
+#### SEO
+
+* meta descriptions
+* title matches h1?
+* keyword ideas: ananda yoga, lander, lander yoga, lander wyoming
 
 ##Getting Started
 <code>npm install</code> will get dependencies out of packages.json
@@ -41,4 +48,4 @@ Anticipated pages include
 * Membership page
 * Retail information
 * ~~Admin page (requires login)~~
-    * ~~forms for each model's crud pages~~
+* ~~forms for each model's crud pages~~
