@@ -279,15 +279,6 @@ textarea {
   font-size: inherit;
   line-height: inherit;
 }
-a {
-  color: #428bca;
-  text-decoration: none;
-}
-a:hover,
-a:focus {
-  color: #2a6496;
-  text-decoration: underline;
-}
 a:focus {
   outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
@@ -5230,11 +5221,13 @@ body {
     background-image: url(/img/slats.jpg);
   }
 }
-a:link {
-  color: #47a329;
+a {
+  transition: color 0.25s ease-in-out;
+  text-decoration: none;
 }
+a:link,
 a:visited {
-  color: #8bdb70;
+  color: #47a329;
 }
 a:hover {
   color: #ffbf66;
