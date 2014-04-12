@@ -34,6 +34,21 @@ module.exports = function (app, soap) {
     app.get('/admin/page/:page', admin.page.edit);
     app.put('/admin/page', admin.page.update);
 
+
+    app.get('/admin/upload', function (req, res) { //testing, be sure to delete
+        res.writeHead(200, {
+            'content-type': 'text/html'
+        });
+        res.end(
+            '<form action="/admin/upload" enctype="multipart/form-data" method="post">' +
+            '<input type="text" name="title"><br>' +
+            '<input type="file" name="uploadimage" multiple="multiple"><br>' +
+            '<input type="submit" value="Upload">' +
+            '</form>'
+        );
+    });
+    app.post('/admin/upload', admin.upload);
+
     app.get("/cache", function (req, res) {
         res.send("Whoa, you found a secret that does nothing");
     });

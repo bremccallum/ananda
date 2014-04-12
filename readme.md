@@ -2,14 +2,16 @@
 
 ##Tasks
 
-* upload files
+* ~~upload files~~
+* Create upload front-nd
+
 * reset cache button on admin. Should cache reset on publish/unpublish?
+
 ####Posts
 
 * style post page
 * post versioning - saving, just need to load/display
 * delete posts
-* add photos to posts
 * Sort posts by published/draft on admin
 * post paging on admin?
 
@@ -20,6 +22,10 @@
 * workshops: group by month, then name, on home page
 * pricing & membership (see WYSIWIG)
 * retail store WYSIWIG
+
+#### Refactor
+* turn "cache" into middleware that router can pass to cached routes
+* Save photos to azure blob? Need to decide on hosting...
 
 #### SEO
 

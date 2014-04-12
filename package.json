@@ -5,7 +5,8 @@
   "private": true,
   "main": "package.json",
   "scripts": {
-    "start": "node ananda.js"
+    "start": "node ananda.js",
+    "test": "node-theseus ananda.js"
   },
   "engines": {
     "node": "0.10.x"
@@ -20,7 +21,9 @@
     "bcrypt-nodejs": "0.0.3",
     "mongoose-q": "0.0.9",
     "soap-q": "~0.1.2",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "formidable": "~1.0.14",
+    "fs-extra": "~0.8.1"
   },
   "devDependencies": {
     "grunt": "~0.4.2",
