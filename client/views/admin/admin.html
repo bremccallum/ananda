@@ -6,35 +6,30 @@
     <div class="col-sm-5">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h2>Pages</h2>
-            </div>
-            <div class="panel-body">Click on a page to edit its heading, text, and/or image</div>
-            <ul class="list-group">
-                {% for page in pages %}
-                <li class="list-group-item">
-                    <h3>
-                        <a href="/admin/page/{{page.page}}">{{page.page}}</a>
-                    </h3>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div class="admin-box panel panel-default">
-            <div class="panel-heading">
-                <a href="/admin/user" class="btn btn-primary pull-right">New User</a>
-                <h2>Users</h2>
+                <button class="pull-right btn btn-warning hidden-xs" onclick="showImages(this)">Load Images</button>
+                <h2>Images</h2>
             </div>
             <ul class="list-group">
-                {% for user in users %}
-                <li class="list-group-item">
-                    <a href="#" onclick="deleteUser(this, '{{user._id}}')" class="pull-right">
+                {% for image in images %}
+                <li class="list-group-item clearfix">
+                    <img src="" data-src="/uploads/{{image}}" alt="" class="image hidden-xs">
+                    <input onclick="this.select()" type="text" readonly value="/uploads/{{image}}">
+
+                    <a href="#" data-file="{{image}}" class="pull-right delete-image">
                         <i class="fa fa-trash-o fa-2x"></i>
                     </a>
-                    <h4 class="list-group-item-heading"><a href="/admin/user/{{user._id}}">{{user.email}}</a></h4>
                 </li>
                 {% endfor %}
-                <!----->
             </ul>
+            <div class="panel-body">
+                <form class="form-upload" action="/admin/upload" enctype="multipart/form-data" method="post">
+                    <div class="form-group">
+                        <label for="form-label">Upload image</label>
+                        <input type="file" required name="uploadimage">
+                    </div>
+                    <button class="btn btn-primary">Upload</button>
+                </form>
+            </div>
         </div>
     </div>
     <div class="col-sm-7">
@@ -48,8 +43,7 @@
                 {% for post in posts %}
                 <li class="list-group-item {{'published' if post.published}}">
                     <a href="/admin/post/{{post.slug}}">
-                        <h4
- class="list-group-item-heading">{{post.title}}</h4>
+                        <h4 class="list-group-item-heading">{{post.title}}</h4>
                     </a>
                     {% if post.isPublished %}
                     <p>Published {{post.published | prettyDate}}</p>
@@ -62,18 +56,113 @@
             </ul>
         </div>
     </div>
+    <div class="col-sm-5">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2>Pages</h2>
+            </div>
+            <div class="panel-body">Click on a page to edit its heading, text, and/or image</div>
+            <ul class="list-group">
+                {% for page in pages %}
+                <li class="list-group-item">
+                    <h3>
+                        <a href="/admin/page/{{page.page}}">{{page.page}}</a>
+                    </h3>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="col-sm-7">
+        <div class="admin-box panel panel-default">
+            <div class="panel-heading">
+                <a href="/admin/user" class="btn btn-primary pull-right">New User</a>
+                <h2>Users</h2>
+            </div>
+            <ul class="list-group">
+                {% for user in users %}
+                <li class="list-group-item">
+                    <a href="#" onclick="deleteUser(this, '{{user._id}}')" class="pull-right">
+                        <i class="fa fa-trash-o fa-2x"></i>
+                    </a>
+                    <h4 class="list-group-item-heading">
+                        <a href="/admin/user/{{user._id}}">{{user.email}}</a>
+                    </h4>
+                </li>
+                {% endfor %}
+                <!----->
+            </ul>
+        </div>
+    </div>
 </div>
 {% endblock %} {% block finally%}
 <script>
-    function deleteUser(a, id){
-        $.post('/admin/user/delete', {id:id}, function(data){
+    function deleteUser(a, id) {
+        $.post('/admin/user/delete', {
+            id: id
+        }, function(data) {
             console.log("Delete user callback")
             console.log(data);
-            if(data.success){
+            if (data.success) {
                 $(a).parent().fadeOut();
             }
 
         });
     }
+</script>
+<script>
+    function showImages(btn) {
+        $(btn).remove();
+        $('img[data-src]').each(function(i, e) {
+            $(e).attr('src', $(e).attr('data-src'));
+        });
+    }
+</script>
+<script>
+    $(function() {
+        $('a.delete-image').click(function(e){
+            e.preventDefault();
+            var $a = $(this),
+                file = $a.data('file');
+            if (confirm("Delete " + file + "?")) {
+                $a.parent().fadeOut('slow');
+                $.post('/admin/image/delete', {
+                    name: file
+                }).fail(console.log.bind(console, "Failed to delete photo"));
+            }
+            
+        });
+        $('.form-upload').submit(function(e) {
+            e.preventDefault();
+            var $form = $(this);
+            $.ajax({
+                type: "POST",
+                contentType: false,
+                processData: false,
+                url: $form.attr('action'),
+                data: new FormData(this),
+                success: function(data) {
+                    console.log(data);
+                    if (data.success) {
+                        alert("Upload successful!");
+                        $form.reset();
+                    }
+                },
+
+                error: function(error) {
+                    if (error.status == 409) {
+                        alert("File already exists.\n" +
+                            "Rename the file and try again, or " +
+                            "delete the file that has the same name.");
+                    } else if (error.status == 500) {
+                        alert("Error uploading file.");
+                    } else {
+                        alert("Unknown error uploading");
+                        console.error(error);
+                    }
+                }
+            });
+        });
+    });
 </script>
 {% endblock %}

@@ -48,6 +48,7 @@ module.exports = function (app, soap) {
         );
     });
     app.post('/admin/upload', admin.upload);
+    app.post('/admin/image/delete', admin.deleteImage)
 
     app.get("/cache", function (req, res) {
         res.send("Whoa, you found a secret that does nothing");
