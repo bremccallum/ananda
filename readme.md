@@ -1,10 +1,6 @@
 #Ananda Yoga Lander Website
 
 ##Tasks
-
-* ~~upload files~~
-* Create upload front-nd
-
 * reset cache button on admin. Should cache reset on publish/unpublish?
 
 ####Posts

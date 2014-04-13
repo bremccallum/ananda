@@ -86,7 +86,7 @@ module.exports = function (soap) {
                     return res.send(415, 'Unsupported Media Type');
                 }
                 save(files.uploadimage).then(function () {
-                    res.send("Upload successful");
+                    res.send({success:true, name: files.uploadimage.name});
                 }).fail(function (err) {
                     if (err == 409) {
                         return res.send(409, "File already exists")

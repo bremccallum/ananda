@@ -9,7 +9,7 @@
                 <button class="pull-right btn btn-warning hidden-xs" onclick="showImages(this)">Load Images</button>
                 <h2>Images</h2>
             </div>
-            <ul class="list-group">
+            <ul class="list-group images">
                 {% for image in images %}
                 <li class="list-group-item clearfix">
                     <img src="" data-src="/uploads/{{image}}" alt="" class="image hidden-xs">
@@ -56,6 +56,7 @@
             </ul>
         </div>
     </div>
+    <div class="clearfix hidden-xs"></div>
     <div class="col-sm-5">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -118,6 +119,16 @@
         });
     }
 </script>
+<script type="text/x-template" id="img-template">
+    <li class="list-group-item clearfix">
+        <img src="/uploads/IMAGE" data-src="/uploads/IMAGE" alt="" class="image hidden-xs">
+        <input onclick="this.select()" type="text" readonly value="/uploads/IMAGE">
+
+        <a href="#" data-file="IMAGE" class="pull-right delete-image">
+            <i class="fa fa-trash-o fa-2x"></i>
+        </a>
+    </li>
+</script>
 <script>
     $(function() {
         $('a.delete-image').click(function(e){
@@ -132,6 +143,7 @@
             }
             
         });
+        var template = $('#img-template').html();
         $('.form-upload').submit(function(e) {
             e.preventDefault();
             var $form = $(this);
@@ -144,8 +156,8 @@
                 success: function(data) {
                     console.log(data);
                     if (data.success) {
-                        alert("Upload successful!");
-                        $form.reset();
+                        $('ul.images').append(template.replace(/IMAGE/g, data.name));
+                        $form[0].reset();
                     }
                 },
 
