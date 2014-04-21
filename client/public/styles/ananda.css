@@ -5284,6 +5284,26 @@ main .affix-bottom {
 .card.no-border {
   border-style: none;
 }
+.home #left {
+  float: left;
+  width: 100%;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+@media (min-width: 768px) {
+  .home #left {
+    float: left;
+    width: 41.66666667%;
+  }
+}
+@media (min-width: 992px) {
+  .home #left {
+    float: left;
+    width: 33.33333333%;
+  }
+}
 .home #left h2 {
   text-align: right;
   margin: 0;
@@ -5314,57 +5334,77 @@ main .affix-bottom {
   font-style: italic;
   font-sizes: .98;
 }
+.home #right {
+  float: left;
+  width: 100%;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+@media (min-width: 768px) {
+  .home #right {
+    float: left;
+    width: 58.33333333%;
+  }
+}
+@media (min-width: 992px) {
+  .home #right {
+    float: left;
+    width: 66.66666667%;
+  }
+}
 @media (max-width: 767px) {
-  .home #welcome.card {
+  .home #right #welcome.card {
     margin-bottom: 0;
   }
 }
 @media (min-width: 767px) {
-  .home #welcome {
+  .home #right #welcome {
     padding: 19px;
   }
 }
-.home #welcome img {
+.home #right #welcome img {
   max-width: 50%;
 }
 @media (max-width: 767px) {
-  .home .article-wrapper {
+  .home #right .article-wrapper {
     padding-left: 0;
     padding-right: 0;
   }
 }
-.home .article-wrapper article {
+.home #right .article-wrapper article {
   height: 250px;
   overflow: hidden;
   padding-left: 1em;
   position: relative;
 }
 @media (max-width: 767px) {
-  .home .article-wrapper article.card {
+  .home #right .article-wrapper article.card {
     margin: 0;
   }
 }
-.home .article-wrapper article img {
+.home #right .article-wrapper article img {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   opacity: .15;
 }
-.home .article-wrapper article > .article-content {
+.home #right .article-wrapper article > .article-content {
   position: relative;
 }
-.home .article-wrapper article > .article-content h1 {
+.home #right .article-wrapper article > .article-content h1 {
   font-size: 1.6em;
   margin-top: 0;
   text-align: center;
 }
 @media (max-width: 767px) {
-  .home .article-wrapper article > .article-content h1 {
+  .home #right .article-wrapper article > .article-content h1 {
     margin-top: .5em;
   }
 }
-.home .article-wrapper article > .article-content time {
+.home #right .article-wrapper article > .article-content time {
   font-size: .8em;
   color: #999999;
 }
