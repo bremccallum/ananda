@@ -1,12 +1,14 @@
 var Q = require('q'),
     mongoose = require("mongoose-q")(),
-    moment = require("moment"),
+    moment = require("../moment"),
     _ = require("lodash"),
     Posts = mongoose.model('Post'),
     Pages = mongoose.model('Page'),
 
     WORKSHOPS_ID = 27;
-
+function nowMoment() {
+    return moment().zone(360);
+}
 function Workshop(mboWorkshop) {
     this.id = mboWorkshop.ClassDescription.ID;
     this.date = mboWorkshop.StartDateTime;

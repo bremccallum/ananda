@@ -12,10 +12,7 @@
 * post paging on admin?
 
 #### General Site Stuff
-* ~~posts: add a header-image field. set that as the post's background, and give it a pretty top.~~
-* ~~posts: come up with a default header image~~
-* ~~workshops page~~
-* ~~workshops: group by month, then name, on home page~~
+* mark workshops on /schedule
 * pricing & membership (see WYSIWIG)
 * retail store WYSIWIG
 
@@ -25,6 +22,7 @@
 
 #### SEO
 
+* facebook image metas
 * meta descriptions
 * title matches h1?
 * keyword ideas: ananda yoga, lander, lander yoga, lander wyoming

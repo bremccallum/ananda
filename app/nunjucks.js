@@ -1,5 +1,5 @@
 var nunjucks = require("nunjucks"),
-    moment = require('moment'),
+    moment = require('./moment'),
     downsize = require('downsize');
 
 var nunjucksInit = function (app) {
