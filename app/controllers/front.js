@@ -268,6 +268,7 @@ module.exports = function (soap) {
                         model.classes[m] = [];
                     }
                     classes.GetClassesResult.Classes.Class.forEach(function (c) {
+                        c.isWorkshop = c.ClassDescription.Program.ID == WORKSHOPS_ID;
                         model.classes[moment(c.StartDateTime).format("dddd [the] Do")].push(c);
                     });
                     model.title = "Schedule";
