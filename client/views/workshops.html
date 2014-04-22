@@ -8,7 +8,7 @@
         <ul id='affix' class="card no-border nav nav-pills nav-stacked">
             {%for workshop in workshops | attrSort('name')%}
             <li>
-                <a href="#{{workshop.name | escape | replace(' ', '-')}}">{{workshop.name}}</a>
+                <a href="#{{workshop.name | slugify}}">{{workshop.name}}</a>
             </li>
             {%endfor%}
         </ul>
@@ -16,7 +16,7 @@
     <div class="col-xs-12 col-sm-8 col-md-9">
         <div class="row">
             {%for workshop in workshops | attrSort('name')%}
-            <div id="{{workshop.name | escape | replace(' ', '-') }}" class="card item clearfix">
+            <div id="{{workshop.name | slugify }}" class="card item clearfix">
                 {%if workshop.image %}
                 <img src="{{workshop.image}}" class="pull-right img-thumbnail" alt="{{workshop.name}} Image">{%endif%}
                 <h1>{{workshop.name}}

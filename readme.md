@@ -4,7 +4,6 @@
 * reset cache button on admin. Should cache reset on publish/unpublish?
 
 ####Posts
-
 * ~~style post page~~
 * post versioning - saving, just need to load/display
 * delete posts
@@ -17,8 +16,10 @@
 * lineup titles on home page
 * pricing & membership (see WYSIWIG)
 * retail store WYSIWIG
+* MBO substitutions!
 
 #### Refactor
+* abstract api service
 * turn "cache" into middleware that router can pass to cached routes
 * Save photos to azure blob? Need to decide on hosting...
 

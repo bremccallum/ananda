@@ -10,7 +10,7 @@
         <h2>
             <a href="/news/{{post.slug}}">{{post.title}}</a>
         </h2>
-        <a class="author" href="/instructors#{{post.author | replace(' ', '-')}}">{{post.author}}</a>
+        <a class="author" href="/instructors#{{post.author | slugify}}">{{post.author}}</a>
         <small>posted {{post.published | prettyDate}}</small>
     </header>
     <hr>
