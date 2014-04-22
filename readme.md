@@ -5,17 +5,17 @@
 
 ####Posts
 
-* style post page
+* ~~style post page~~
 * post versioning - saving, just need to load/display
 * delete posts
 * Sort posts by published/draft on admin
 * post paging on admin?
 
 #### General Site Stuff
-* posts: add a header-image field. set that as the post's background, and give it a pretty top.
-* posts: come up with a default header image
-* workshops page
-* workshops: group by month, then name, on home page
+* ~~posts: add a header-image field. set that as the post's background, and give it a pretty top.~~
+* ~~posts: come up with a default header image~~
+* ~~workshops page~~
+* ~~workshops: group by month, then name, on home page~~
 * pricing & membership (see WYSIWIG)
 * retail store WYSIWIG
 
