@@ -1,5 +1,6 @@
 var nunjucks = require("nunjucks"),
-    moment = require('moment');
+    moment = require('moment'),
+    downsize = require('downsize');
 
 var nunjucksInit = function (app) {
     nunjucks = nunjucks.configure('client/views', {
@@ -45,6 +46,10 @@ var nunjucksInit = function (app) {
 
         return arr;
     });
+    nunjucks.addFilter('excerpt', function(v, numWords){
+        numWords = numWords ? numWords : 50;
+        return v ? downsize(v.replace(/<\/?[^>]+>/gi, ' '), {words:numWords}) : v;
+    })
     nunjucks.addFilter("slugify", function (v) {
         if (!v) {
             return v;
