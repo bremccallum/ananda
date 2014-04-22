@@ -84,12 +84,12 @@ module.exports = function (soap) {
     }
 
     function workshopArgs(details) {
-        return classArgs(moment(), moment().add('months', 2), WORKSHOPS_ID, details);
+        return classArgs(nowMoment(), nowMoment().add('months', 2), WORKSHOPS_ID, details);
     }
 
     function home(req, res) {
-        var now = moment();
-        if (now.add('minutes', -30).day() != moment().day())
+        var now = nowMoment();
+        if (now.add('minutes', -30).day() != nowMoment().day())
             now.add('minutes', 30);
         var tmrw = moment(now).add('days', 1).endOf('day');
 
@@ -225,8 +225,8 @@ module.exports = function (soap) {
     }
 
     function classes(req, res) {
-        var now = moment(),
-            future = moment().add('weeks', 2),
+        var now = nowMoment(),
+            future = nowMoment().add('weeks', 2),
             program = 22, //regular classes
             details = true;
 
@@ -254,8 +254,8 @@ module.exports = function (soap) {
     }
 
     function schedule(req, res) {
-        var now = moment(),
-            future = moment().add('weeks', 2)
+        var now = nowMoment(),
+            future = nowMoment().add('weeks', 2)
             Classes.GetClassesQ(classArgs(now, future))
                 .then(function (classes) {
                     var model = {
