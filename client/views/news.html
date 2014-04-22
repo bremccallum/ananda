@@ -1,15 +1,21 @@
-{%extends 'layout.html'%}
-{% block bodyattr%}class="post"{%endblock%}
-{%block main%}
-<div class="row">
-    <div class="col-sm-8 col-sm-offset-3">
-        <article>
-            <h2><a href="/news/{{post.slug}}">{{post.title}}</a></h2>
-            <h2 class="small byline"><a href="/instructors#{{post.author | replace(' ', '-')}}">{{post.author}}</a></h2>
-            <div>{{post.body | safe}}</div>
-            <small>published {{post.published}}</small>
-            
-        </article>
-    </div>
-</div>
+{%extends 'layout.html'%} {% block bodyattr%}class="post"{%endblock%} {%block styles%} {%if post.headerImg %}
+<style>
+    body > header {
+        background-image: url({{post.headerImg}});
+    }
+</style>
+{%endif%} {%endblock%} {%block main%}
+<article class="card">
+    <header class="byline">
+        <h2>
+            <a href="/news/{{post.slug}}">{{post.title}}</a>
+        </h2>
+        <a class="author" href="/instructors#{{post.author | replace(' ', '-')}}">{{post.author}}</a>
+        <small>posted {{post.published | prettyDate}}</small>
+    </header>
+    <hr>
+    <div class="content">{{post.body | safe}}</div>
+
+
+</article>
 {%endblock%}

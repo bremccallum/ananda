@@ -4306,7 +4306,9 @@ button.close {
 .post .form-holder > form .form-group:before,
 .post .form-holder > form .form-group:after,
 .post .form-holder > form .submit-buttons:before,
-.post .form-holder > form .submit-buttons:after {
+.post .form-holder > form .submit-buttons:after,
+.post article:before,
+.post article:after {
   content: " ";
   display: table;
 }
@@ -4327,7 +4329,8 @@ button.close {
 .post .alertBox:after,
 .post .form-holder:after,
 .post .form-holder > form .form-group:after,
-.post .form-holder > form .submit-buttons:after {
+.post .form-holder > form .submit-buttons:after,
+.post article:after {
   clear: both;
 }
 .center-block {
@@ -5170,7 +5173,7 @@ button.close {
 .colorSwatch br {
   clear: both;
 }
-header {
+body > header {
   min-height: 10em;
   width: 100%;
   background-image: url(/img/bg_leaf_1600.jpg);
@@ -5787,16 +5790,149 @@ fieldset[disabled] .post-edit.post-published .btn-publish.active {
   color: #f0ad4e;
   background-color: #ffffff;
 }
-footer {
+.post article {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+.post article header {
+  float: left;
+  width: 100%;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.1;
+  color: inherit;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 24px;
+  margin-bottom: .75em;
+}
+@media (min-width: 992px) {
+  .post article header {
+    float: left;
+    width: 83.33333333%;
+  }
+}
+@media (min-width: 992px) {
+  .post article header {
+    margin-left: 8.33333333%;
+  }
+}
+@media (min-width: 1200px) {
+  .post article header {
+    float: left;
+    width: 75%;
+  }
+}
+@media (min-width: 1200px) {
+  .post article header {
+    margin-left: 16.66666667%;
+  }
+}
+.post article header small,
+.post article header .small {
+  font-weight: normal;
+  line-height: 1;
+  color: #999999;
+}
+.post article header small,
+.post article header .small {
+  font-size: 65%;
+}
+.post article header h2 {
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.1;
+  color: inherit;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 36px;
+}
+.post article header h2 small,
+.post article header h2 .small {
+  font-weight: normal;
+  line-height: 1;
+  color: #999999;
+}
+.post article header h2 small,
+.post article header h2 .small {
+  font-size: 65%;
+}
+.post article header a.author {
+  dispay: block;
+}
+.post article header small {
+  display: block;
+}
+.post article .content {
+  float: left;
+  width: 100%;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  font-size: 1.6rem;
+}
+@media (min-width: 768px) {
+  .post article .content {
+    float: left;
+    width: 83.33333333%;
+  }
+}
+@media (min-width: 768px) {
+  .post article .content {
+    margin-left: 8.33333333%;
+  }
+}
+@media (min-width: 992px) {
+  .post article .content {
+    float: left;
+    width: 66.66666667%;
+  }
+}
+@media (min-width: 992px) {
+  .post article .content {
+    margin-left: 16.66666667%;
+  }
+}
+@media (min-width: 1200px) {
+  .post article .content {
+    float: left;
+    width: 50%;
+  }
+}
+@media (min-width: 1200px) {
+  .post article .content {
+    margin-left: 25%;
+  }
+}
+.post article .content iframe,
+.post article .content img {
+  dislay: block;
+  max-width: 100%;
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+@media (min-width: 992px) {
+  .post article .content img {
+    width: 126%;
+    margin-left: -13%;
+    max-width: none;
+  }
+}
+body > footer {
   height: 4em;
   padding: 10px;
   padding-right: 20px;
 }
-footer p {
+body > footer p {
   margin-bottom: 0;
   padding-bottom: 1em;
   text-align: right;
 }
-footer > a {
+body > footer > a {
   margin-left: 20px;
 }
