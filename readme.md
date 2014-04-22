@@ -13,6 +13,8 @@
 
 #### General Site Stuff
 * mark workshops on /schedule
+* update schedule layout
+* lineup titles on home page
 * pricing & membership (see WYSIWIG)
 * retail store WYSIWIG
 
