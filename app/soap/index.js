@@ -11,7 +11,6 @@ module.exports = function (callback) {
     var staffUrl = __dirname + '/StaffService.wsdl';
     Q.all([soap.createClientQ(classUrl), soap.createClientQ(staffUrl)])
         .spread(function (c, s) {
-            console.log("SOAP initialized.")
             var clients = {
                 Classes: c,
                 Staff: s,
