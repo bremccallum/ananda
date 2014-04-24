@@ -52,7 +52,7 @@ var home = function (req, res) {
             MboApiClient.GetWorkshops(),
             postQuery.execQ(),
             pageQuery.execQ()
-            ]);
+        ]);
     }).spread(function (classes, workshops, posts, page) {
 
         classes = _.groupBy(classes, function (c) {
@@ -60,7 +60,6 @@ var home = function (req, res) {
             return date.isBefore(tmrwStart) ? 'today' : 'tomorrow';
         });
         var earliestClass = _.min(classes.today, 'StartDateTime');
-
         var model = {
             today: classes.today,
             tomorrow: classes.tomorrow,
@@ -68,9 +67,13 @@ var home = function (req, res) {
             posts: posts,
             //It's PM if the first class of today is after 4
             pm: (earliestClass ? moment(earliestClass.StartDateTime).hours() : now.hours()) >= 16,
-            //Group workshops by month
-            workshops: _.groupBy(workshops, function (ws) {
+            //Group workshops by month and remove duplicates from each month
+            workshops: _.mapValues(_.groupBy(workshops, function (ws) {
                 return moment(ws.date).format('MMMM');
+            }), function (array) {
+                return _.uniq(array, function (c) {
+                    return c.id;
+                });
             })
         };
 
@@ -145,7 +148,7 @@ var classes = function (req, res) {
                     Name: c.ClassDescription.Name,
                     ImageURL: c.ClassDescription.ImageURL,
                     Description: c.ClassDescription.Description
-                }
+                };
             })
         });
     }).fail(fail.bind(null, res));

@@ -38,7 +38,7 @@
             <ol class="list-unstyled">
                 {% for workshop in classes %}
                 <li class="align-right">
-                    <a href="/workshops#{{workshop.Name | slugify}}">{{workshop.Name}}</a>
+                    <a href="/workshops#{{workshop.name | slugify}}">{{workshop.name}}</a>
                 </li>
                 {% endfor %}
             </ol>
