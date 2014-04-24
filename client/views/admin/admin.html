@@ -54,6 +54,9 @@
                 {% endfor %}
                 <!----->
             </ul>
+            <div class="panel-footer">
+                <form action="/admin/cache/reset" method="post"><label>Click this button to update the home page when you create or edit a post if you don't want to wait for it to automatically refresh in an hour.</label><button class="btn btn-danger">Reset Cache</button></form>
+            </div>
         </div>
     </div>
     <div class="clearfix hidden-xs"></div>

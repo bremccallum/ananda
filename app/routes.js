@@ -1,20 +1,22 @@
 var app = require("../ananda"),
     front = require("./controllers/front"),
-    admin = require("./controllers/admin");
+    admin = require("./controllers/admin"),
+    cache = require('./cache');
 
 function redirect(where) {
     return function (req, res) {
         res.redirect(where);
     };
 }
-
+// @TODO enable etag support with cache
+app.disable('etag');
 //## Front
-app.get('/', front.home);
-app.get('/instructors', front.instructors);
-app.get('/classes', front.classes);
-app.get('/workshops', front.workshops);
-app.get('/schedule', front.schedule);
-app.get('/news/:slug', front.viewPost);
+app.get('/', cache, front.home);
+app.get('/instructors', cache, front.instructors);
+app.get('/classes', cache, front.classes);
+app.get('/workshops', cache, front.workshops);
+app.get('/schedule', cache, front.schedule);
+app.get('/news/:slug', cache, front.viewPost);
 
 //## Login
 app.get("/login", admin.login);
@@ -43,6 +45,8 @@ app.put('/admin/page', admin.page.update);
 //### Image
 app.post('/admin/upload', admin.upload);
 app.post('/admin/image/delete', admin.deleteImage);
+
+app.post('/admin/cache/reset', cache.reset, redirect('/admin'));
 
 app.all("*", function (req, res) {
     res.statusCode = 404;
