@@ -17,8 +17,8 @@
         <div class="row">
             {%for item in objectList | attrSort('Name')%}
             <div id="{{item.Name | slugify}}" class="card item clearfix">
-                {%if item.Image %}
-                <img src="{{item.Image}}" class="pull-right img-circle" alt="{{item.Name}} Image">{%endif%}
+                {%if item.ImageURL %}
+                <img src="{{item.ImageURL}}" class="pull-right img-circle" alt="{{item.Name}} Image">{%endif%}
                 <h1>{%if item.Email %}
                     <a href="mailto:{{item.Email}}" title="Email {{item.Name}}">{% endif %} {{item.Name}}{%if item.Email %}</a>{% endif %}
                 </h1>

@@ -25,7 +25,7 @@ module.exports = function (milliseconds, myRoute) {
                 console.log("CACHE: Abort Cache: " + myRoute + " - " + res.statusCode);
             } else {
                 res.on('finish', function () {
-                    console.log("CACHE: SAVING:'" + route);
+                    console.log("CACHE: SAVING:" + route);
                     app._cache[route] = {
                         data: data,
                         expires: Date.now() + milliseconds
@@ -33,7 +33,7 @@ module.exports = function (milliseconds, myRoute) {
                 });
             }
             res.end(data, encryption);
-        }
+        };
         return next();
-    }
-}
+    };
+};

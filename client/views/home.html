@@ -25,7 +25,7 @@
             <h3>{{'Tonight' if pm else 'Today'}}</h3>
             {{upcomingPrinter(today)}}
             <h3>Tomorrow</h3>
-            {{upcomingPrinter(tmrw)}}
+            {{upcomingPrinter(tomorrow)}}
             <a href="/schedule">
                 <small>or check out our entire schedule</small>
             </a>
@@ -38,7 +38,7 @@
             <ol class="list-unstyled">
                 {% for workshop in classes %}
                 <li class="align-right">
-                    <a href="/workshops#{{workshop | slugify}}">{{workshop}}</a>
+                    <a href="/workshops#{{workshop.Name | slugify}}">{{workshop.Name}}</a>
                 </li>
                 {% endfor %}
             </ol>

@@ -14,7 +14,7 @@
             </tr>
             {% for day in days %} {%if not (loop.index0 == 0 and classes[day].length == 0)%}{#get rid of first empty day#}
             <tr>
-                <th class="day{{ ' no-classes' if classes[day].length == 0 }}" colspan="4">{{day}}</td>
+                <th class="day {{'no-classes' if not classes[day]}}" colspan="4">{{day}}</td>
             </tr>
             {% for class in classes[day] | attrSort("StartDateTime")%}
             <tr>

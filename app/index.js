@@ -1,9 +1,9 @@
 var nunjucks = require('./nunjucks'),
-    cache = require('./cache');
+    cache = require('./cache'),
+    CACHE_TIME = 1000 * 60 * 60; //1 hour
 
 var cacheInit = function (app) {
-    var CACHE_TIME = 1000 * 60 * 60; //1 hour
-
+    // @TODO make cache work with etag
     app.disable("etag");
     app.use('/', cache(CACHE_TIME, '/'));
     app.use('/instructors', cache(CACHE_TIME, '/instructors'));
@@ -12,10 +12,8 @@ var cacheInit = function (app) {
     app.use('/workshops', cache(CACHE_TIME, '/workshops'));
 }
 
-var routesInit = function (app) {
-    var loadRoutes = require('./routes'),
-        loadSoap = require('./soap');
-    loadSoap(loadRoutes.bind(null, app));
+var routesInit = function () {
+    require('./routes');
 }
 var dataInit = function () {
     require("./models");
@@ -25,6 +23,5 @@ module.exports.initialize = function (app) {
     nunjucks(app);
     dataInit();
     cacheInit(app);
-    routesInit(app);
-
+    routesInit();
 }

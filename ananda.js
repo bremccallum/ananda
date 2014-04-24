@@ -1,5 +1,5 @@
 var express = require('express'),
-    app = express(),
+    app = module.exports = express(),
     server = require('./app');
 
 app.configure(function () {
@@ -16,13 +16,15 @@ app.configure(function () {
             res.redirect("/login");
         }
     });
-    server.initialize(app);
-    app.use(express.static(__dirname + "/client/public"));
+    app.use('/styles', express.static(__dirname + '/client/public/styles'));
+    app.use('/fonts', express.static(__dirname + '/client/public/fonts'));
+    app.use('/img', express.static(__dirname + '/client/public/img'));
+    app.use('/js', express.static(__dirname + '/client/public/js'));
     app.use('/uploads', express.static(__dirname + '/client/uploads'));
+    server.initialize(app);
 });
 
-var port = process.env.PORT || '6969'
+var port = process.env.PORT || '6969';
 app.listen(port, function () {
     console.log('Listening on port ' + port);
 });
-module.exports = app;

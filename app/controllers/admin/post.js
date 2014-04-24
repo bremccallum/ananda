@@ -1,145 +1,132 @@
 var Posts = require("mongoose-q")().model('Post'),
-    Q = require('q');
+    Q = require('q'),
+    soap = require("../../soap"),
+    _ = require('lodash');
 
-module.exports = function (soap) {
-
-    //#Helpers
-    function teachersToNames(staff) {
-        staff = staff.GetStaffResult.StaffMembers.Staff
-            .filter(function (staff) {
-                return staff.ID > 1; //they have weird testing data at lower ID
-            });
-        staff.map(function (v, i) {
-            staff[i] = v.Name;
+var getTeacherNames = function () {
+    return soap().then(function (MboApiClient) {
+        return MboApiClient.GetStaff();
+    }).then(function (staff) {
+        var names = _.map(staff, function (s) {
+            return s.Name;
         });
-        return staff;
+        return names;
+    });
+};
+
+var parseBody = function (body) {
+    var post = {
+        title: body.title,
+        slug: body.slug,
+        author: body.author,
+        body: body.body,
+        headerImg: body.headerImg
+    };
+    if (body._id) {
+        post._id = body._id;
     }
+    return post;
+};
 
-    function getTeacherPromise(callback) {
-        var args = {
-            Fields: [
-                {
-                    string: 'Staff.Name'
-            }
-        ],
-            XMLDetail: 'Bare'
-        };
-        return soap.Staff.GetStaffQ(soap.setArgs(args));
-    }
+// #Routes
+var doPost = function (post, options) {
+    var deferred = Q.defer();
 
-    function parseBody(body) {
-        var post = {
-            title: body.title,
-            slug: body.slug,
-            author: body.author,
-            body: body.body,
-            headerImg: body.headerImg
-        };
-        if (body._id)
-            post._id = body._id;
-        return post;
-    }
-
-    // #Routes
-    function doPost(post, options) {
-        var deferred = Q.defer();
-
-        function saveToPromise(err, post) {
-            if (err)
-                deferred.reject(err);
-            else
-                deferred.resolve({
-                    success: true,
-                    post: post
-                });
-        }
-
-        if (options.publish) {
-            post.isPublished = true;
-            post.published = moment().toDate();
-        } else if (options.unpublish) {
-            post.isPublished = false;
-        }
-
-        if (options.create) {
-            post = new Posts(post);
-            post.save(saveToPromise);
-            return deferred.promise;
-        }
-        Posts.findById(post._id, "+versions").execQ()
-            .then(function (_post) {
-                _post.versions.push({
-                    date: _post.modified,
-                    body: _post.body
-                });
-                _post.set(post);
-                _post.save(saveToPromise);
-            }).fail(function (err) {
-                deferred.reject(err);
+    function saveToPromise(err, post) {
+        if (err) {
+            deferred.reject(err);
+        } else {
+            deferred.resolve({
+                success: true,
+                post: post
             });
+        }
+    }
+
+    if (options.publish) {
+        post.isPublished = true;
+        post.published = moment().toDate();
+    } else if (options.unpublish) {
+        post.isPublished = false;
+    }
+
+    if (options.create) {
+        post = new Posts(post);
+        post.save(saveToPromise);
         return deferred.promise;
     }
-
-    function addPost(req, res) {
-        getTeacherPromise().then(function (teachers) {
-            var model = {
-                title: "New Post",
-                teacherNames: teachersToNames(teachers)
-            };
-            res.render('/admin/post.html', model);
+    Posts.findById(post._id, "+versions").execQ()
+        .then(function (_post) {
+            _post.versions.push({
+                date: _post.modified,
+                body: _post.body
+            });
+            _post.set(post);
+            _post.save(saveToPromise);
+        }).fail(function (err) {
+            deferred.reject(err);
         });
-    }
-    //get
-    function editPost(req, res) {
-        var slug = req.params.slug;
-        Q.all([getTeacherPromise(),
-           Posts.findOne({
-                slug: slug
-            }).execQ()])
-            .spread(function (teachers, post) {
-                var model = {
-                    title: 'Edit Post',
-                    teacherNames: teachersToNames(teachers),
-                    post: post
-                };
-                res.render('/admin/post.html', model);
-            });
-    }
-    //put
-    function updatePost(req, res) {
-        var p = parseBody(req.body);
-        var publish = false,
-            unpublish = false;
-        if (req.body.publish == "true") {
-            publish = true;
-        } else if (req.body.unpublish == "true") {
-            unpublish = true;
-        }
+    return deferred.promise;
+};
 
-        doPost(p, {
-            publish: publish,
-            unpublish: unpublish,
-            create: !! req.body.create //from addPost
-        })
-            .then(function (post) {
-                res.send({
-                    success: true
-                });
-            }).fail(function (err) {
-                res.send({
-                    err: err
-                });
-            });
+var addPost = function (req, res) {
+    getTeacherNames().then(function (names) {
+        var model = {
+            title: "New Post",
+            teacherNames: names
+        };
+        res.render('/admin/post.html', model);
+    });
+};
+//get
+var editPost = function (req, res) {
+    var post = Posts.findOne({
+        slug: req.params.slug
+    });
+    Q.all([
+        getTeacherNames(),
+        post.execQ()
+    ]).spread(function (names, post) {
+        var model = {
+            title: 'Edit Post',
+            teacherNames: names,
+            post: post
+        };
+        res.render('/admin/post.html', model);
+    });
+};
+//put
+var updatePost = function(req, res) {
+    var p = parseBody(req.body);
+    var publish = false,
+        unpublish = false;
+    if (req.body.publish == "true") {
+        publish = true;
+    } else if (req.body.unpublish == "true") {
+        unpublish = true;
     }
 
-    function doAddPost(req, res) {
-        req.body.create = true;
-        updatePost(req, res);
-    }
-    var out = {};
-    out.add = addPost;
-    out.doAdd = doAddPost;
-    out.edit = editPost;
-    out.update = updatePost;
-    return out;
-}
+    doPost(p, {
+        publish: publish,
+        unpublish: unpublish,
+        create: !! req.body.create //from addPost
+    }).then(function (post) {
+        res.send({
+            success: true
+        });
+    }).fail(function (err) {
+        res.send({
+            err: err
+        });
+    });
+};
+
+var doAddPost = function (req, res) {
+    req.body.create = true;
+    updatePost(req, res);
+};
+
+exports.add = addPost;
+exports.doAdd = doAddPost;
+exports.edit = editPost;
+exports.update = updatePost;
