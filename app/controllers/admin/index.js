@@ -11,7 +11,7 @@ var formidable = require('formidable'),
 
 var login = function (req, res) {
     res.render("/admin/login.html");
-}
+};
 
 var doLogin = function (req, res) {
     Users.authenticate(req.body.email, req.body.password, function (err, isMatch) {
@@ -19,13 +19,13 @@ var doLogin = function (req, res) {
             res.cookie("loggedin", "true", {
                 maxAge: 1000 * 60 * 60 * 5,
                 signed: true
-            })
+            });
             res.redirect("/admin");
         } else {
             res.redirect("/login");
         }
     });
-}
+};
 
 var dashboard = function (req, res) {
     Q.all([Users.find().execQ(),
@@ -38,12 +38,12 @@ var dashboard = function (req, res) {
                 users: users,
                 pages: pages,
                 images: images
-            }
+            };
             res.render('/admin/admin.html', model);
         }).fail(function (err) {
-            if (err) res.send("Error loading posts. Try reloading the page.\nError:" + err);
+            if (err) {res.send("Error loading posts. Try reloading the page.\nError:" + err);}
         });
-}
+};
 
 // Response: json
 var upload = function (req, res) {
@@ -90,22 +90,22 @@ var upload = function (req, res) {
                 });
             }).fail(function (err) {
                 if (err == 409) {
-                    return res.send(409, "File already exists")
+                    return res.send(409, "File already exists");
                 }
                 res.send(500, "Couldn't save file.");
             });
-        })
+        });
     } catch (e) {
         console.error(e.message);
         res.send(500, "Internal server error");
     }
-}
+};
 
 var deleteImage = function (req, res) {
     var fileToDelete = req.body.name;
     fs.unlink(path.resolve(uploadDir, fileToDelete));
     res.send("Deleted");
-}
+};
 
 exports.dashboard = dashboard;
 exports.login = login;

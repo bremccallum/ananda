@@ -25,9 +25,3 @@
 
 ##Getting Started
 <code>npm install</code> will get dependencies out of packages.json
-
-## Pages
-Anticipated pages include
-
-* Membership page
-* Retail information

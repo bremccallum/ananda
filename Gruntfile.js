@@ -15,9 +15,9 @@ module.exports = function (grunt) {
         cssmin : {
             files:{src:'client/public/styles/ananda.css', dest:'client/public/styles/ananda.min.css'}
         }
-    })
+    });
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.registerTask('default', ['less', 'cssmin']);
-}
+};

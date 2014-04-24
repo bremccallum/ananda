@@ -20,10 +20,13 @@ function doAddUser(req, res) {
         password: body.password
     });
     user.save(function (err, user) {
-        if (err) res.send(err);
-        else res.send({
-            success: true
-        });
+        if (err) {
+            res.send(err);
+        } else {
+            res.send({
+                success: true
+            });
+        }
     });
 }
 
@@ -53,7 +56,7 @@ function updateUser(req, res) {
                 success: true
             });
         });
-    })
+    });
     Users.authenticate(email, password, function (err, isMatch) {
         if (isMatch) {
             Users.updateQ({
@@ -80,13 +83,14 @@ function deleteUser(req, res) {
     Users.remove({
         _id: req.body.id
     }, function (err) {
-        if (err)
+        if (err) {
             res.send(err);
-        else
+        } else {
             res.send({
                 success: true
             });
-    })
+        }
+    });
 }
 
 exports.add = addUser;

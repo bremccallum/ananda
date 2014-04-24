@@ -22,7 +22,7 @@ function update(req, res) {
     }, function (err) {
         res.send(err || {
             success: true
-        })
+        });
     });
 }
 

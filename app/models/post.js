@@ -1,4 +1,3 @@
-"use strict"
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
@@ -45,7 +44,7 @@ var postSchema = Schema({
     headerImg: {
         type:String
     }
-})
+});
 postSchema.pre('save', function (next) {
     if (this.isModified("body")) {
         this.modified = Date.now;
