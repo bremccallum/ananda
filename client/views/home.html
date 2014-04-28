@@ -2,8 +2,11 @@
 <!------>
 {% macro upcomingPrinter(classes) %}
 <!------>
-{{'
-<p class="upcoming no-upcoming">No classes</p>' | safe if classes.length == 0}} {% for class in classes | sort(false, false,'StartDateTime')%}
+{%if not classes %}
+<p class="upcoming no-upcoming">No classes</p>
+{% else %}
+
+{% for class in classes | sort(false, false,'StartDateTime')%}
 <p class="upcoming clearfix">
     <time>{{class.StartDateTime | prettyTime}}</time>
     {% if class.isWorkshop %}<span class="label label-default">Workshop</span>{%endif%}<a class="class-name" href="/{{'workshops' if class.isWorkshop else 'classes'}}#{{class.ClassDescription.Name | slugify}}">{{class.ClassDescription.Name}}</a>
@@ -12,6 +15,7 @@
     </span>
 </p>
 {% endfor %}
+{% endif %}
 <!------>
 {% endmacro %} {% block bodyattr%}class="home"{%endblock%}
 <!-------->
