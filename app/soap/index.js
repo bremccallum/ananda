@@ -2,9 +2,11 @@ var soap = require('soap-q')(),
     _ = require('lodash'),
     Q = require('q'),
     moment = require('moment'),
+    
 
     DateFormat = 'YYYY-MM-DD[T]HH:mm:ss',
     MboApiClient = {},
+    MboPassword = process.env.MBO_PASSWORD,
     WORKSHOPS_ID = 27;
 
 if (process.env.NODE_ENV === "development") {
@@ -12,7 +14,6 @@ if (process.env.NODE_ENV === "development") {
 }
 
 function initializeClient() {
-    console.log("Initializing soap client");
     var deferred = Q.defer(),
 
         //## Request Constructors
@@ -20,7 +21,7 @@ function initializeClient() {
             var credentials = {
                 SourceCredentials: {
                     'SourceName': 'NovaugustWebDesign',
-                    'Password': '5qNInG8NEsagui9L35ujs51wz5s=',
+                    'Password': MboPassword,
                     'SiteIDs': {
                         'int': 29280
                     }
@@ -98,12 +99,12 @@ function initializeClient() {
             });
 
             //Standardize data
-            cleanedStaff = _.map(cleanedStaff, function (s) {
+            cleanedStaff = _.map(cleanedStaff, function (staff) {
                 return {
-                    Name: s.Name,
-                    Email: s.Email,
-                    ImageURL: s.ImageURL,
-                    Description: (_.isEmpty(s.Bio)) ? '' : s.Bio
+                    Name: staff.Name,
+                    Email: staff.Email,
+                    ImageURL: staff.ImageURL,
+                    Description: (_.isEmpty(staff.Bio)) ? '' : staff.Bio
                 };
             });
 
