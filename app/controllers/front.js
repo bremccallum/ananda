@@ -59,6 +59,7 @@ var home = function (req, res) {
             var date = moment(c.StartDateTime);
             return date.isBefore(tmrwStart) ? 'today' : 'tomorrow';
         });
+
         var earliestClass = _.min(classes.today, 'StartDateTime');
         var model = {
             today: classes.today,
@@ -93,16 +94,19 @@ var workshops = function (req, res) {
             //make each workshop a pretty object rather than a list of.
             var starts = _.pluck(classes, 'start'),
                 days = [],
-                daySorter = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                daySorter = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                dateToUnix = function dateToUnix(dateString) {
+                    return moment(dateString).valueOf();
+                };
+            
+            //I'll have to comment on this when I'm not on pain meds and can
+            //     remember what I'm doing here.
             _.forEach(starts, function (start) {
                 var day = moment(start).format('dddd');
                 days[daySorter.indexOf(day)] = day;
             });
             days = _.reject(days, _.isUndefined);
 
-            function dateToUnix(dateString) {
-                return moment(dateString).valueOf();
-            }
             return _.assign(classes[0], {
                 days: days,
                 start: _.min(starts, dateToUnix),
