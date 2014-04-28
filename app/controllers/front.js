@@ -77,9 +77,7 @@ var home = function (req, res) {
                 });
             })
         };
-
         res.render('home.html', model);
-
     }).fail(fail.bind(null, res));
 };
 
@@ -89,9 +87,10 @@ var workshops = function (req, res) {
             detailed: true
         });
     }).then(function (workshops) {
-        // @TODO wtf is this?
+        //Group the workshops by their name,
+        // then map the list of classes that comprise the workshop into
+        // a single object that represents their sum.
         workshops = _.map(_.groupBy(workshops, 'name'), function (classes) {
-            //make each workshop a pretty object rather than a list of.
             var starts = _.pluck(classes, 'start'),
                 days = [],
                 daySorter = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
@@ -99,14 +98,14 @@ var workshops = function (req, res) {
                     return moment(dateString).valueOf();
                 };
             
-            //I'll have to comment on this when I'm not on pain meds and can
-            //     remember what I'm doing here.
+            //Create days, which holds what days the class occurs, in order
             _.forEach(starts, function (start) {
                 var day = moment(start).format('dddd');
                 days[daySorter.indexOf(day)] = day;
             });
+            //...and remove the days that the class doesn't occur on
             days = _.reject(days, _.isUndefined);
-
+            
             return _.assign(classes[0], {
                 days: days,
                 start: _.min(starts, dateToUnix),
