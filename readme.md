@@ -23,6 +23,7 @@ For now, though, it's a work-in-progress.
 
 ### Refactor
 
+* [ ] Remove jQuery soup in favor of SPA(?) for client-side admin. Angular? Ember? 
 * [ ] Do real session tracking for admin
 * [ ] Make PagesDB calls from an async nunjucks helper, moving those lookups out of the controller. (Downside: Breaks down asynchronicity a bit. Upside: Cleaner code & models)
 
