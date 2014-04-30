@@ -59,15 +59,14 @@ var home = function (req, res) {
             var date = moment(c.StartDateTime);
             return date.isBefore(tmrwStart) ? 'today' : 'tomorrow';
         });
-
-        var earliestClass = _.min(classes.today, 'StartDateTime');
+        var earliestClass = classes.today ? _.min(classes.today, 'StartDateTime') : now;
         var model = {
             today: classes.today,
             tomorrow: classes.tomorrow,
             page: page,
             posts: posts,
             //It's PM if the first class of today is after 4
-            pm: (earliestClass ? moment(earliestClass.StartDateTime).hours() : now.hours()) >= 16,
+            pm: moment(earliestClass).hours() >= 16,
             //Group workshops by month and remove duplicates from each month
             workshops: _.mapValues(_.groupBy(workshops, function (ws) {
                 return moment(ws.date).format('MMMM');
@@ -97,7 +96,7 @@ var workshops = function (req, res) {
                 dateToUnix = function dateToUnix(dateString) {
                     return moment(dateString).valueOf();
                 };
-            
+
             //Create days, which holds what days the class occurs, in order
             _.forEach(starts, function (start) {
                 var day = moment(start).format('dddd');
@@ -105,7 +104,7 @@ var workshops = function (req, res) {
             });
             //...and remove the days that the class doesn't occur on
             days = _.reject(days, _.isUndefined);
-            
+
             return _.assign(classes[0], {
                 days: days,
                 start: _.min(starts, dateToUnix),
