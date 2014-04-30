@@ -153,7 +153,6 @@ function initializeClient() {
         if (_.isUndefined(this.description) || _.isObject(this.description)) {
             this.description = '';
         }
-        return this;
     }
 
     MboApiClient.GetWorkshops = function (options) {
