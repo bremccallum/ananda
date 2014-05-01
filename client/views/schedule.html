@@ -24,6 +24,7 @@
                 </td>
                 <td>
                     <a href="/instructors#{{class.Staff.Name | slugify}}">{{class.Staff.Name}}</a>
+                    {% if class.isSubstitute %} <span class="label label-info">Substitute</span> {%endif%}
                 </td>
             </tr>
             {% endfor %} {%endif%} {% endfor %}

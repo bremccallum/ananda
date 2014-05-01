@@ -18,7 +18,7 @@ For now, though, it's a work-in-progress.
 * [ ] line up titles on home page
 * [ ] retail store WYSIWIG
 * [ ] pricing & membership (see WYSIWIG)
-* [ ] MBO substitutions!
+* [x] MBO substitutions!
 * [ ] Save photos to azure blob? Need to decide on hosting...
 
 ### Refactor

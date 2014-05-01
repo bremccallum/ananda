@@ -42,6 +42,9 @@ function initializeClient() {
                         string: 'Classes.StartDateTime'
                     },
                     {
+                        string: 'Classes.Substitute'
+                    },
+                    {
                         string: 'Classes.Staff.Name'
                     },
                     {
@@ -131,6 +134,7 @@ function initializeClient() {
             if (_.isUndefined(options.programID)) {
                 cleanedClasses = _.map(cleanedClasses, function (c) {
                     c.isWorkshop = c.ClassDescription.Program.ID == WORKSHOPS_ID;
+                    c.isSubstitute = c.Substitute === "true";
                     return c;
                 });
             }
