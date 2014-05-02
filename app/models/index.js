@@ -1,5 +1,5 @@
 var mongoose = require("mongoose"),
-    mongoUri = process.env.CUSTOMCONNSTR_MONGOLAB_URI ||
+    mongoUri = process.env.ANANDA_MONGO ||
         process.env.ANANDA_MONGO_DEV;
 
 mongoose.connect(mongoUri);
