@@ -48,7 +48,7 @@ function initializeClient() {
                         string: 'Classes.Staff.Name'
                     },
                     {
-                        string: 'Classes.ClassDescription.Program'
+                        string: 'Classes.ClassDescription.Program.ID'
                     }
                 ],
                 StartDateTime: start.format(DateFormat),
@@ -126,7 +126,7 @@ function initializeClient() {
             } else {
                 cleanedClasses = rawClasses.GetClassesResult.Classes.Class;
                 //If there's only one class, put it in an array.
-                if (_.isObject(cleanedClasses.length)) {
+                if (!_.isArray(cleanedClasses)) {
                     cleanedClasses = [cleanedClasses];
                 }
             }
