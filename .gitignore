@@ -219,3 +219,5 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 /client/public/uploads/
+/client/public/styles/ananda.min.css
+/client/public/styles/ananda.css
