@@ -11,7 +11,8 @@
     <time>{{class.StartDateTime | prettyTime}}</time>
     {% if class.isWorkshop %}<span class="label label-default">Workshop</span>{%endif%}<a class="class-name" href="/{{'workshops' if class.isWorkshop else 'classes'}}#{{class.ClassDescription.Name | slugify}}">{{class.ClassDescription.Name}}</a>
     <span class="class-instructor">with
-        <a class="link-instructor" href="/instructors#{{class.Staff.Name | slugify}}">{{ class.Staff.Name }}</a>{% if class.isSubstitute %} <span class="label label-info">Substitute</span> {%endif%}
+        {% if class.isSubstitute %} <span class="label label-info">Substitute</span> {%endif%}
+        <a class="link-instructor" href="/instructors#{{class.Staff.Name | slugify}}">{{ class.Staff.Name }}</a>
     </span>
 </p>
 {% endfor %}
