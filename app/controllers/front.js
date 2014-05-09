@@ -171,12 +171,12 @@ var schedule = function (req, res) {
                 classes: _.groupBy(classes, function (c) {
                     return moment(c.StartDateTime).format(dayFormat);
                 }),
-                days: [now.format(dayFormat)],
+                days: [],
                 title: 'Schedule'
             };
         //Fill in the dates, so we don't have gaps for days without classes
-        while (future.diff(now, 'days') > 0) {
-            model.days.push(now.add('days', 1).format(dayFormat));
+        for (var i = 0; i < future.diff(now, 'days'); i++) {
+            model.days.push(moment(now).add('days', i).format(dayFormat));
         }
         res.render("schedule.html", model);
     }).fail(fail.bind(null, res));
