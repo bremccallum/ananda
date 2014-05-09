@@ -52,7 +52,7 @@ var nunjucksInit = function (app) {
         return arr;
     });
     nunjucks.addFilter('excerpt', function (v, numWords) {
-        numWords = numWords ? numWords : 50;
+        numWords = numWords ? numWords : 64;
         return v ? downsize(v.replace(/<\/?[^>]+>/gi, ' '), {
             words: numWords
         }) : v;

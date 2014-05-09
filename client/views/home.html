@@ -81,7 +81,7 @@
                             <a href="/news/{{post.slug}}">{{post.title}}</a>
                         </h1>
                         <time>Published {{post.published | prettyDate}}</time>
-                        <div class="post-body">{{post.body | excerpt(40) | safe}}&hellip;</div>
+                        <div class="post-body">{{post.body | excerpt | safe}}&hellip;</div>
                         <a href="/news/{{post.slug}}">Read More..</a>
                     </div>
                 </article>
