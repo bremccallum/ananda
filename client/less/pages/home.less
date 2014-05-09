@@ -15,6 +15,11 @@
         p.upcoming {
             margin-top: 1.5em;
             padding-left: .3em;
+            &.cancelled {
+                a {
+                    text-decoration: line-through;
+                }
+            }
             .class-name {
                 font-family: @title-font;
             }
@@ -34,6 +39,7 @@
                 font-sizes: .98;
             }
         }
+        
     }
     #right {
         .make-xs-column(12);

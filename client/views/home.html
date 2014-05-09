@@ -7,13 +7,22 @@
 {% else %}
 
 {% for class in classes | sort(false, false,'StartDateTime')%}
-<p class="upcoming clearfix">
+<p class="upcoming clearfix {{'cancelled' if class.isCancelled}}">
+    
     <time>{{class.StartDateTime | prettyTime}}</time>
-    {% if class.isWorkshop %}<span class="label label-default">Workshop</span>{%endif%}<a class="class-name" href="/{{'workshops' if class.isWorkshop else 'classes'}}#{{class.ClassDescription.Name | slugify}}">{{class.ClassDescription.Name}}</a>
+    
+    {% if class.isWorkshop and not class.isCancelled %}
+    <span class="label label-primary">Workshop</span>
+    {% elif class.isCancelled %}
+    <span class="label label-warning">Cancelled</span>
+    {% endif -%}
+    <a class="class-name" href="/{{'workshops' if class.isWorkshop else 'classes'}}#{{class.ClassDescription.Name | slugify}}">{{class.ClassDescription.Name}}</a>
+    {% if not class.isCancelled %}
     <span class="class-instructor">with
         {% if class.isSubstitute %} <span class="label label-info">Substitute</span> {%endif%}
         <a class="link-instructor" href="/instructors#{{class.Staff.Name | slugify}}">{{ class.Staff.Name }}</a>
     </span>
+    {% endif %}
 </p>
 {% endfor %}
 {% endif %}

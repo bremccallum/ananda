@@ -20,7 +20,7 @@
             <tr class="{{'cancelled' if class.isCancelled}}">
                 <td class="class-time">{{class.StartDateTime | prettyTime}}</td>
                 <td>
-                    <a href="/{{'workshops' if class.isWorkshop else 'classes'}}#{{class.ClassDescription.Name | slugify}}">{{class.ClassDescription.Name}}</a> {% if class.isWorkshop %}<span class="label label-default"> Workshop</span>{%endif%}
+                    <a href="/{{'workshops' if class.isWorkshop else 'classes'}}#{{class.ClassDescription.Name | slugify}}">{{class.ClassDescription.Name}}</a> {% if class.isWorkshop %}<span class="label label-primary"> Workshop</span>{%endif%}
                 </td>
                 <td>
                     {% if not class.isCancelled %}
