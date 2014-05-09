@@ -5,6 +5,18 @@
                 border-bottom-width: 2px;
                 border-bottom-style: solid;
             }
+            &.cancelled {
+                a, .class-time {
+                    text-decoration: line-through;
+                    a {
+                        color: @brand-warning;
+                    }
+                    .label-warning {
+                        text-decoration: none;
+                    }
+                }
+
+            }
         }
         th {
             background-color: @gray-lighter;

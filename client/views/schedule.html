@@ -17,14 +17,18 @@
                 <th class="day {{'no-classes' if not classes[day]}}" colspan="4">{{day}}</td>
             </tr>
             {% for class in classes[day] | attrSort("StartDateTime")%}
-            <tr>
+            <tr class="{{'cancelled' if class.isCancelled}}">
                 <td class="class-time">{{class.StartDateTime | prettyTime}}</td>
                 <td>
                     <a href="/{{'workshops' if class.isWorkshop else 'classes'}}#{{class.ClassDescription.Name | slugify}}">{{class.ClassDescription.Name}}</a> {% if class.isWorkshop %}<span class="label label-default"> Workshop</span>{%endif%}
                 </td>
                 <td>
+                    {% if not class.isCancelled %}
                     <a href="/instructors#{{class.Staff.Name | slugify}}">{{class.Staff.Name}}</a>
-                    {% if class.isSubstitute %} <span class="label label-info">Substitute</span> {%endif%}
+                        {% if class.isSubstitute %} <span class="label label-info">Substitute</span> {%endif%}
+                    {% else %}
+                    <span class="label label-warning">Class Cancelled</span>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %} {%endif%} {% endfor %}
