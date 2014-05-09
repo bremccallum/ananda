@@ -49,6 +49,9 @@ function initializeClient() {
                     },
                     {
                         string: 'Classes.ClassDescription.Program.ID'
+                    },
+                    {
+                        string: 'Classes.IsCanceled'
                     }
                 ],
                 StartDateTime: start.format(DateFormat),
@@ -135,6 +138,7 @@ function initializeClient() {
                 cleanedClasses = _.map(cleanedClasses, function (c) {
                     c.isWorkshop = c.ClassDescription.Program.ID == WORKSHOPS_ID;
                     c.isSubstitute = c.Substitute === "true";
+                    c.isCancelled = c.IsCanceled === "true";
                     return c;
                 });
             }
