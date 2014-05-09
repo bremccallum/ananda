@@ -157,13 +157,13 @@ var classes = function (req, res) {
 };
 
 var schedule = function (req, res) {
-    var now = nowMoment(),
-        future = nowMoment().add('weeks', 2);
+    var now = nowMoment().startOf('day'),
+        future = nowMoment().add('weeks', 2).endOf('day');
 
     soap().then(function (MboApiClient) {
         return MboApiClient.GetClasses({
-            start: nowMoment(),
-            end: nowMoment().add('weeks', 2)
+            start: now,
+            end: future
         });
     }).then(function (classes) {
         var dayFormat = 'dddd [the] Do',
@@ -171,7 +171,7 @@ var schedule = function (req, res) {
                 classes: _.groupBy(classes, function (c) {
                     return moment(c.StartDateTime).format(dayFormat);
                 }),
-                days: [],
+                days: [now.format(dayFormat)],
                 title: 'Schedule'
             };
         //Fill in the dates, so we don't have gaps for days without classes
